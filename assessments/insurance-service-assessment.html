@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insurance Service Profile Assessment | StaffMyAgency.com</title>
+<style>
+  :root {
+    --primary: #1a4fa0;
+    --primary-dark: #123a78;
+    --accent: #e8a020;
+    --accent-dark: #c78510;
+    --success: #1e8a4a;
+    --danger: #c0392b;
+    --warn: #e8a020;
+    --light: #f4f7fb;
+    --border: #d0daea;
+    --text: #1a2232;
+    --muted: #6b7a95;
+    --white: #ffffff;
+    --card-shadow: 0 2px 16px rgba(26,79,160,0.09);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--primary);
+    color: white;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-logo {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 18px; color: white;
+  }
+  .header-title { font-size: 17px; font-weight: 700; line-height: 1.2; }
+  .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .header-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px;
+  }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    background: rgba(255,255,255,0.2);
+    height: 4px;
+  }
+  .progress-bar {
+    background: var(--accent);
+    height: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── Container ── */
+  .container { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  /* ── Cards ── */
+  .card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    padding: 36px 40px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 540px) {
+    .card { padding: 24px 20px; }
+  }
+
+  /* ── Welcome screen ── */
+  .welcome-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin-bottom: 20px;
+  }
+  .welcome-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+  .welcome-sub { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 540px) { .info-grid { grid-template-columns: 1fr; } }
+  .info-item {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .info-item-icon { font-size: 22px; margin-bottom: 6px; }
+  .info-item-label { font-size: 12px; color: var(--muted); }
+  .info-item-value { font-size: 14px; font-weight: 700; color: var(--primary); margin-top: 2px; }
+  .applicant-greeting {
+    background: linear-gradient(135deg, #eef3fb, #dce8f8);
+    border: 1px solid #c0d4f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    margin-bottom: 24px;
+    color: var(--primary-dark);
+  }
+  .applicant-greeting strong { font-weight: 700; }
+
+  /* ── Section header ── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .section-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .section-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+  /* ── Questions ── */
+  .question-block {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .question-block:focus-within { border-color: var(--primary); }
+  .question-block.answered { border-color: #b0c8f0; background: #fafcff; }
+  .question-block.error { border-color: var(--danger); background: #fff8f7; }
+
+  .question-num {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 11px; font-weight: 700;
+    text-align: center; line-height: 22px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .question-text {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* Likert scale */
+  .likert-wrap {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .likert-option { flex: 1; min-width: 80px; }
+  .likert-option input[type="radio"],
+  .scenario-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px; height: 1px;
+    pointer-events: none;
+  }
+  .likert-option input[type="radio"]:focus-visible + label,
+  .scenario-option input[type="radio"]:focus-visible + label {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .likert-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 6px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+  .likert-option label .score-num {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .likert-option input[type="radio"]:checked + label {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+  }
+  .likert-option input[type="radio"]:checked + label .score-num { color: white; }
+  .likert-option label:hover { border-color: var(--primary); background: #f0f5ff; }
+  .likert-option input[type="radio"]:checked + label:hover { background: var(--primary); }
+
+  /* Scenario options */
+  .scenario-options { display: flex; flex-direction: column; gap: 8px; }
+  .scenario-option { position: relative; }
+  .scenario-option label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text);
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .scenario-option label .opt-letter {
+    background: var(--light);
+    border: 1.5px solid var(--border);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    color: var(--primary);
+    transition: all 0.15s;
+  }
+  .scenario-option input[type="radio"]:checked + label {
+    border-color: var(--primary);
+    background: #f0f5ff;
+  }
+  .scenario-option input[type="radio"]:checked + label .opt-letter {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+  .scenario-option label:hover { border-color: var(--primary); }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-accent {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-accent:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-lg { padding: 16px 36px; font-size: 16px; width: 100%; }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* ── Navigation ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--muted);
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ── Results screen ── */
+  .results-header {
+    text-align: center;
+    padding: 32px 0 24px;
+  }
+  .results-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .badge-elite { background: linear-gradient(135deg, #1e8a4a, #25a858); color: white; }
+  .badge-strong { background: linear-gradient(135deg, #1a4fa0, #2563c0); color: white; }
+  .badge-developing { background: linear-gradient(135deg, #e8a020, #d4880a); color: white; }
+  .badge-notrecommended { background: linear-gradient(135deg, #c0392b, #a02020); color: white; }
+
+  .results-name { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .results-sub { font-size: 14px; color: var(--muted); }
+
+  /* Overall score ring */
+  .score-ring-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+  }
+  .score-ring-svg { transform: rotate(-90deg); }
+  .score-ring-text {
+    position: absolute;
+    text-align: center;
+  }
+  .score-ring-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .score-center-num { font-size: 36px; font-weight: 900; color: var(--primary); line-height: 1; }
+  .score-center-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* Dimension bars */
+  .dimension-card {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .dimension-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .dimension-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .dimension-score {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--primary);
+  }
+  .dim-bar-bg {
+    height: 10px;
+    background: #dce5f0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .dim-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease;
+  }
+  .fill-service { background: linear-gradient(90deg, #1a4fa0, #4a80d0); }
+  .fill-conscientiousness { background: linear-gradient(90deg, #1e8a4a, #35c070); }
+  .fill-composure { background: linear-gradient(90deg, #8e44ad, #b56ae8); }
+  .fill-crosssell { background: linear-gradient(90deg, #e8a020, #f0c060); }
+
+  .dimension-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Insight items */
+  .insights-title { font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 14px; }
+  .insight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: white;
+    border: 1px solid var(--border);
+  }
+  .insight-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .insight-text { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+  .insight-text strong { color: var(--primary); }
+
+  /* Footer note */
+  .results-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Status messages */
+  .submit-status {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: none;
+  }
+  .status-success { background: #e8f7ef; border: 1px solid #a0d8b8; color: #1e6e3e; display: block; }
+  .status-error { background: #fdf0ef; border: 1px solid #f0b0a8; color: #8c2020; display: block; }
+  .status-sending { background: #eef3fb; border: 1px solid #c0d4f0; color: #1a4fa0; display: block; }
+
+  /* Screen management */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* Validation error message */
+  .val-msg {
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: 8px;
+    display: none;
+  }
+  .val-msg.visible { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">S</div>
+    <div>
+      <div class="header-title">StaffMyAgency.com</div>
+      <div class="header-sub">Insurance Service Profile Assessment</div>
+    </div>
+  </div>
+  <div class="header-badge">Confidential</div>
+</div>
+<div class="progress-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- ══════════════ WELCOME SCREEN ══════════════ -->
+<div class="container">
+  <div class="screen active" id="screenWelcome">
+    <div class="card">
+      <div class="welcome-icon">🎧</div>
+      <div class="welcome-title">Service Profile Assessment</div>
+      <div class="welcome-sub">
+        This assessment helps insurance agencies identify candidates with the empathy, accuracy,
+        and composure to excel in customer service and account management roles. There are no right
+        or wrong answers — just answer honestly for the most accurate results.
+      </div>
+
+      <div id="applicantGreeting" class="applicant-greeting" style="display:none;">
+        Welcome, <strong id="greetingName"></strong>! This assessment has been sent to you by
+        <strong id="greetingAgent"></strong>. Your results will be shared with them upon completion.
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-item-icon">❓</div>
+          <div class="info-item-label">Questions</div>
+          <div class="info-item-value">26 Questions</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">⏱️</div>
+          <div class="info-item-label">Est. Time</div>
+          <div class="info-item-value">8–12 Minutes</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">📊</div>
+          <div class="info-item-label">Dimensions</div>
+          <div class="info-item-value">4 Core Areas</div>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;">
+        <strong style="color:var(--text);">What we measure:</strong> Your responses will be scored across
+        four dimensions — <strong>Service Orientation &amp; Empathy</strong>, <strong>Conscientiousness &amp; Accuracy</strong>,
+        <strong>Composure &amp; De-escalation</strong>, and <strong>Cross-Sell Comfort</strong> — to generate
+        your Insurance Service Aptitude Score.
+      </p>
+
+      <button class="btn btn-primary btn-lg" onclick="startAssessment()">
+        Begin Assessment →
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 1: SERVICE ORIENTATION ══════════════ -->
+  <div class="screen" id="screenSection1">
+    <div class="card">
+      <div class="section-label">🤝 Part 1 of 4</div>
+      <div class="section-title">Service Orientation &amp; Empathy</div>
+      <div class="section-desc">How do you approach helping customers and understanding their needs?</div>
+      <div id="sectionQuestions1"></div>
+      <div class="val-msg" id="val1">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <span></span>
+        <button class="btn btn-primary" onclick="goToSection(2)">Next: Accuracy →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 2: CONSCIENTIOUSNESS ══════════════ -->
+  <div class="screen" id="screenSection2">
+    <div class="card">
+      <div class="section-label">✅ Part 2 of 4</div>
+      <div class="section-title">Conscientiousness &amp; Accuracy</div>
+      <div class="section-desc">How do you handle details, documentation, and follow-through?</div>
+      <div id="sectionQuestions2"></div>
+      <div class="val-msg" id="val2">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goToSection(3)">Next: Composure →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 3: COMPOSURE ══════════════ -->
+  <div class="screen" id="screenSection3">
+    <div class="card">
+      <div class="section-label">🧘 Part 3 of 4</div>
+      <div class="section-title">Composure &amp; De-escalation</div>
+      <div class="section-desc">How do you handle difficult customers, pressure, and unwelcome news?</div>
+      <div id="sectionQuestions3"></div>
+      <div class="val-msg" id="val3">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(2)">← Back</button>
+        <button class="btn btn-primary" onclick="goToSection(4)">Next: Account Growth →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 4: CROSS-SELL COMFORT ══════════════ -->
+  <div class="screen" id="screenSection4">
+    <div class="card">
+      <div class="section-label">🌱 Part 4 of 4</div>
+      <div class="section-title">Account Growth &amp; Cross-Sell Comfort</div>
+      <div class="section-desc">How comfortable are you identifying and raising additional coverage needs?</div>
+      <div id="sectionQuestions4"></div>
+      <div class="val-msg" id="val4">⚠️ Please answer all questions before submitting.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(3)">← Back</button>
+        <button class="btn btn-accent" id="submitBtn" onclick="submitAssessment()">
+          Submit Assessment ✓
+        </button>
+      </div>
+      <div id="submitStatus" class="submit-status"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ THANK YOU SCREEN (applicant-facing) ══════════════ -->
+  <div class="screen" id="screenThankYou">
+    <div class="card" style="text-align:center;">
+      <div class="welcome-icon" style="margin:0 auto 20px;">✅</div>
+      <div class="welcome-title">Assessment Complete</div>
+      <div class="welcome-sub">
+        Thank you<span id="thankYouName"></span>! Your responses have been submitted and shared with
+        <span id="thankYouAgent">your hiring agent</span>, who will be in touch about next steps.
+      </div>
+      <div id="thankYouWarn" style="display:none;font-size:13px;color:var(--danger);line-height:1.6;margin-bottom:16px;">
+        ⚠️ We had trouble reaching the server. Your answers are saved in this browser and we'll retry
+        automatically — but please also let your hiring agent know you've completed the assessment.
+      </div>
+      <div class="results-footer">
+        <strong>StaffMyAgency.com</strong> — Built for Insurance Agency Owners
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ RESULTS SCREEN (agent-facing — hidden from applicants unless CONFIG.showApplicantResults) ══════════════ -->
+  <div class="screen" id="screenResults">
+    <div class="card">
+      <div class="results-header">
+        <div id="resultsBadge" class="results-badge"><!-- filled by JS --></div>
+        <div id="resultsName" class="results-name"></div>
+        <div class="results-sub">Insurance Service Profile Assessment — StaffMyAgency.com</div>
+
+        <!-- Score Ring -->
+        <div class="score-ring-wrap">
+          <div class="score-ring-container">
+            <svg class="score-ring-svg" width="160" height="160" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="65" fill="none" stroke="#dce5f0" stroke-width="14"/>
+              <circle id="ringCircle" cx="80" cy="80" r="65" fill="none" stroke="#1a4fa0" stroke-width="14"
+                stroke-dasharray="408.41" stroke-dashoffset="408.41"
+                stroke-linecap="round" style="transition: stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-text">
+              <div class="score-center-num" id="scoreCenterNum">--</div>
+              <div class="score-center-label">Overall Score</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dimension Bars -->
+      <div style="margin-bottom:28px;">
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">🤝 Service Orientation &amp; Empathy</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 30%</div>
+            </div>
+            <div class="dimension-score" id="scoreService">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-service" id="barService" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">✅ Conscientiousness &amp; Accuracy</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 30%</div>
+            </div>
+            <div class="dimension-score" id="scoreConscientiousness">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-conscientiousness" id="barConscientiousness" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">🧘 Composure &amp; De-escalation</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 25%</div>
+            </div>
+            <div class="dimension-score" id="scoreComposure">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-composure" id="barComposure" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">🌱 Cross-Sell Comfort</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 15%</div>
+            </div>
+            <div class="dimension-score" id="scoreCrossSell">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-crosssell" id="barCrossSell" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+      </div>
+
+      <!-- Insights -->
+      <div>
+        <div class="insights-title">📝 Assessment Insights</div>
+        <div id="insightsList"></div>
+      </div>
+
+      <div class="results-footer">
+        This assessment was completed on <span id="completedDate"></span>.<br>
+        Results have been sent to your hiring agent. A copy has been recorded in their ATS.<br><br>
+        <strong>StaffMyAgency.com</strong> — Built for Insurance Agency Owners
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIGURATION — Update before deploying
+// ══════════════════════════════════════════════
+const CONFIG = {
+  // Your ATS webhook endpoint. Results will be POSTed here as JSON.
+  webhookUrl: 'https://YOUR_ATS_WEBHOOK_URL_HERE',
+
+  // Set to true to log payload to console instead of POSTing (for development)
+  devMode: false,
+
+  // Show the full scored report (rating badge, dimension scores, hiring insights)
+  // to the applicant after submission. Recommended: false — hiring recommendations
+  // like "Not Recommended" should only reach the agent via the webhook.
+  showApplicantResults: false
+};
+
+// An unconfigured webhook behaves like dev mode so test runs don't error out.
+const WEBHOOK_READY = CONFIG.webhookUrl && !CONFIG.webhookUrl.includes('YOUR_ATS_WEBHOOK');
+
+// ══════════════════════════════════════════════
+// URL PARAMETER PARSING
+// ══════════════════════════════════════════════
+const params = new URLSearchParams(window.location.search);
+const APPLICANT = {
+  name:      params.get('applicant_name')  || '',
+  email:     params.get('applicant_email') || '',
+  agentEmail: params.get('agent_email')    || '',
+  agentName:  params.get('agent_name')     || 'Your Hiring Agent',
+  jobId:      params.get('job_id')         || '',
+  jobTitle:   params.get('job_title')      || 'Customer Service Representative'
+};
+
+// ══════════════════════════════════════════════
+// QUESTION BANK
+// ══════════════════════════════════════════════
+// Likert items: 1 (Strongly Disagree) → 5 (Strongly Agree).
+// Scenario options carry a quality value 1 (weakest) to 4 (strongest); they are
+// listed in display order (deliberately shuffled) and the value travels with the
+// option's content, not its letter.
+const LIKERT_LABELS = ['Strongly<br>Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly<br>Agree'];
+
+const QUESTIONS = [
+  // ── Section 1: Service Orientation & Empathy ──
+  { n: 1, section: 1, type: 'likert', text: "I get genuine satisfaction from helping someone solve a problem, even when there's nothing in it for me." },
+  { n: 2, section: 1, type: 'likert', text: "When a customer is confused, I'm patient about explaining things multiple ways until it clicks." },
+  { n: 3, section: 1, type: 'scenario', text: "A policyholder calls upset because their premium went up and they don't understand why. What do you do?", options: [
+    { v: 3, label: "Explain the rate change factors right away so they have the facts." },
+    { v: 4, label: "Listen fully, acknowledge their frustration, then walk through the change and explore options together." },
+    { v: 1, label: "Transfer them to whoever handles billing — rate changes aren't my call." },
+    { v: 2, label: "Apologize and offer to have an agent call them back later." }
+  ]},
+  { n: 4, section: 1, type: 'likert', text: "I find it draining to deal with people who ask a lot of questions." }, // reverse
+  { n: 5, section: 1, type: 'likert', text: "I can usually sense how someone is feeling from their tone of voice or word choice." },
+  { n: 6, section: 1, type: 'likert', text: "I'm willing to go out of my way to fix a customer's problem I could have passed along to someone else." },
+  { n: 7, section: 1, type: 'likert', text: "Customers would describe me as warm and approachable, even over the phone." },
+
+  // ── Section 2: Conscientiousness & Accuracy ──
+  { n: 8, section: 2, type: 'likert', text: "I double-check my work for errors before considering a task complete." },
+  { n: 9, section: 2, type: 'likert', text: "I keep detailed notes of my customer interactions, even when it isn't required." },
+  { n: 10, section: 2, type: 'scenario', text: "You're processing a policy change and notice a small discrepancy in the customer's file that isn't related to today's request. It's 4:55 PM. What do you do?", options: [
+    { v: 3, label: "Make a note to look into it first thing tomorrow." },
+    { v: 1, label: "Leave it — it's not related to what the customer asked for." },
+    { v: 4, label: "Fix or flag it now before it becomes a bigger problem, even if I leave a few minutes late." },
+    { v: 2, label: "Mention it to a coworker in case they know something about it." }
+  ]},
+  { n: 11, section: 2, type: 'likert', text: "Small details sometimes slip past me when I'm juggling multiple tasks." }, // reverse
+  { n: 12, section: 2, type: 'likert', text: "I follow documented procedures even when a shortcut would be faster." },
+  { n: 13, section: 2, type: 'likert', text: "I finish what I start — open items on my to-do list bother me until they're closed." },
+  { n: 14, section: 2, type: 'likert', text: "People who know my work would describe me as highly organized." },
+
+  // ── Section 3: Composure & De-escalation ──
+  { n: 15, section: 3, type: 'likert', text: "I can stay calm and professional when a customer raises their voice at me." },
+  { n: 16, section: 3, type: 'scenario', text: "A customer is angry about a denied claim and starts blaming you personally. Your most likely response:", options: [
+    { v: 4, label: "Let them vent, acknowledge their frustration, and calmly explain what options they have." },
+    { v: 1, label: "Put them on hold or hand them to a manager so they can cool down." },
+    { v: 2, label: "Stay polite but make clear the decision wasn't mine and there's nothing I can do." },
+    { v: 3, label: "Try to calm them down quickly so we can get to solutions." }
+  ]},
+  { n: 17, section: 3, type: 'likert', text: "After a difficult call, I can reset and give the next customer my full attention." },
+  { n: 18, section: 3, type: 'likert', text: "Criticism or hostility from a customer tends to stay with me for the rest of the day." }, // reverse
+  { n: 19, section: 3, type: 'likert', text: "I can deliver unwelcome news — a rate increase, a coverage limitation — clearly and without dancing around it." },
+  { n: 20, section: 3, type: 'likert', text: "I stay composed when handling several urgent requests at the same time." },
+  { n: 21, section: 3, type: 'likert', text: "Coworkers would say I'm the steady one when things get hectic." },
+
+  // ── Section 4: Account Growth & Cross-Sell Comfort ──
+  { n: 22, section: 4, type: 'likert', text: "If I notice a customer has a coverage gap, I'm comfortable bringing it up even though they didn't ask." },
+  { n: 23, section: 4, type: 'likert', text: "I would feel pushy suggesting additional products during a service call." }, // reverse
+  { n: 24, section: 4, type: 'scenario', text: "While updating a customer's auto policy, you notice they rent their home but have no renters policy. What do you do?", options: [
+    { v: 2, label: "Send a follow-up email afterward with some information about renters coverage." },
+    { v: 1, label: "Nothing — they called about their auto policy, not to be sold something." },
+    { v: 4, label: "Mention it naturally: ask if they've thought about renters coverage and offer a quick quote." },
+    { v: 3, label: "Make a note for an agent to follow up with them about it later." }
+  ]},
+  { n: 25, section: 4, type: 'likert', text: "Recommending coverage a customer genuinely needs is part of good service, not sales pressure." },
+  { n: 26, section: 4, type: 'likert', text: "I'm comfortable asking satisfied customers for referrals or reviews." }
+];
+
+const SECTION_MAP = { 1: [1,2,3,4,5,6,7], 2: [8,9,10,11,12,13,14], 3: [15,16,17,18,19,20,21], 4: [22,23,24,25,26] };
+const TOTAL_QUESTIONS = 26;
+
+function renderQuestions() {
+  const letters = ['A', 'B', 'C', 'D'];
+  for (const q of QUESTIONS) {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `qb${q.n}`;
+    let inner = `<div class="question-text"><span class="question-num">${q.n}</span>${q.text}</div>`;
+    if (q.type === 'likert') {
+      inner += '<div class="likert-wrap">' + LIKERT_LABELS.map((lab, i) =>
+        `<div class="likert-option"><input type="radio" name="q${q.n}" id="q${q.n}-${i + 1}" value="${i + 1}"><label for="q${q.n}-${i + 1}"><span class="score-num">${i + 1}</span>${lab}</label></div>`
+      ).join('') + '</div>';
+    } else {
+      inner += '<div class="scenario-options">' + q.options.map((opt, i) =>
+        `<div class="scenario-option"><input type="radio" name="q${q.n}" id="q${q.n}-${letters[i].toLowerCase()}" value="${opt.v}"><label for="q${q.n}-${letters[i].toLowerCase()}"><span class="opt-letter">${letters[i]}</span>${opt.label}</label></div>`
+      ).join('') + '</div>';
+    }
+    block.innerHTML = inner;
+    document.getElementById(`sectionQuestions${q.section}`).appendChild(block);
+  }
+}
+
+// ══════════════════════════════════════════════
+// SCORING MODEL
+// ══════════════════════════════════════════════
+const DIMENSIONS = {
+  serviceOrientation: { questions: [1,2,3,4,5,6,7],       weight: 0.30 },
+  conscientiousness:  { questions: [8,9,10,11,12,13,14],  weight: 0.30 },
+  composure:          { questions: [15,16,17,18,19,20,21], weight: 0.25 },
+  crossSell:          { questions: [22,23,24,25,26],      weight: 0.15 }
+};
+// Scenario questions: 4 options ranked 1-4, mapped linearly onto the 1-5 Likert range.
+const SCENARIO_QUESTIONS = [3, 10, 16, 24];
+// Reverse-keyed Likert items: agreement indicates a weaker fit, so the score is flipped.
+const REVERSED_QUESTIONS = [4, 11, 18, 23];
+
+function getQuestionValue(qNum) {
+  const inputs = document.querySelectorAll(`input[name="q${qNum}"]:checked`);
+  if (!inputs.length) return null;
+  const raw = parseFloat(inputs[0].value);
+  if (SCENARIO_QUESTIONS.includes(qNum)) return 1 + (raw - 1) * (4 / 3); // 1-4 → 1-5
+  if (REVERSED_QUESTIONS.includes(qNum)) return 6 - raw;
+  return raw;
+}
+
+function calcDimensionScore(questionNums) {
+  let total = 0, max = questionNums.length * 5;
+  for (const q of questionNums) {
+    const v = getQuestionValue(q);
+    if (v !== null) total += v;
+  }
+  return Math.round((total / max) * 100);
+}
+
+// ══════════════════════════════════════════════
+// DRAFT PERSISTENCE (survives accidental refresh)
+// ══════════════════════════════════════════════
+const DRAFT_KEY = `iss_draft_${APPLICANT.email || 'anon'}_${APPLICANT.jobId || 'nojob'}`;
+const PENDING_KEY = 'iss_pending_submission';
+let startedAt = null;
+
+function saveDraft() {
+  const draft = { startedAt, answers: {} };
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    if (checked) draft.answers[`q${i}`] = checked.value;
+  }
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch (e) {}
+}
+
+function restoreDraft() {
+  let draft;
+  try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch (e) { return; }
+  if (!draft || !draft.answers) return;
+  if (draft.startedAt) startedAt = draft.startedAt;
+  for (const [name, value] of Object.entries(draft.answers)) {
+    const input = document.querySelector(`input[name="${name}"][value="${value}"]`);
+    if (input) {
+      input.checked = true;
+      const block = document.getElementById(`qb${name.replace('q','')}`);
+      if (block) block.classList.add('answered');
+    }
+  }
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+}
+
+// ══════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(pct) {
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function updateAnswerProgress() {
+  let answered = 0;
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+  }
+  updateProgress(Math.round((answered / TOTAL_QUESTIONS) * 95));
+}
+
+function startAssessment() {
+  showScreen('screenSection1');
+  if (!startedAt) startedAt = Date.now();
+  saveDraft();
+  updateAnswerProgress();
+}
+
+// ══════════════════════════════════════════════
+// VALIDATION
+// ══════════════════════════════════════════════
+function validateSection(sectionNum) {
+  const qs = SECTION_MAP[sectionNum];
+  let allAnswered = true;
+
+  qs.forEach(q => {
+    const answered = document.querySelector(`input[name="q${q}"]:checked`) !== null;
+    const block = document.getElementById(`qb${q}`);
+    if (!answered) {
+      block.classList.add('error');
+      allAnswered = false;
+    } else {
+      block.classList.remove('error');
+      block.classList.add('answered');
+    }
+  });
+
+  const valEl = document.getElementById(`val${sectionNum}`);
+  if (!allAnswered) {
+    valEl.classList.add('visible');
+  } else {
+    valEl.classList.remove('visible');
+  }
+  return allAnswered;
+}
+
+// Mark blocks as answered on change
+document.addEventListener('change', e => {
+  if (e.target.type === 'radio') {
+    const qNum = parseInt(e.target.name.replace('q', ''));
+    const block = document.getElementById(`qb${qNum}`);
+    if (block) {
+      block.classList.remove('error');
+      block.classList.add('answered');
+    }
+    saveDraft();
+    updateAnswerProgress();
+  }
+});
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function goToSection(num) {
+  const prev = num - 1;
+  if (prev >= 1 && prev <= 4) {
+    if (!validateSection(prev)) return;
+  }
+  showScreen(`screenSection${num}`);
+  updateAnswerProgress();
+}
+
+// ══════════════════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════════════════
+async function postWithRetry(payload, attempts = 3) {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const res = await fetch(CONFIG.webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return true;
+    } catch (err) {
+      console.error(`Webhook attempt ${i + 1} failed:`, err);
+      if (i < attempts - 1) await new Promise(r => setTimeout(r, 1500 * (i + 1)));
+    }
+  }
+  return false;
+}
+
+async function submitAssessment() {
+  if (!validateSection(4)) return;
+
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('submitStatus');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+  // Calculate scores
+  const sScore = calcDimensionScore(DIMENSIONS.serviceOrientation.questions);
+  const aScore = calcDimensionScore(DIMENSIONS.conscientiousness.questions);
+  const pScore = calcDimensionScore(DIMENSIONS.composure.questions);
+  const xScore = calcDimensionScore(DIMENSIONS.crossSell.questions);
+  const overall = Math.round(
+    sScore * DIMENSIONS.serviceOrientation.weight +
+    aScore * DIMENSIONS.conscientiousness.weight +
+    pScore * DIMENSIONS.composure.weight +
+    xScore * DIMENSIONS.crossSell.weight
+  );
+
+  // Collect raw answers as selected (reversed items are NOT flipped here — scoring handles that)
+  const answers = {};
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    answers[`q${i}`] = checked ? parseFloat(checked.value) : null;
+  }
+
+  // Quality signals for the agent: completion time and straight-line responding
+  const durationSeconds = startedAt ? Math.round((Date.now() - startedAt) / 1000) : null;
+  const likertValues = [];
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    if (!SCENARIO_QUESTIONS.includes(i) && answers[`q${i}`] !== null) likertValues.push(answers[`q${i}`]);
+  }
+  const straightLine = likertValues.length > 0 && likertValues.every(v => v === likertValues[0]);
+
+  const rating = getRating(overall);
+  const completedAt = new Date().toISOString();
+
+  const payload = {
+    // Metadata
+    assessment_type: 'insurance_service_profile',
+    assessment_version: '1.0',
+    completed_at: completedAt,
+    job_id: APPLICANT.jobId,
+    job_title: APPLICANT.jobTitle,
+
+    // Applicant
+    applicant_name:  APPLICANT.name,
+    applicant_email: APPLICANT.email,
+    agent_email:     APPLICANT.agentEmail,
+    agent_name:      APPLICANT.agentName,
+
+    // Scores
+    score_overall:             overall,
+    score_service_orientation: sScore,
+    score_conscientiousness:   aScore,
+    score_composure:           pScore,
+    score_cross_sell:          xScore,
+    rating:                    rating.label,
+    rating_code:               rating.code,
+
+    // Response-quality signals
+    quality_flags: {
+      duration_seconds: durationSeconds,
+      rushed: durationSeconds !== null && durationSeconds < 120,
+      straight_line: straightLine
+    },
+
+    // Raw answers
+    answers: answers
+  };
+
+  // POST to webhook
+  statusEl.className = 'submit-status status-sending';
+  statusEl.textContent = '⏳ Sending your results...';
+
+  let sent = false;
+  if (CONFIG.devMode || !WEBHOOK_READY) {
+    console.log('Assessment payload:', JSON.stringify(payload, null, 2));
+    await new Promise(r => setTimeout(r, 800)); // simulate delay
+    sent = true;
+  } else {
+    sent = await postWithRetry(payload);
+  }
+
+  clearDraft();
+  if (sent) {
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+    statusEl.className = 'submit-status status-success';
+    statusEl.textContent = '✓ Results submitted successfully.';
+  } else {
+    // Keep the payload so it can be resent automatically on the next page load
+    try { localStorage.setItem(PENDING_KEY, JSON.stringify(payload)); } catch (e) {}
+    statusEl.className = 'submit-status status-error';
+    statusEl.textContent = '⚠️ Could not reach the server. Your answers are saved and will be retried — please also notify your agent.';
+  }
+
+  updateProgress(100);
+  setTimeout(() => {
+    if (CONFIG.showApplicantResults) {
+      showResults(overall, sScore, aScore, pScore, xScore, rating);
+    } else {
+      document.getElementById('thankYouWarn').style.display = sent ? 'none' : 'block';
+      showScreen('screenThankYou');
+    }
+  }, 900);
+}
+
+// ══════════════════════════════════════════════
+// RATING LOGIC
+// ══════════════════════════════════════════════
+function getRating(score) {
+  if (score >= 85) return { code: 'elite', label: 'Elite Service Professional', emoji: '🏆', badgeClass: 'badge-elite' };
+  if (score >= 70) return { code: 'strong', label: 'Strong Service Candidate', emoji: '⭐', badgeClass: 'badge-strong' };
+  if (score >= 55) return { code: 'developing', label: 'Developing Candidate', emoji: '📈', badgeClass: 'badge-developing' };
+  return { code: 'notrecommended', label: 'Not Recommended', emoji: '⚠️', badgeClass: 'badge-notrecommended' };
+}
+
+// ══════════════════════════════════════════════
+// RESULTS DISPLAY
+// ══════════════════════════════════════════════
+function showResults(overall, sScore, aScore, pScore, xScore, rating) {
+  showScreen('screenResults');
+
+  // Badge
+  const badgeEl = document.getElementById('resultsBadge');
+  badgeEl.className = `results-badge ${rating.badgeClass}`;
+  badgeEl.innerHTML = `${rating.emoji} ${rating.label}`;
+
+  // Name
+  document.getElementById('resultsName').textContent = APPLICANT.name || 'Assessment Complete';
+
+  // Score ring animation
+  const circumference = 408.41;
+  const offset = circumference - (overall / 100) * circumference;
+  setTimeout(() => {
+    document.getElementById('ringCircle').style.strokeDashoffset = offset;
+    const colorMap = { elite: '#1e8a4a', strong: '#1a4fa0', developing: '#e8a020', notrecommended: '#c0392b' };
+    document.getElementById('ringCircle').setAttribute('stroke', colorMap[rating.code]);
+  }, 100);
+  document.getElementById('scoreCenterNum').textContent = overall;
+
+  // Dimension scores & bars
+  document.getElementById('scoreService').textContent = sScore;
+  document.getElementById('scoreConscientiousness').textContent = aScore;
+  document.getElementById('scoreComposure').textContent = pScore;
+  document.getElementById('scoreCrossSell').textContent = xScore;
+  setTimeout(() => {
+    document.getElementById('barService').style.width = sScore + '%';
+    document.getElementById('barConscientiousness').style.width = aScore + '%';
+    document.getElementById('barComposure').style.width = pScore + '%';
+    document.getElementById('barCrossSell').style.width = xScore + '%';
+  }, 200);
+
+  // Completed date
+  document.getElementById('completedDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  // Insights
+  const insights = generateInsights(overall, sScore, aScore, pScore, xScore, rating);
+  document.getElementById('insightsList').innerHTML = insights.map(i =>
+    `<div class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function generateInsights(overall, s, a, p, x, rating) {
+  const insights = [];
+  const safeName = APPLICANT.name ? escapeHtml(APPLICANT.name) : 'This candidate';
+
+  // Overall
+  const descriptions = {
+    elite: `<strong>${safeName}</strong> scored in the top tier for insurance service readiness. They show exceptional customer empathy, attention to detail, and composure under pressure — the traits behind high retention and low error rates.`,
+    strong: `<strong>${safeName}</strong> demonstrates strong service fundamentals with solid scores across the core dimensions. Expect a smooth ramp-up with standard onboarding.`,
+    developing: `<strong>${safeName}</strong> shows potential in some areas but will need targeted coaching to build the consistency and composure required for a front-line service role.`,
+    notrecommended: `<strong>${safeName}</strong> scored below the threshold for recommended hire in key service aptitude areas. Consider whether additional assessment or a different role may be more appropriate.`
+  };
+  insights.push({ icon: rating.emoji, text: descriptions[rating.code] });
+
+  // Dimension-specific — cross-sell excluded from strength/gap ranking since it's
+  // weighted lower and low scores aren't disqualifying for a service-only role.
+  const coreScores = { serviceOrientation: s, conscientiousness: a, composure: p };
+  const labels = {
+    serviceOrientation: 'Service Orientation & Empathy',
+    conscientiousness: 'Conscientiousness & Accuracy',
+    composure: 'Composure & De-escalation'
+  };
+
+  // Highest dimension
+  const topDim = Object.entries(coreScores).sort((a2,b2) => b2[1]-a2[1])[0];
+  insights.push({ icon: '💡', text: `<strong>Top Strength:</strong> ${labels[topDim[0]]} (${topDim[1]}/100) — This is the candidate's strongest area and should be reinforced during onboarding.` });
+
+  // Lowest dimension
+  const bottomDim = Object.entries(coreScores).sort((a2,b2) => a2[1]-b2[1])[0];
+  if (bottomDim[1] < 70) {
+    const devNotes = {
+      serviceOrientation: 'Pair with a customer-first mentor and have them shadow your best CSR on live calls during the first two weeks.',
+      conscientiousness: 'Use checklists and documentation standards from day one, and QA-review their file work weekly for the first 90 days.',
+      composure: 'Provide de-escalation scripts and role-play difficult calls (rate increases, claim denials) before putting them on the front line.'
+    };
+    insights.push({ icon: '🎯', text: `<strong>Development Area:</strong> ${labels[bottomDim[0]]} (${bottomDim[1]}/100) — ${devNotes[bottomDim[0]]}` });
+  }
+
+  // Insurance-specific flags
+  if (a < 60) {
+    insights.push({ icon: '⚠️', text: `<strong>Accuracy Risk Alert:</strong> Low conscientiousness scores (${a}/100) correlate with documentation errors — the leading source of E&O exposure in agency service work. If hired, require peer review of policy changes during the first 90 days.` });
+  }
+  if (p < 60) {
+    insights.push({ icon: '⚠️', text: `<strong>Burnout Risk:</strong> Low composure scores (${p}/100) predict early attrition in high-volume service seats. Watch workload and check in frequently during ramp-up.` });
+  }
+  if (x >= 80) {
+    insights.push({ icon: '🌱', text: `<strong>Service-Plus Candidate (${x}/100):</strong> Comfortable rounding out accounts — a strong fit if you expect CSRs to cross-sell or generate referrals, and a potential future producer.` });
+  } else if (x < 60) {
+    insights.push({ icon: 'ℹ️', text: `<strong>Service-Only Profile (${x}/100):</strong> Best suited to a pure service seat. Avoid setting cross-sell quotas early — it's a common reason strong CSRs quit.` });
+  }
+  if (s >= 80 && a >= 80) {
+    insights.push({ icon: '✅', text: `<strong>Retention Driver:</strong> High empathy (${s}/100) combined with high accuracy (${a}/100) is the profile behind top-decile client retention. Prioritize this hire.` });
+  }
+
+  return insights;
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+async function retryPendingSubmission() {
+  if (CONFIG.devMode || !WEBHOOK_READY) return;
+  let pending;
+  try { pending = JSON.parse(localStorage.getItem(PENDING_KEY)); } catch (e) { return; }
+  if (!pending) return;
+  const sent = await postWithRetry(pending, 2);
+  if (sent) {
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+    console.log('Previously failed submission delivered successfully.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderQuestions();
+
+  // Populate greeting if params present
+  if (APPLICANT.name) {
+    document.getElementById('greetingName').textContent = APPLICANT.name;
+    document.getElementById('greetingAgent').textContent = APPLICANT.agentName;
+    document.getElementById('applicantGreeting').style.display = 'block';
+    document.getElementById('thankYouName').textContent = `, ${APPLICANT.name.split(' ')[0]}`;
+  }
+  if (APPLICANT.agentName && APPLICANT.agentName !== 'Your Hiring Agent') {
+    document.getElementById('thankYouAgent').textContent = APPLICANT.agentName;
+  }
+
+  restoreDraft();
+  updateAnswerProgress();
+  retryPendingSubmission();
+});
+</script>
+</body>
+</html>
