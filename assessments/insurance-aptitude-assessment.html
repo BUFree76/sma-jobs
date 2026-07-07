@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insurance Aptitude Assessment | StaffMyAgency.com</title>
+<style>
+  :root {
+    --primary: #1a4fa0;
+    --primary-dark: #123a78;
+    --accent: #e8a020;
+    --accent-dark: #c78510;
+    --success: #1e8a4a;
+    --danger: #c0392b;
+    --warn: #e8a020;
+    --light: #f4f7fb;
+    --border: #d0daea;
+    --text: #1a2232;
+    --muted: #6b7a95;
+    --white: #ffffff;
+    --card-shadow: 0 2px 16px rgba(26,79,160,0.09);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--primary);
+    color: white;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-logo {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 18px; color: white;
+  }
+  .header-title { font-size: 17px; font-weight: 700; line-height: 1.2; }
+  .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .header-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px;
+  }
+  .header-badge.timer-running { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .header-badge.timer-warn {
+    background: rgba(192,57,43,0.9);
+    border-color: rgba(255,255,255,0.4);
+  }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    background: rgba(255,255,255,0.2);
+    height: 4px;
+  }
+  .progress-bar {
+    background: var(--accent);
+    height: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── Container ── */
+  .container { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  /* ── Cards ── */
+  .card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    padding: 36px 40px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 540px) {
+    .card { padding: 24px 20px; }
+  }
+
+  /* ── Welcome screen ── */
+  .welcome-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin-bottom: 20px;
+  }
+  .welcome-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+  .welcome-sub { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 540px) { .info-grid { grid-template-columns: 1fr; } }
+  .info-item {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .info-item-icon { font-size: 22px; margin-bottom: 6px; }
+  .info-item-label { font-size: 12px; color: var(--muted); }
+  .info-item-value { font-size: 14px; font-weight: 700; color: var(--primary); margin-top: 2px; }
+  .applicant-greeting {
+    background: linear-gradient(135deg, #eef3fb, #dce8f8);
+    border: 1px solid #c0d4f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    margin-bottom: 24px;
+    color: var(--primary-dark);
+  }
+  .applicant-greeting strong { font-weight: 700; }
+  .timed-notice {
+    background: #fdf6e8;
+    border: 1px solid #ecd49a;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    color: #7a5c10;
+  }
+
+  /* ── Section header ── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .section-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .section-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+  /* ── Passages & exhibits ── */
+  .passage {
+    background: var(--light);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .passage-label {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .exhibit {
+    background: var(--light);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    line-height: 1.8;
+    margin-bottom: 14px;
+    overflow-x: auto;
+  }
+  .mono {
+    font-family: 'Consolas', 'Menlo', 'Courier New', monospace;
+    background: #e6ecf6;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+
+  /* ── Questions ── */
+  .question-block {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .question-block:focus-within { border-color: var(--primary); }
+  .question-block.answered { border-color: #b0c8f0; background: #fafcff; }
+  .question-block.error { border-color: var(--danger); background: #fff8f7; }
+
+  .question-num {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 11px; font-weight: 700;
+    text-align: center; line-height: 22px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .question-text {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* Answer options */
+  .scenario-options { display: flex; flex-direction: column; gap: 8px; }
+  .scenario-option { position: relative; }
+  .scenario-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px; height: 1px;
+    pointer-events: none;
+  }
+  .scenario-option input[type="radio"]:focus-visible + label {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .scenario-option label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text);
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .scenario-option label .opt-letter {
+    background: var(--light);
+    border: 1.5px solid var(--border);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    color: var(--primary);
+    transition: all 0.15s;
+  }
+  .scenario-option input[type="radio"]:checked + label {
+    border-color: var(--primary);
+    background: #f0f5ff;
+  }
+  .scenario-option input[type="radio"]:checked + label .opt-letter {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+  .scenario-option label:hover { border-color: var(--primary); }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-accent {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-accent:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-lg { padding: 16px 36px; font-size: 16px; width: 100%; }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* ── Navigation ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--muted);
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ── Results screen ── */
+  .results-header {
+    text-align: center;
+    padding: 32px 0 24px;
+  }
+  .results-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .badge-elite { background: linear-gradient(135deg, #1e8a4a, #25a858); color: white; }
+  .badge-strong { background: linear-gradient(135deg, #1a4fa0, #2563c0); color: white; }
+  .badge-developing { background: linear-gradient(135deg, #e8a020, #d4880a); color: white; }
+  .badge-notrecommended { background: linear-gradient(135deg, #c0392b, #a02020); color: white; }
+
+  .results-name { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .results-sub { font-size: 14px; color: var(--muted); }
+
+  /* Overall score ring */
+  .score-ring-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+  }
+  .score-ring-svg { transform: rotate(-90deg); }
+  .score-ring-text {
+    position: absolute;
+    text-align: center;
+  }
+  .score-ring-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .score-center-num { font-size: 36px; font-weight: 900; color: var(--primary); line-height: 1; }
+  .score-center-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* Dimension bars */
+  .dimension-card {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .dimension-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .dimension-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .dimension-score {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--primary);
+  }
+  .dim-bar-bg {
+    height: 10px;
+    background: #dce5f0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .dim-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease;
+  }
+  .fill-comprehension { background: linear-gradient(90deg, #1a4fa0, #4a80d0); }
+  .fill-math { background: linear-gradient(90deg, #1e8a4a, #35c070); }
+  .fill-detail { background: linear-gradient(90deg, #8e44ad, #b56ae8); }
+
+  .dimension-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Insight items */
+  .insights-title { font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 14px; }
+  .insight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: white;
+    border: 1px solid var(--border);
+  }
+  .insight-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .insight-text { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+  .insight-text strong { color: var(--primary); }
+
+  /* Footer note */
+  .results-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Status messages */
+  .submit-status {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: none;
+  }
+  .status-success { background: #e8f7ef; border: 1px solid #a0d8b8; color: #1e6e3e; display: block; }
+  .status-error { background: #fdf0ef; border: 1px solid #f0b0a8; color: #8c2020; display: block; }
+  .status-sending { background: #eef3fb; border: 1px solid #c0d4f0; color: #1a4fa0; display: block; }
+
+  /* Screen management */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* Validation error message */
+  .val-msg {
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: 8px;
+    display: none;
+  }
+  .val-msg.visible { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">S</div>
+    <div>
+      <div class="header-title">StaffMyAgency.com</div>
+      <div class="header-sub">Insurance Aptitude Assessment — Comprehension &amp; Math</div>
+    </div>
+  </div>
+  <div class="header-badge" id="headerBadge">Confidential</div>
+</div>
+<div class="progress-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- ══════════════ WELCOME SCREEN ══════════════ -->
+<div class="container">
+  <div class="screen active" id="screenWelcome">
+    <div class="card">
+      <div class="welcome-icon">🧮</div>
+      <div class="welcome-title">Aptitude Assessment</div>
+      <div class="welcome-sub">
+        This assessment measures the reading comprehension, practical math, and attention to detail
+        used every day in insurance agency work — understanding policy language, calculating premiums
+        and refunds, and catching data errors before they become problems.
+      </div>
+
+      <div id="applicantGreeting" class="applicant-greeting" style="display:none;">
+        Welcome, <strong id="greetingName"></strong>! This assessment has been sent to you by
+        <strong id="greetingAgent"></strong>. Your results will be shared with them upon completion.
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-item-icon">❓</div>
+          <div class="info-item-label">Questions</div>
+          <div class="info-item-value">24 Questions</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">⏱️</div>
+          <div class="info-item-label">Time Limit</div>
+          <div class="info-item-value" id="timeLimitDisplay">20 Minutes</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">📊</div>
+          <div class="info-item-label">Dimensions</div>
+          <div class="info-item-value">3 Core Areas</div>
+        </div>
+      </div>
+
+      <div class="timed-notice">
+        <strong>⏱️ This assessment is timed.</strong> The clock starts when you click Begin and runs
+        continuously — it will not pause if you refresh the page. When time expires, your answers are
+        submitted automatically. You may use a calculator and scratch paper. Unanswered questions are
+        scored as incorrect, so keep an eye on the timer in the top-right corner.
+      </div>
+
+      <p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;">
+        <strong style="color:var(--text);">What we measure:</strong> Your responses will be scored across
+        three dimensions — <strong>Reading Comprehension</strong>, <strong>Numerical Reasoning</strong>, and
+        <strong>Attention to Detail</strong> — to generate your Insurance Aptitude Score.
+      </p>
+
+      <button class="btn btn-primary btn-lg" onclick="startAssessment()">
+        Begin Timed Assessment →
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 1: READING COMPREHENSION ══════════════ -->
+  <div class="screen" id="screenSection1">
+    <div class="card">
+      <div class="section-label">📖 Part 1 of 3</div>
+      <div class="section-title">Reading Comprehension</div>
+      <div class="section-desc">Read each passage carefully, then answer the questions that follow.</div>
+      <div id="sectionQuestions1"></div>
+      <div class="val-msg" id="val1">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <span></span>
+        <button class="btn btn-primary" onclick="goToSection(2)">Next: Numerical Reasoning →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 2: NUMERICAL REASONING ══════════════ -->
+  <div class="screen" id="screenSection2">
+    <div class="card">
+      <div class="section-label">🔢 Part 2 of 3</div>
+      <div class="section-title">Numerical Reasoning</div>
+      <div class="section-desc">Practical math used in agency work. A calculator and scratch paper are allowed.</div>
+      <div id="sectionQuestions2"></div>
+      <div class="val-msg" id="val2">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goToSection(3)">Next: Attention to Detail →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 3: ATTENTION TO DETAIL ══════════════ -->
+  <div class="screen" id="screenSection3">
+    <div class="card">
+      <div class="section-label">🔍 Part 3 of 3</div>
+      <div class="section-title">Attention to Detail</div>
+      <div class="section-desc">Compare records and data carefully — small differences matter.</div>
+      <div id="sectionQuestions3"></div>
+      <div class="val-msg" id="val3">⚠️ Please answer all questions before submitting.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(2)">← Back</button>
+        <button class="btn btn-accent" id="submitBtn" onclick="submitAssessment()">
+          Submit Assessment ✓
+        </button>
+      </div>
+      <div id="submitStatus" class="submit-status"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ THANK YOU SCREEN (applicant-facing) ══════════════ -->
+  <div class="screen" id="screenThankYou">
+    <div class="card" style="text-align:center;">
+      <div class="welcome-icon" style="margin:0 auto 20px;">✅</div>
+      <div class="welcome-title">Assessment Complete</div>
+      <div class="welcome-sub">
+        Thank you<span id="thankYouName"></span>! Your responses have been submitted and shared with
+        <span id="thankYouAgent">your hiring agent</span>, who will be in touch about next steps.
+      </div>
+      <div id="thankYouWarn" style="display:none;font-size:13px;color:var(--danger);line-height:1.6;margin-bottom:16px;">
+        ⚠️ We had trouble reaching the server. Your answers are saved in this browser and we'll retry
+        automatically — but please also let your hiring agent know you've completed the assessment.
+      </div>
+      <div class="results-footer">
+        <strong>StaffMyAgency.com</strong> — Built for Insurance Agency Owners
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ RESULTS SCREEN (agent-facing — hidden from applicants unless CONFIG.showApplicantResults) ══════════════ -->
+  <div class="screen" id="screenResults">
+    <div class="card">
+      <div class="results-header">
+        <div id="resultsBadge" class="results-badge"><!-- filled by JS --></div>
+        <div id="resultsName" class="results-name"></div>
+        <div class="results-sub">Insurance Aptitude Assessment — StaffMyAgency.com</div>
+
+        <!-- Score Ring -->
+        <div class="score-ring-wrap">
+          <div class="score-ring-container">
+            <svg class="score-ring-svg" width="160" height="160" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="65" fill="none" stroke="#dce5f0" stroke-width="14"/>
+              <circle id="ringCircle" cx="80" cy="80" r="65" fill="none" stroke="#1a4fa0" stroke-width="14"
+                stroke-dasharray="408.41" stroke-dashoffset="408.41"
+                stroke-linecap="round" style="transition: stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-text">
+              <div class="score-center-num" id="scoreCenterNum">--</div>
+              <div class="score-center-label">Overall Score</div>
+            </div>
+          </div>
+        </div>
+        <div class="results-sub" id="correctSummary"></div>
+      </div>
+
+      <!-- Dimension Bars -->
+      <div style="margin-bottom:28px;margin-top:16px;">
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">📖 Reading Comprehension</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 40%</div>
+            </div>
+            <div class="dimension-score" id="scoreComprehension">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-comprehension" id="barComprehension" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">🔢 Numerical Reasoning</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 40%</div>
+            </div>
+            <div class="dimension-score" id="scoreMath">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-math" id="barMath" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">🔍 Attention to Detail</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 20%</div>
+            </div>
+            <div class="dimension-score" id="scoreDetail">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-detail" id="barDetail" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+      </div>
+
+      <!-- Insights -->
+      <div>
+        <div class="insights-title">📝 Assessment Insights</div>
+        <div id="insightsList"></div>
+      </div>
+
+      <div class="results-footer">
+        This assessment was completed on <span id="completedDate"></span>.<br>
+        Results have been sent to your hiring agent. A copy has been recorded in their ATS.<br><br>
+        <strong>StaffMyAgency.com</strong> — Built for Insurance Agency Owners
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIGURATION — Update before deploying
+// ══════════════════════════════════════════════
+const CONFIG = {
+  // Your ATS webhook endpoint. Results will be POSTed here as JSON.
+  webhookUrl: 'https://YOUR_ATS_WEBHOOK_URL_HERE',
+
+  // Set to true to log payload to console instead of POSTing (for development)
+  devMode: false,
+
+  // Show the full scored report (rating badge, dimension scores, hiring insights)
+  // to the applicant after submission. Recommended: false — hiring recommendations
+  // like "Not Recommended" should only reach the agent via the webhook.
+  showApplicantResults: false,
+
+  // Time limit for the whole assessment. The clock keeps running through page
+  // refreshes; on expiry the assessment auto-submits with unanswered = incorrect.
+  timeLimitMinutes: 20
+};
+
+// An unconfigured webhook behaves like dev mode so test runs don't error out.
+const WEBHOOK_READY = CONFIG.webhookUrl && !CONFIG.webhookUrl.includes('YOUR_ATS_WEBHOOK');
+
+// ══════════════════════════════════════════════
+// URL PARAMETER PARSING
+// ══════════════════════════════════════════════
+const params = new URLSearchParams(window.location.search);
+const APPLICANT = {
+  name:      params.get('applicant_name')  || '',
+  email:     params.get('applicant_email') || '',
+  agentEmail: params.get('agent_email')    || '',
+  agentName:  params.get('agent_name')     || 'Your Hiring Agent',
+  jobId:      params.get('job_id')         || '',
+  jobTitle:   params.get('job_title')      || 'Insurance Agency Staff'
+};
+
+// ══════════════════════════════════════════════
+// QUESTION BANK
+// ══════════════════════════════════════════════
+// Every question is multiple choice with exactly one correct option.
+// `a` is the 0-based index of the correct option.
+// NOTE: because scoring runs client-side, the answer key is visible to anyone
+// who reads the page source. See the integration guide's security note.
+const QUESTIONS = [
+  // ── Section 1: Reading Comprehension ──
+  { n: 1, section: 1,
+    passage: { label: 'Passage 1 — Policy Excerpt (applies to questions 1–4)', text: '<strong>Coverage D — Water Damage.</strong> We cover sudden and accidental discharge or overflow of water from within a plumbing, heating, or air conditioning system. We do not cover loss caused by continuous or repeated seepage or leakage occurring over a period of 14 days or more, nor loss resulting from a failure to perform routine maintenance. Water damage originating from flood, surface water, or sewer backup is excluded under this section but may be covered by separate endorsement. In the event of covered water damage, the insured must take reasonable steps to prevent further damage and must report the loss within 30 days.' },
+    text: 'Based on the passage, which of the following losses is most likely covered?',
+    options: [
+      'A nearby creek overflows and floods the basement',
+      'A slow drip under the kitchen sink that went unnoticed for two months',
+      'A pipe inside a wall bursts suddenly and soaks the drywall',
+      'Sewage backs up through a basement floor drain'
+    ], a: 2 },
+  { n: 2, section: 1,
+    text: 'A homeowner discovers a leak that has been dripping for two months. Why would this claim likely be denied?',
+    options: [
+      'The loss resulted from flood or surface water',
+      'Continuous or repeated leakage over 14 days or more is excluded',
+      'The homeowner failed to report the loss within 30 days',
+      'Plumbing systems are not covered under this policy at all'
+    ], a: 1 },
+  { n: 3, section: 1,
+    text: 'According to the passage, damage from sewer backup is:',
+    options: [
+      'Always covered under Coverage D',
+      'Covered only if reported within 14 days',
+      'Excluded under this section, but may be covered by a separate endorsement',
+      'Never coverable under any circumstances'
+    ], a: 2 },
+  { n: 4, section: 1,
+    text: 'After a covered water damage loss, what does the passage require the insured to do?',
+    options: [
+      'File a police report and obtain two repair estimates',
+      'Take reasonable steps to prevent further damage and report the loss within 30 days',
+      'Hire a licensed contractor within 14 days',
+      'Stop using all plumbing until an adjuster arrives'
+    ], a: 1 },
+  { n: 5, section: 1,
+    passage: { label: 'Passage 2 — Customer Email (applies to questions 5–8)', text: '<em>Subject: Question about my son\'s coverage</em><br><br>Hi — my son Tyler just turned 16 and got his learner\'s permit last Tuesday. I know I need to add him to my auto policy, but I wanted to check two things first: how much will my premium go up, and does he qualify for the good student discount? He has a 3.8 GPA. Also, we\'re buying him a used Civic next month, so I\'d rather not adjust the policy twice if we can avoid it. Can you get back to me before Friday? That\'s when his permit paperwork is due at school and I need proof of insurance for the form.<br><br>— Dana M.' },
+    text: 'What two pieces of information is Dana asking for?',
+    options: [
+      'The premium impact of adding Tyler, and whether he qualifies for the good student discount',
+      'Proof of insurance and a quote for the Civic',
+      'Whether Tyler needs his own separate policy, and the cost of a Civic policy',
+      'Help with permit paperwork and verification of Tyler\'s GPA'
+    ], a: 0 },
+  { n: 6, section: 1,
+    text: 'Why does Dana need a response by Friday?',
+    options: [
+      'Tyler\'s permit test is scheduled for Friday',
+      'She needs proof of insurance for the school\'s permit paperwork',
+      'The Civic purchase closes on Friday',
+      'Her current policy expires on Friday'
+    ], a: 1 },
+  { n: 7, section: 1,
+    text: 'What upcoming change should you note in Dana\'s file for follow-up?',
+    options: [
+      'A used Civic is being purchased next month and will need to be added to the policy',
+      'Tyler\'s GPA may change at the end of the semester',
+      'Dana is considering switching carriers',
+      'Tyler\'s learner\'s permit expires next month'
+    ], a: 0 },
+  { n: 8, section: 1,
+    text: 'Which detail in the email supports Tyler\'s eligibility for the good student discount?',
+    options: [
+      'He just turned 16',
+      'He received his learner\'s permit last Tuesday',
+      'His 3.8 GPA',
+      'He will be driving a used vehicle'
+    ], a: 2 },
+
+  // ── Section 2: Numerical Reasoning ──
+  { n: 9, section: 2,
+    text: 'A six-month auto premium is $840, paid in six equal monthly installments. How much is each payment?',
+    options: ['$120.00', '$140.00', '$168.00', '$70.00'], a: 1 },
+  { n: 10, section: 2,
+    text: 'A homeowner\'s annual premium of $1,200 increases by 15% at renewal. What is the new annual premium?',
+    options: ['$1,215', '$1,320', '$1,350', '$1,380'], a: 3 },
+  { n: 11, section: 2,
+    text: 'An agent earns 12% commission on a policy with a $2,400 annual premium. What is the commission?',
+    options: ['$288', '$240', '$264', '$312'], a: 0 },
+  { n: 12, section: 2,
+    text: 'A customer cancels a $960 annual policy exactly 4 months into the term. What prorated refund are they owed for the unused months?',
+    options: ['$480', '$560', '$640', '$320'], a: 2 },
+  { n: 13, section: 2,
+    text: 'A covered claim totals $3,750 and the policy carries a $500 deductible. How much does the insurer pay?',
+    options: ['$3,750', '$3,250', '$3,300', '$3,200'], a: 1 },
+  { n: 14, section: 2,
+    text: 'After the deductible is met, a policy pays 80% of covered costs and the customer pays 20%. On a $2,000 covered bill, what is the customer\'s share?',
+    options: ['$1,600', '$200', '$500', '$400'], a: 3 },
+  { n: 15, section: 2,
+    text: 'An agency has 1,250 active policies. If 4% cancel this year, how many cancellations is that?',
+    options: ['40', '45', '50', '125'], a: 2 },
+  { n: 16, section: 2,
+    text: 'A policy costs $68 per month, but paying annually earns a 5% discount on the total. What is the discounted annual cost?',
+    options: ['$734.40', '$775.20', '$795.60', '$816.00'], a: 1 },
+  { n: 17, section: 2,
+    text: 'A CSR handles 45 calls in a 5-hour shift. At the same rate, how many calls would they handle in an 8-hour day?',
+    options: ['63', '68', '72', '80'], a: 2 },
+  { n: 18, section: 2,
+    text: 'Carrier A quotes $1,140 per year. Carrier B quotes $99 per month. Which is cheaper over a full year, and by how much?',
+    options: [
+      'Carrier B is $48 cheaper per year',
+      'They cost about the same',
+      'Carrier A is $99 cheaper per year',
+      'Carrier A is $48 cheaper per year'
+    ], a: 3 },
+
+  // ── Section 3: Attention to Detail ──
+  { n: 19, section: 3,
+    text: 'A customer\'s policy number is <span class="mono">HZ-4471-88B</span>. Which of the following matches it exactly?',
+    options: [
+      '<span class="mono">HZ-4471-8BB</span>',
+      '<span class="mono">HZ-4477-88B</span>',
+      '<span class="mono">HZ-4471-88B</span>',
+      '<span class="mono">H2-4471-88B</span>'
+    ], a: 2 },
+  { n: 20, section: 3,
+    exhibit: '<strong>Application:</strong>&nbsp; Name: Maria Gonzales &nbsp;·&nbsp; DOB: 03/14/1987 &nbsp;·&nbsp; VIN: <span class="mono">1HGCM82633A004352</span> &nbsp;·&nbsp; ZIP: 62704<br><strong>Policy record:</strong>&nbsp; Name: Maria Gonzales &nbsp;·&nbsp; DOB: 03/14/1987 &nbsp;·&nbsp; VIN: <span class="mono">1HGCM82633A004532</span> &nbsp;·&nbsp; ZIP: 62704',
+    text: 'Compare the application to the policy record. Which field contains a discrepancy?',
+    options: ['Name', 'VIN', 'Date of birth', 'ZIP code'], a: 1 },
+  { n: 21, section: 3,
+    exhibit: '<strong>Application:</strong>&nbsp; Name: David Okafor &nbsp;·&nbsp; Phone: (217) 555-0164 &nbsp;·&nbsp; DOB: 07/21/1990 &nbsp;·&nbsp; Address: 418 Maple Ct<br><strong>Policy record:</strong>&nbsp; Name: David Okafor &nbsp;·&nbsp; Phone: (217) 555-0164 &nbsp;·&nbsp; DOB: 07/12/1990 &nbsp;·&nbsp; Address: 418 Maple Ct',
+    text: 'Compare the application to the policy record. Which field contains a discrepancy?',
+    options: ['Name', 'Phone', 'Address', 'Date of birth'], a: 3 },
+  { n: 22, section: 3,
+    text: 'A customer\'s email address is <span class="mono">jsmith_1984@mailbox.com</span>. Which of the following matches it exactly?',
+    options: [
+      '<span class="mono">jsmith-1984@mailbox.com</span>',
+      '<span class="mono">jsmith_1984@mailbax.com</span>',
+      '<span class="mono">jsmith_1984@mailbox.com</span>',
+      '<span class="mono">jsmlth_1984@mailbox.com</span>'
+    ], a: 2 },
+  { n: 23, section: 3,
+    text: 'A customer\'s file lists three premium payments: $212.50, $198.75, and $205.25. The system shows a total of $616.50. Is the system total correct?',
+    options: [
+      'Yes — $616.50 is correct',
+      'No — it should be $615.50',
+      'No — it should be $617.50',
+      'No — it should be $626.50'
+    ], a: 0 },
+  { n: 24, section: 3,
+    exhibit: 'Policy list:&nbsp; <span class="mono">AU-2201</span> &nbsp; <span class="mono">HO-1177</span> &nbsp; <span class="mono">AU-2210</span> &nbsp; <span class="mono">LF-3350</span> &nbsp; <span class="mono">AU-2201</span> &nbsp; <span class="mono">HO-1717</span>',
+    text: 'One policy number appears twice in this list. Which one?',
+    options: [
+      '<span class="mono">HO-1177</span>',
+      '<span class="mono">AU-2210</span>',
+      '<span class="mono">AU-2201</span>',
+      '<span class="mono">HO-1717</span>'
+    ], a: 2 }
+];
+
+const SECTION_MAP = { 1: [1,2,3,4,5,6,7,8], 2: [9,10,11,12,13,14,15,16,17,18], 3: [19,20,21,22,23,24] };
+const TOTAL_QUESTIONS = 24;
+const LETTERS = ['a', 'b', 'c', 'd'];
+
+function renderQuestions() {
+  for (const q of QUESTIONS) {
+    const container = document.getElementById(`sectionQuestions${q.section}`);
+    if (q.passage) {
+      const p = document.createElement('div');
+      p.className = 'passage';
+      p.innerHTML = `<div class="passage-label">${q.passage.label}</div>${q.passage.text}`;
+      container.appendChild(p);
+    }
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `qb${q.n}`;
+    let inner = `<div class="question-text"><span class="question-num">${q.n}</span><span>${q.text}</span></div>`;
+    if (q.exhibit) inner += `<div class="exhibit">${q.exhibit}</div>`;
+    inner += '<div class="scenario-options">' + q.options.map((opt, i) =>
+      `<div class="scenario-option"><input type="radio" name="q${q.n}" id="q${q.n}-${LETTERS[i]}" value="${i}"><label for="q${q.n}-${LETTERS[i]}"><span class="opt-letter">${LETTERS[i].toUpperCase()}</span><span>${opt}</span></label></div>`
+    ).join('') + '</div>';
+    block.innerHTML = inner;
+    container.appendChild(block);
+  }
+}
+
+// ══════════════════════════════════════════════
+// SCORING MODEL — correct / incorrect
+// ══════════════════════════════════════════════
+const DIMENSIONS = {
+  comprehension: { questions: SECTION_MAP[1], weight: 0.40 },
+  math:          { questions: SECTION_MAP[2], weight: 0.40 },
+  detail:        { questions: SECTION_MAP[3], weight: 0.20 }
+};
+
+function getSelectedIndex(qNum) {
+  const checked = document.querySelector(`input[name="q${qNum}"]:checked`);
+  return checked ? parseInt(checked.value) : null;
+}
+
+function isCorrect(qNum) {
+  const q = QUESTIONS.find(x => x.n === qNum);
+  const sel = getSelectedIndex(qNum);
+  return sel !== null && sel === q.a;
+}
+
+function calcDimensionScore(questionNums) {
+  let correct = 0;
+  for (const q of questionNums) {
+    if (isCorrect(q)) correct++;
+  }
+  return Math.round((correct / questionNums.length) * 100);
+}
+
+// ══════════════════════════════════════════════
+// DRAFT PERSISTENCE (survives accidental refresh — timer keeps running)
+// ══════════════════════════════════════════════
+const DRAFT_KEY = `iaa_draft_${APPLICANT.email || 'anon'}_${APPLICANT.jobId || 'nojob'}`;
+const PENDING_KEY = 'iaa_pending_submission';
+let startedAt = null;
+let submitted = false;
+
+function saveDraft() {
+  const draft = { startedAt, answers: {} };
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    if (checked) draft.answers[`q${i}`] = checked.value;
+  }
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch (e) {}
+}
+
+function restoreDraft() {
+  let draft;
+  try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch (e) { return; }
+  if (!draft || !draft.answers) return;
+  if (draft.startedAt) startedAt = draft.startedAt;
+  for (const [name, value] of Object.entries(draft.answers)) {
+    const input = document.querySelector(`input[name="${name}"][value="${value}"]`);
+    if (input) {
+      input.checked = true;
+      const block = document.getElementById(`qb${name.replace('q','')}`);
+      if (block) block.classList.add('answered');
+    }
+  }
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+}
+
+// ══════════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════════
+let timerInterval = null;
+
+function timeRemainingMs() {
+  if (!startedAt) return CONFIG.timeLimitMinutes * 60000;
+  return (startedAt + CONFIG.timeLimitMinutes * 60000) - Date.now();
+}
+
+function startTimer() {
+  const badge = document.getElementById('headerBadge');
+  badge.classList.add('timer-running');
+  const tick = () => {
+    const remaining = timeRemainingMs();
+    if (remaining <= 0) {
+      badge.textContent = '⏱ 0:00';
+      clearInterval(timerInterval);
+      timerInterval = null;
+      submitAssessment(true); // time's up — auto-submit
+      return;
+    }
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    badge.textContent = `⏱ ${mins}:${String(secs).padStart(2, '0')}`;
+    if (remaining < 2 * 60000) badge.classList.add('timer-warn');
+  };
+  tick();
+  timerInterval = setInterval(tick, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  const badge = document.getElementById('headerBadge');
+  badge.classList.remove('timer-running', 'timer-warn');
+  badge.textContent = 'Confidential';
+}
+
+// ══════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(pct) {
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function answeredCount() {
+  let answered = 0;
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+  }
+  return answered;
+}
+
+function updateAnswerProgress() {
+  updateProgress(Math.round((answeredCount() / TOTAL_QUESTIONS) * 95));
+}
+
+function startAssessment() {
+  showScreen('screenSection1');
+  if (!startedAt) startedAt = Date.now();
+  saveDraft();
+  startTimer();
+  updateAnswerProgress();
+}
+
+// ══════════════════════════════════════════════
+// VALIDATION
+// ══════════════════════════════════════════════
+function validateSection(sectionNum) {
+  const qs = SECTION_MAP[sectionNum];
+  let allAnswered = true;
+
+  qs.forEach(q => {
+    const answered = document.querySelector(`input[name="q${q}"]:checked`) !== null;
+    const block = document.getElementById(`qb${q}`);
+    if (!answered) {
+      block.classList.add('error');
+      allAnswered = false;
+    } else {
+      block.classList.remove('error');
+      block.classList.add('answered');
+    }
+  });
+
+  const valEl = document.getElementById(`val${sectionNum}`);
+  if (!allAnswered) {
+    valEl.classList.add('visible');
+  } else {
+    valEl.classList.remove('visible');
+  }
+  return allAnswered;
+}
+
+// Mark blocks as answered on change
+document.addEventListener('change', e => {
+  if (e.target.type === 'radio') {
+    const qNum = parseInt(e.target.name.replace('q', ''));
+    const block = document.getElementById(`qb${qNum}`);
+    if (block) {
+      block.classList.remove('error');
+      block.classList.add('answered');
+    }
+    saveDraft();
+    updateAnswerProgress();
+  }
+});
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function goToSection(num) {
+  const prev = num - 1;
+  if (prev >= 1 && prev <= 3) {
+    if (!validateSection(prev)) return;
+  }
+  showScreen(`screenSection${num}`);
+  updateAnswerProgress();
+}
+
+// ══════════════════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════════════════
+async function postWithRetry(payload, attempts = 3) {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const res = await fetch(CONFIG.webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return true;
+    } catch (err) {
+      console.error(`Webhook attempt ${i + 1} failed:`, err);
+      if (i < attempts - 1) await new Promise(r => setTimeout(r, 1500 * (i + 1)));
+    }
+  }
+  return false;
+}
+
+// force=true is used by the timer: it bypasses validation and submits
+// whatever has been answered (unanswered = incorrect).
+async function submitAssessment(force = false) {
+  if (submitted) return;
+  if (!force && !validateSection(3)) return;
+  submitted = true;
+  stopTimer();
+
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('submitStatus');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+  // Calculate scores
+  const cScore = calcDimensionScore(DIMENSIONS.comprehension.questions);
+  const mScore = calcDimensionScore(DIMENSIONS.math.questions);
+  const dScore = calcDimensionScore(DIMENSIONS.detail.questions);
+  const overall = Math.round(
+    cScore * DIMENSIONS.comprehension.weight +
+    mScore * DIMENSIONS.math.weight +
+    dScore * DIMENSIONS.detail.weight
+  );
+
+  // Collect answers: selected letter + correctness per question
+  const answers = {};
+  let totalCorrect = 0;
+  for (const q of QUESTIONS) {
+    const sel = getSelectedIndex(q.n);
+    const correct = sel !== null && sel === q.a;
+    if (correct) totalCorrect++;
+    answers[`q${q.n}`] = { selected: sel !== null ? LETTERS[sel] : null, correct: correct };
+  }
+
+  // Quality signals for the agent
+  const durationSeconds = startedAt ? Math.round((Date.now() - startedAt) / 1000) : null;
+  const positions = [];
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    const sel = getSelectedIndex(i);
+    if (sel !== null) positions.push(sel);
+  }
+  const straightLine = positions.length >= 12 && positions.every(v => v === positions[0]);
+  const unanswered = TOTAL_QUESTIONS - answeredCount();
+
+  const rating = getRating(overall);
+  const completedAt = new Date().toISOString();
+
+  const payload = {
+    // Metadata
+    assessment_type: 'insurance_aptitude_profile',
+    assessment_version: '1.0',
+    completed_at: completedAt,
+    job_id: APPLICANT.jobId,
+    job_title: APPLICANT.jobTitle,
+
+    // Applicant
+    applicant_name:  APPLICANT.name,
+    applicant_email: APPLICANT.email,
+    agent_email:     APPLICANT.agentEmail,
+    agent_name:      APPLICANT.agentName,
+
+    // Scores
+    score_overall:       overall,
+    score_comprehension: cScore,
+    score_math:          mScore,
+    score_detail:        dScore,
+    questions_correct:   totalCorrect,
+    questions_total:     TOTAL_QUESTIONS,
+    rating:              rating.label,
+    rating_code:         rating.code,
+
+    // Timing
+    time_limit_minutes: CONFIG.timeLimitMinutes,
+    auto_submitted:     force,
+    questions_unanswered: unanswered,
+
+    // Response-quality signals
+    quality_flags: {
+      duration_seconds: durationSeconds,
+      rushed: durationSeconds !== null && durationSeconds < 180,
+      straight_line: straightLine
+    },
+
+    // Per-question results
+    answers: answers
+  };
+
+  // POST to webhook
+  statusEl.className = 'submit-status status-sending';
+  statusEl.textContent = force ? '⏱ Time is up — submitting your answers...' : '⏳ Sending your results...';
+
+  let sent = false;
+  if (CONFIG.devMode || !WEBHOOK_READY) {
+    console.log('Assessment payload:', JSON.stringify(payload, null, 2));
+    await new Promise(r => setTimeout(r, 800)); // simulate delay
+    sent = true;
+  } else {
+    sent = await postWithRetry(payload);
+  }
+
+  clearDraft();
+  if (sent) {
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+    statusEl.className = 'submit-status status-success';
+    statusEl.textContent = '✓ Results submitted successfully.';
+  } else {
+    // Keep the payload so it can be resent automatically on the next page load
+    try { localStorage.setItem(PENDING_KEY, JSON.stringify(payload)); } catch (e) {}
+    statusEl.className = 'submit-status status-error';
+    statusEl.textContent = '⚠️ Could not reach the server. Your answers are saved and will be retried — please also notify your agent.';
+  }
+
+  updateProgress(100);
+  setTimeout(() => {
+    if (CONFIG.showApplicantResults) {
+      showResults(overall, cScore, mScore, dScore, totalCorrect, unanswered, force, rating);
+    } else {
+      document.getElementById('thankYouWarn').style.display = sent ? 'none' : 'block';
+      showScreen('screenThankYou');
+    }
+  }, 900);
+}
+
+// ══════════════════════════════════════════════
+// RATING LOGIC
+// ══════════════════════════════════════════════
+function getRating(score) {
+  if (score >= 85) return { code: 'elite', label: 'Excellent Aptitude', emoji: '🏆', badgeClass: 'badge-elite' };
+  if (score >= 70) return { code: 'strong', label: 'Strong Aptitude', emoji: '⭐', badgeClass: 'badge-strong' };
+  if (score >= 55) return { code: 'developing', label: 'Developing Aptitude', emoji: '📈', badgeClass: 'badge-developing' };
+  return { code: 'notrecommended', label: 'Not Recommended', emoji: '⚠️', badgeClass: 'badge-notrecommended' };
+}
+
+// ══════════════════════════════════════════════
+// RESULTS DISPLAY
+// ══════════════════════════════════════════════
+function showResults(overall, cScore, mScore, dScore, totalCorrect, unanswered, autoSubmitted, rating) {
+  showScreen('screenResults');
+
+  // Badge
+  const badgeEl = document.getElementById('resultsBadge');
+  badgeEl.className = `results-badge ${rating.badgeClass}`;
+  badgeEl.innerHTML = `${rating.emoji} ${rating.label}`;
+
+  // Name
+  document.getElementById('resultsName').textContent = APPLICANT.name || 'Assessment Complete';
+  document.getElementById('correctSummary').textContent = `${totalCorrect} of ${TOTAL_QUESTIONS} questions answered correctly`;
+
+  // Score ring animation
+  const circumference = 408.41;
+  const offset = circumference - (overall / 100) * circumference;
+  setTimeout(() => {
+    document.getElementById('ringCircle').style.strokeDashoffset = offset;
+    const colorMap = { elite: '#1e8a4a', strong: '#1a4fa0', developing: '#e8a020', notrecommended: '#c0392b' };
+    document.getElementById('ringCircle').setAttribute('stroke', colorMap[rating.code]);
+  }, 100);
+  document.getElementById('scoreCenterNum').textContent = overall;
+
+  // Dimension scores & bars
+  document.getElementById('scoreComprehension').textContent = cScore;
+  document.getElementById('scoreMath').textContent = mScore;
+  document.getElementById('scoreDetail').textContent = dScore;
+  setTimeout(() => {
+    document.getElementById('barComprehension').style.width = cScore + '%';
+    document.getElementById('barMath').style.width = mScore + '%';
+    document.getElementById('barDetail').style.width = dScore + '%';
+  }, 200);
+
+  // Completed date
+  document.getElementById('completedDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  // Insights
+  const insights = generateInsights(overall, cScore, mScore, dScore, unanswered, autoSubmitted, rating);
+  document.getElementById('insightsList').innerHTML = insights.map(i =>
+    `<div class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function generateInsights(overall, c, m, d, unanswered, autoSubmitted, rating) {
+  const insights = [];
+  const safeName = APPLICANT.name ? escapeHtml(APPLICANT.name) : 'This candidate';
+
+  // Overall
+  const descriptions = {
+    elite: `<strong>${safeName}</strong> scored in the top tier for the core cognitive skills of agency work — interpreting policy language accurately, computing premiums and refunds reliably, and catching data errors.`,
+    strong: `<strong>${safeName}</strong> demonstrates solid comprehension and math fundamentals. Expect them to pick up quoting, billing, and policy paperwork with standard training.`,
+    developing: `<strong>${safeName}</strong> shows gaps in one or more core skill areas. They may need closer supervision on tasks involving policy language, calculations, or data entry until accuracy is verified.`,
+    notrecommended: `<strong>${safeName}</strong> scored below the threshold in core comprehension and math skills. Errors in these areas directly affect quoting accuracy and E&O exposure — consider whether this role is the right fit.`
+  };
+  insights.push({ icon: rating.emoji, text: descriptions[rating.code] });
+
+  // Timed-out note first — it contextualizes everything else
+  if (autoSubmitted) {
+    insights.push({ icon: '⏱️', text: `<strong>Time Expired:</strong> The assessment auto-submitted at the ${CONFIG.timeLimitMinutes}-minute limit with ${unanswered} question${unanswered === 1 ? '' : 's'} unanswered (scored as incorrect). Scores may understate ability — consider whether pace or skill was the limiting factor.` });
+  }
+
+  // Dimension-specific
+  const scores = { comprehension: c, math: m, detail: d };
+  const labels = {
+    comprehension: 'Reading Comprehension',
+    math: 'Numerical Reasoning',
+    detail: 'Attention to Detail'
+  };
+
+  // Highest dimension
+  const topDim = Object.entries(scores).sort((a2,b2) => b2[1]-a2[1])[0];
+  insights.push({ icon: '💡', text: `<strong>Top Strength:</strong> ${labels[topDim[0]]} (${topDim[1]}/100) — Lean on this in role assignment and early responsibilities.` });
+
+  // Lowest dimension
+  const bottomDim = Object.entries(scores).sort((a2,b2) => a2[1]-b2[1])[0];
+  if (bottomDim[1] < 70) {
+    const devNotes = {
+      comprehension: 'Expect difficulty parsing policy language independently. Provide verbal walkthroughs of coverage forms during training and verify understanding before customer-facing work.',
+      math: 'Double-check their quoting, proration, and billing work until accuracy is established. Provide calculation templates and worked examples.',
+      detail: 'Require peer review of policy changes and data entry during the first 90 days — transcription errors are a leading source of E&O claims.'
+    };
+    insights.push({ icon: '🎯', text: `<strong>Development Area:</strong> ${labels[bottomDim[0]]} (${bottomDim[1]}/100) — ${devNotes[bottomDim[0]]}` });
+  }
+
+  // Insurance-specific flags
+  if (m >= 80 && d >= 80) {
+    insights.push({ icon: '✅', text: `<strong>Quoting &amp; Billing Ready:</strong> Strong math (${m}/100) and detail (${d}/100) scores — this candidate can be trusted with premium calculations and policy data entry early in onboarding.` });
+  }
+  if (c >= 80) {
+    insights.push({ icon: '📖', text: `<strong>Strong Comprehension (${c}/100):</strong> Reads policy language and customer requests accurately — well suited to explaining coverage and handling written correspondence.` });
+  }
+
+  return insights;
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+async function retryPendingSubmission() {
+  if (CONFIG.devMode || !WEBHOOK_READY) return;
+  let pending;
+  try { pending = JSON.parse(localStorage.getItem(PENDING_KEY)); } catch (e) { return; }
+  if (!pending) return;
+  const sent = await postWithRetry(pending, 2);
+  if (sent) {
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+    console.log('Previously failed submission delivered successfully.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderQuestions();
+  document.getElementById('timeLimitDisplay').textContent = `${CONFIG.timeLimitMinutes} Minutes`;
+
+  // Populate greeting if params present
+  if (APPLICANT.name) {
+    document.getElementById('greetingName').textContent = APPLICANT.name;
+    document.getElementById('greetingAgent').textContent = APPLICANT.agentName;
+    document.getElementById('applicantGreeting').style.display = 'block';
+    document.getElementById('thankYouName').textContent = `, ${APPLICANT.name.split(' ')[0]}`;
+  }
+  if (APPLICANT.agentName && APPLICANT.agentName !== 'Your Hiring Agent') {
+    document.getElementById('thankYouAgent').textContent = APPLICANT.agentName;
+  }
+
+  restoreDraft();
+  updateAnswerProgress();
+  retryPendingSubmission();
+
+  // If a timed session was already in progress (page refresh), resume it —
+  // the clock keeps running from the original start time.
+  if (startedAt) {
+    if (timeRemainingMs() <= 0) {
+      // Time expired while the page was closed: render a section so the
+      // submit UI exists, then auto-submit what was answered.
+      showScreen('screenSection3');
+      submitAssessment(true);
+    } else {
+      // Resume at the first section with an unanswered question
+      let resumeSection = 3;
+      outer: for (const [sec, qs] of Object.entries(SECTION_MAP)) {
+        for (const q of qs) {
+          if (!document.querySelector(`input[name="q${q}"]:checked`)) {
+            resumeSection = parseInt(sec);
+            break outer;
+          }
+        }
+      }
+      showScreen(`screenSection${resumeSection}`);
+      startTimer();
+    }
+  }
+});
+</script>
+</body>
+</html>
