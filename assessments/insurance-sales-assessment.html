@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insurance Sales Profile Assessment | StaffMyAgency.com</title>
+<style>
+  :root {
+    --primary: #1a4fa0;
+    --primary-dark: #123a78;
+    --accent: #e8a020;
+    --accent-dark: #c78510;
+    --success: #1e8a4a;
+    --danger: #c0392b;
+    --warn: #e8a020;
+    --light: #f4f7fb;
+    --border: #d0daea;
+    --text: #1a2232;
+    --muted: #6b7a95;
+    --white: #ffffff;
+    --card-shadow: 0 2px 16px rgba(26,79,160,0.09);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--primary);
+    color: white;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-logo {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 18px; color: white;
+  }
+  .header-title { font-size: 17px; font-weight: 700; line-height: 1.2; }
+  .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .header-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px;
+  }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    background: rgba(255,255,255,0.2);
+    height: 4px;
+  }
+  .progress-bar {
+    background: var(--accent);
+    height: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── Container ── */
+  .container { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  /* ── Cards ── */
+  .card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    padding: 36px 40px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 540px) {
+    .card { padding: 24px 20px; }
+  }
+
+  /* ── Welcome screen ── */
+  .welcome-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin-bottom: 20px;
+  }
+  .welcome-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+  .welcome-sub { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 540px) { .info-grid { grid-template-columns: 1fr; } }
+  .info-item {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .info-item-icon { font-size: 22px; margin-bottom: 6px; }
+  .info-item-label { font-size: 12px; color: var(--muted); }
+  .info-item-value { font-size: 14px; font-weight: 700; color: var(--primary); margin-top: 2px; }
+  .applicant-greeting {
+    background: linear-gradient(135deg, #eef3fb, #dce8f8);
+    border: 1px solid #c0d4f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    margin-bottom: 24px;
+    color: var(--primary-dark);
+  }
+  .applicant-greeting strong { font-weight: 700; }
+
+  /* ── Section header ── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .section-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .section-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+  /* ── Questions ── */
+  .question-block {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .question-block:focus-within { border-color: var(--primary); }
+  .question-block.answered { border-color: #b0c8f0; background: #fafcff; }
+  .question-block.error { border-color: var(--danger); background: #fff8f7; }
+
+  .question-num {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 11px; font-weight: 700;
+    text-align: center; line-height: 22px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .question-text {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* Likert scale */
+  .likert-wrap {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .likert-option { flex: 1; min-width: 80px; }
+  .likert-option input[type="radio"],
+  .scenario-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px; height: 1px;
+    pointer-events: none;
+  }
+  .likert-option input[type="radio"]:focus-visible + label,
+  .scenario-option input[type="radio"]:focus-visible + label {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .likert-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 6px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+  .likert-option label .score-num {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .likert-option input[type="radio"]:checked + label {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+  }
+  .likert-option input[type="radio"]:checked + label .score-num { color: white; }
+  .likert-option label:hover { border-color: var(--primary); background: #f0f5ff; }
+  .likert-option input[type="radio"]:checked + label:hover { background: var(--primary); }
+
+  /* Scenario options */
+  .scenario-options { display: flex; flex-direction: column; gap: 8px; }
+  .scenario-option { position: relative; }
+  .scenario-option label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text);
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .scenario-option label .opt-letter {
+    background: var(--light);
+    border: 1.5px solid var(--border);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    color: var(--primary);
+    transition: all 0.15s;
+  }
+  .scenario-option input[type="radio"]:checked + label {
+    border-color: var(--primary);
+    background: #f0f5ff;
+  }
+  .scenario-option input[type="radio"]:checked + label .opt-letter {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+  .scenario-option label:hover { border-color: var(--primary); }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-accent {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-accent:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-lg { padding: 16px 36px; font-size: 16px; width: 100%; }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* ── Navigation ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--muted);
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ── Results screen ── */
+  .results-header {
+    text-align: center;
+    padding: 32px 0 24px;
+  }
+  .results-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .badge-elite { background: linear-gradient(135deg, #1e8a4a, #25a858); color: white; }
+  .badge-strong { background: linear-gradient(135deg, #1a4fa0, #2563c0); color: white; }
+  .badge-developing { background: linear-gradient(135deg, #e8a020, #d4880a); color: white; }
+  .badge-notrecommended { background: linear-gradient(135deg, #c0392b, #a02020); color: white; }
+
+  .results-name { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .results-sub { font-size: 14px; color: var(--muted); }
+
+  /* Overall score ring */
+  .score-ring-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+  }
+  .score-ring-svg { transform: rotate(-90deg); }
+  .score-ring-text {
+    position: absolute;
+    text-align: center;
+  }
+  .score-ring-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .score-center-num { font-size: 36px; font-weight: 900; color: var(--primary); line-height: 1; }
+  .score-center-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* Dimension bars */
+  .dimension-card {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .dimension-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .dimension-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .dimension-score {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--primary);
+  }
+  .dim-bar-bg {
+    height: 10px;
+    background: #dce5f0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .dim-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease;
+  }
+  .fill-motivation { background: linear-gradient(90deg, #1a4fa0, #4a80d0); }
+  .fill-coachability { background: linear-gradient(90deg, #1e8a4a, #35c070); }
+  .fill-resilience { background: linear-gradient(90deg, #8e44ad, #b56ae8); }
+
+  .dimension-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Insight items */
+  .insights-title { font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 14px; }
+  .insight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: white;
+    border: 1px solid var(--border);
+  }
+  .insight-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .insight-text { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+  .insight-text strong { color: var(--primary); }
+
+  /* Footer note */
+  .results-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Status messages */
+  .submit-status {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: none;
+  }
+  .status-success { background: #e8f7ef; border: 1px solid #a0d8b8; color: #1e6e3e; display: block; }
+  .status-error { background: #fdf0ef; border: 1px solid #f0b0a8; color: #8c2020; display: block; }
+  .status-sending { background: #eef3fb; border: 1px solid #c0d4f0; color: #1a4fa0; display: block; }
+
+  /* Screen management */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* Validation error message */
+  .val-msg {
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: 8px;
+    display: none;
+  }
+  .val-msg.visible { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">S</div>
+    <div>
+      <div class="header-title">StaffMyAgency.com</div>
+      <div class="header-sub">Insurance Sales Profile Assessment</div>
+    </div>
+  </div>
+  <div class="header-badge">Confidential</div>
+</div>
+<div class="progress-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- ══════════════ WELCOME SCREEN ══════════════ -->
+<div class="container">
+  <div class="screen active" id="screenWelcome">
+    <div class="card">
+      <div class="welcome-icon">📋</div>
+      <div class="welcome-title">Sales Profile Assessment</div>
+      <div class="welcome-sub">
+        This assessment helps insurance agencies identify candidates with the right sales mindset,
+        coachability, and resilience to thrive in an insurance sales career. There are no right or
+        wrong answers — just answer honestly for the most accurate results.
+      </div>
+
+      <div id="applicantGreeting" class="applicant-greeting" style="display:none;">
+        Welcome, <strong id="greetingName"></strong>! This assessment has been sent to you by
+        <strong id="greetingAgent"></strong>. Your results will be shared with them upon completion.
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-item-icon">❓</div>
+          <div class="info-item-label">Questions</div>
+          <div class="info-item-value">26 Questions</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">⏱️</div>
+          <div class="info-item-label">Est. Time</div>
+          <div class="info-item-value">8–12 Minutes</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">📊</div>
+          <div class="info-item-label">Dimensions</div>
+          <div class="info-item-value">3 Core Areas</div>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;">
+        <strong style="color:var(--text);">What we measure:</strong> Your responses will be scored across
+        three dimensions — <strong>Motivation &amp; Drive</strong>, <strong>Coachability</strong>, and
+        <strong>Resilience / Rejection Handling</strong> — to generate your Insurance Sales Aptitude Score.
+      </p>
+
+      <button class="btn btn-primary btn-lg" onclick="startAssessment()">
+        Begin Assessment →
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 1: MOTIVATION ══════════════ -->
+  <div class="screen" id="screenSection1">
+    <div class="card">
+      <div class="section-label">🔥 Part 1 of 3</div>
+      <div class="section-title">Motivation &amp; Drive</div>
+      <div class="section-desc">How do you approach goals, earning potential, and self-directed performance?</div>
+
+      <!-- Q1 -->
+      <div class="question-block" id="qb1">
+        <div class="question-text"><span class="question-num">1</span>I set specific income goals for myself and track my progress regularly.</div>
+        <div class="likert-wrap" id="q1-wrap">
+          <div class="likert-option"><input type="radio" name="q1" id="q1-1" value="1"><label for="q1-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q1" id="q1-2" value="2"><label for="q1-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q1" id="q1-3" value="3"><label for="q1-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q1" id="q1-4" value="4"><label for="q1-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q1" id="q1-5" value="5"><label for="q1-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="question-block" id="qb2">
+        <div class="question-text"><span class="question-num">2</span>I am motivated primarily by earning potential rather than a fixed salary.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q2" id="q2-1" value="1"><label for="q2-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q2" id="q2-2" value="2"><label for="q2-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q2" id="q2-3" value="3"><label for="q2-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q2" id="q2-4" value="4"><label for="q2-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q2" id="q2-5" value="5"><label for="q2-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q3 (scenario) -->
+      <div class="question-block" id="qb3">
+        <div class="question-text"><span class="question-num">3</span>You've had a slow week with very few leads converting. What do you do?</div>
+        <div class="scenario-options">
+          <div class="scenario-option"><input type="radio" name="q3" id="q3-a" value="4"><label for="q3-a"><span class="opt-letter">A</span>Immediately increase prospecting activity and reach out to more people.</label></div>
+          <div class="scenario-option"><input type="radio" name="q3" id="q3-b" value="1"><label for="q3-b"><span class="opt-letter">B</span>Take a break — next week will probably be better.</label></div>
+          <div class="scenario-option"><input type="radio" name="q3" id="q3-c" value="3"><label for="q3-c"><span class="opt-letter">C</span>Analyze the week in detail and adjust one or two things.</label></div>
+          <div class="scenario-option"><input type="radio" name="q3" id="q3-d" value="2"><label for="q3-d"><span class="opt-letter">D</span>Review what happened but don't make major changes yet.</label></div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="question-block" id="qb4">
+        <div class="question-text"><span class="question-num">4</span>I consistently hit or exceed goals I set for myself.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q4" id="q4-1" value="1"><label for="q4-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q4" id="q4-2" value="2"><label for="q4-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q4" id="q4-3" value="3"><label for="q4-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q4" id="q4-4" value="4"><label for="q4-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q4" id="q4-5" value="5"><label for="q4-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="question-block" id="qb5">
+        <div class="question-text"><span class="question-num">5</span>I am comfortable with (or would prefer) a compensation structure tied to performance.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q5" id="q5-1" value="1"><label for="q5-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q5" id="q5-2" value="2"><label for="q5-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q5" id="q5-3" value="3"><label for="q5-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q5" id="q5-4" value="4"><label for="q5-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q5" id="q5-5" value="5"><label for="q5-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="question-block" id="qb6">
+        <div class="question-text"><span class="question-num">6</span>My productivity tends to slip when no one is monitoring my activity.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q6" id="q6-1" value="1"><label for="q6-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q6" id="q6-2" value="2"><label for="q6-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q6" id="q6-3" value="3"><label for="q6-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q6" id="q6-4" value="4"><label for="q6-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q6" id="q6-5" value="5"><label for="q6-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="question-block" id="qb7">
+        <div class="question-text"><span class="question-num">7</span>I am energized by competition — whether against others or my own past performance.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q7" id="q7-1" value="1"><label for="q7-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q7" id="q7-2" value="2"><label for="q7-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q7" id="q7-3" value="3"><label for="q7-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q7" id="q7-4" value="4"><label for="q7-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q7" id="q7-5" value="5"><label for="q7-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="question-block" id="qb8">
+        <div class="question-text"><span class="question-num">8</span>I have personally designed and followed a daily work routine without being instructed to do so.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q8" id="q8-1" value="1"><label for="q8-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q8" id="q8-2" value="2"><label for="q8-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q8" id="q8-3" value="3"><label for="q8-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q8" id="q8-4" value="4"><label for="q8-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q8" id="q8-5" value="5"><label for="q8-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <div class="val-msg" id="val1">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <span></span>
+        <button class="btn btn-primary" onclick="goToSection(2)">Next: Coachability →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 2: COACHABILITY ══════════════ -->
+  <div class="screen" id="screenSection2">
+    <div class="card">
+      <div class="section-label">📚 Part 2 of 3</div>
+      <div class="section-title">Coachability</div>
+      <div class="section-desc">How do you respond to feedback, training, and sales processes?</div>
+
+      <!-- Q9 -->
+      <div class="question-block" id="qb9">
+        <div class="question-text"><span class="question-num">9</span>When a manager points out something I'm doing wrong, my first instinct is to explain why I did it that way.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q9" id="q9-1" value="1"><label for="q9-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q9" id="q9-2" value="2"><label for="q9-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q9" id="q9-3" value="3"><label for="q9-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q9" id="q9-4" value="4"><label for="q9-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q9" id="q9-5" value="5"><label for="q9-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="question-block" id="qb10">
+        <div class="question-text"><span class="question-num">10</span>I have changed a meaningful habit or behavior based on feedback I received at work.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q10" id="q10-1" value="1"><label for="q10-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q10" id="q10-2" value="2"><label for="q10-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q10" id="q10-3" value="3"><label for="q10-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q10" id="q10-4" value="4"><label for="q10-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q10" id="q10-5" value="5"><label for="q10-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="question-block" id="qb11">
+        <div class="question-text"><span class="question-num">11</span>I follow established sales scripts and processes, even when I think I know a better way.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q11" id="q11-1" value="1"><label for="q11-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q11" id="q11-2" value="2"><label for="q11-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q11" id="q11-3" value="3"><label for="q11-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q11" id="q11-4" value="4"><label for="q11-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q11" id="q11-5" value="5"><label for="q11-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="question-block" id="qb12">
+        <div class="question-text"><span class="question-num">12</span>I regularly seek out feedback from managers or colleagues to improve my performance.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q12" id="q12-1" value="1"><label for="q12-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q12" id="q12-2" value="2"><label for="q12-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q12" id="q12-3" value="3"><label for="q12-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q12" id="q12-4" value="4"><label for="q12-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q12" id="q12-5" value="5"><label for="q12-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q13 (scenario) -->
+      <div class="question-block" id="qb13">
+        <div class="question-text"><span class="question-num">13</span>Your manager shows you a new sales approach that's different from what you've been doing successfully. What do you do?</div>
+        <div class="scenario-options">
+          <div class="scenario-option"><input type="radio" name="q13" id="q13-a" value="3"><label for="q13-a"><span class="opt-letter">A</span>Try it a few times but blend my old approach back in.</label></div>
+          <div class="scenario-option"><input type="radio" name="q13" id="q13-b" value="4"><label for="q13-b"><span class="opt-letter">B</span>Fully commit to it and give it a proper test before drawing conclusions.</label></div>
+          <div class="scenario-option"><input type="radio" name="q13" id="q13-c" value="1"><label for="q13-c"><span class="opt-letter">C</span>Internally dismiss it — my current way has been working.</label></div>
+          <div class="scenario-option"><input type="radio" name="q13" id="q13-d" value="2"><label for="q13-d"><span class="opt-letter">D</span>Try it once to satisfy the manager, then revert.</label></div>
+        </div>
+      </div>
+
+      <!-- Q14 -->
+      <div class="question-block" id="qb14">
+        <div class="question-text"><span class="question-num">14</span>I view critical feedback as an opportunity to grow, not a personal attack.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q14" id="q14-1" value="1"><label for="q14-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q14" id="q14-2" value="2"><label for="q14-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q14" id="q14-3" value="3"><label for="q14-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q14" id="q14-4" value="4"><label for="q14-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q14" id="q14-5" value="5"><label for="q14-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q15 -->
+      <div class="question-block" id="qb15">
+        <div class="question-text"><span class="question-num">15</span>I consume sales or professional development content (books, podcasts, courses) outside of required work time.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q15" id="q15-1" value="1"><label for="q15-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q15" id="q15-2" value="2"><label for="q15-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q15" id="q15-3" value="3"><label for="q15-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q15" id="q15-4" value="4"><label for="q15-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q15" id="q15-5" value="5"><label for="q15-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q16 -->
+      <div class="question-block" id="qb16">
+        <div class="question-text"><span class="question-num">16</span>I would be comfortable having my sales calls recorded and reviewed by a manager.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q16" id="q16-1" value="1"><label for="q16-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q16" id="q16-2" value="2"><label for="q16-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q16" id="q16-3" value="3"><label for="q16-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q16" id="q16-4" value="4"><label for="q16-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q16" id="q16-5" value="5"><label for="q16-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q17 -->
+      <div class="question-block" id="qb17">
+        <div class="question-text"><span class="question-num">17</span>When I fail to close a deal, I reflect on what I could have done differently.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q17" id="q17-1" value="1"><label for="q17-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q17" id="q17-2" value="2"><label for="q17-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q17" id="q17-3" value="3"><label for="q17-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q17" id="q17-4" value="4"><label for="q17-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q17" id="q17-5" value="5"><label for="q17-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <div class="val-msg" id="val2">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goToSection(3)">Next: Resilience →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 3: RESILIENCE ══════════════ -->
+  <div class="screen" id="screenSection3">
+    <div class="card">
+      <div class="section-label">💪 Part 3 of 3</div>
+      <div class="section-title">Resilience &amp; Rejection Handling</div>
+      <div class="section-desc">How do you manage rejection, setbacks, and the emotional demands of sales?</div>
+
+      <!-- Q18 -->
+      <div class="question-block" id="qb18">
+        <div class="question-text"><span class="question-num">18</span>Being told "no" by a prospect motivates me to refine my approach rather than discourages me.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q18" id="q18-1" value="1"><label for="q18-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q18" id="q18-2" value="2"><label for="q18-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q18" id="q18-3" value="3"><label for="q18-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q18" id="q18-4" value="4"><label for="q18-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q18" id="q18-5" value="5"><label for="q18-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q19 -->
+      <div class="question-block" id="qb19">
+        <div class="question-text"><span class="question-num">19</span>I can recover quickly after a difficult client interaction and return to full productivity.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q19" id="q19-1" value="1"><label for="q19-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q19" id="q19-2" value="2"><label for="q19-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q19" id="q19-3" value="3"><label for="q19-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q19" id="q19-4" value="4"><label for="q19-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q19" id="q19-5" value="5"><label for="q19-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q20 -->
+      <div class="question-block" id="qb20">
+        <div class="question-text"><span class="question-num">20</span>I understand that in insurance sales, rejection is far more common than closing — and I'm fully comfortable with that reality.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q20" id="q20-1" value="1"><label for="q20-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q20" id="q20-2" value="2"><label for="q20-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q20" id="q20-3" value="3"><label for="q20-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q20" id="q20-4" value="4"><label for="q20-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q20" id="q20-5" value="5"><label for="q20-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q21 (scenario) -->
+      <div class="question-block" id="qb21">
+        <div class="question-text"><span class="question-num">21</span>You've had five consecutive conversations where prospects said they weren't interested. Your most likely reaction:</div>
+        <div class="scenario-options">
+          <div class="scenario-option"><input type="radio" name="q21" id="q21-a" value="3"><label for="q21-a"><span class="opt-letter">A</span>Stay consistent but feel a bit worn down internally.</label></div>
+          <div class="scenario-option"><input type="radio" name="q21" id="q21-b" value="4"><label for="q21-b"><span class="opt-letter">B</span>See it as building momentum — the next "yes" is getting closer.</label></div>
+          <div class="scenario-option"><input type="radio" name="q21" id="q21-c" value="2"><label for="q21-c"><span class="opt-letter">C</span>Feel frustrated and make fewer calls the rest of the day.</label></div>
+          <div class="scenario-option"><input type="radio" name="q21" id="q21-d" value="1"><label for="q21-d"><span class="opt-letter">D</span>Take a break and re-evaluate whether sales is the right career.</label></div>
+        </div>
+      </div>
+
+      <!-- Q22 -->
+      <div class="question-block" id="qb22">
+        <div class="question-text"><span class="question-num">22</span>When a prospect turns me down, I find it hard not to take it personally.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q22" id="q22-1" value="1"><label for="q22-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q22" id="q22-2" value="2"><label for="q22-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q22" id="q22-3" value="3"><label for="q22-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q22" id="q22-4" value="4"><label for="q22-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q22" id="q22-5" value="5"><label for="q22-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q23 -->
+      <div class="question-block" id="qb23">
+        <div class="question-text"><span class="question-num">23</span>I have experienced a significant professional or personal setback and came back stronger from it.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q23" id="q23-1" value="1"><label for="q23-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q23" id="q23-2" value="2"><label for="q23-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q23" id="q23-3" value="3"><label for="q23-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q23" id="q23-4" value="4"><label for="q23-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q23" id="q23-5" value="5"><label for="q23-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q24 -->
+      <div class="question-block" id="qb24">
+        <div class="question-text"><span class="question-num">24</span>I can maintain a positive attitude and full effort even during extended periods without closing a sale.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q24" id="q24-1" value="1"><label for="q24-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q24" id="q24-2" value="2"><label for="q24-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q24" id="q24-3" value="3"><label for="q24-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q24" id="q24-4" value="4"><label for="q24-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q24" id="q24-5" value="5"><label for="q24-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q25 -->
+      <div class="question-block" id="qb25">
+        <div class="question-text"><span class="question-num">25</span>Work stress rarely carries over to affect my performance on subsequent calls or the following day.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q25" id="q25-1" value="1"><label for="q25-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q25" id="q25-2" value="2"><label for="q25-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q25" id="q25-3" value="3"><label for="q25-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q25" id="q25-4" value="4"><label for="q25-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q25" id="q25-5" value="5"><label for="q25-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <!-- Q26 -->
+      <div class="question-block" id="qb26">
+        <div class="question-text"><span class="question-num">26</span>I believe persistence — continuing to show up and put in the work — is the most important factor in sales success.</div>
+        <div class="likert-wrap">
+          <div class="likert-option"><input type="radio" name="q26" id="q26-1" value="1"><label for="q26-1"><span class="score-num">1</span>Strongly<br>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q26" id="q26-2" value="2"><label for="q26-2"><span class="score-num">2</span>Disagree</label></div>
+          <div class="likert-option"><input type="radio" name="q26" id="q26-3" value="3"><label for="q26-3"><span class="score-num">3</span>Neutral</label></div>
+          <div class="likert-option"><input type="radio" name="q26" id="q26-4" value="4"><label for="q26-4"><span class="score-num">4</span>Agree</label></div>
+          <div class="likert-option"><input type="radio" name="q26" id="q26-5" value="5"><label for="q26-5"><span class="score-num">5</span>Strongly<br>Agree</label></div>
+        </div>
+      </div>
+
+      <div class="val-msg" id="val3">⚠️ Please answer all questions before submitting.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(2)">← Back</button>
+        <button class="btn btn-accent" id="submitBtn" onclick="submitAssessment()">
+          Submit Assessment ✓
+        </button>
+      </div>
+      <div id="submitStatus" class="submit-status"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ THANK YOU SCREEN (applicant-facing) ══════════════ -->
+  <div class="screen" id="screenThankYou">
+    <div class="card" style="text-align:center;">
+      <div class="welcome-icon" style="margin:0 auto 20px;">✅</div>
+      <div class="welcome-title">Assessment Complete</div>
+      <div class="welcome-sub">
+        Thank you<span id="thankYouName"></span>! Your responses have been submitted and shared with
+        <span id="thankYouAgent">your hiring agent</span>, who will be in touch about next steps.
+      </div>
+      <div id="thankYouWarn" style="display:none;font-size:13px;color:var(--danger);line-height:1.6;margin-bottom:16px;">
+        ⚠️ We had trouble reaching the server. Your answers are saved in this browser and we'll retry
+        automatically — but please also let your hiring agent know you've completed the assessment.
+      </div>
+      <div class="results-footer">
+        <strong>StaffMyAgency.com</strong> — Built for Insurance Agency Owners
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ RESULTS SCREEN (agent-facing — hidden from applicants unless CONFIG.showApplicantResults) ══════════════ -->
+  <div class="screen" id="screenResults">
+    <div class="card">
+      <div class="results-header">
+        <div id="resultsBadge" class="results-badge"><!-- filled by JS --></div>
+        <div id="resultsName" class="results-name"></div>
+        <div class="results-sub">Insurance Sales Profile Assessment — StaffMyAgency.com</div>
+
+        <!-- Score Ring -->
+        <div class="score-ring-wrap">
+          <div class="score-ring-container">
+            <svg class="score-ring-svg" width="160" height="160" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="65" fill="none" stroke="#dce5f0" stroke-width="14"/>
+              <circle id="ringCircle" cx="80" cy="80" r="65" fill="none" stroke="#1a4fa0" stroke-width="14"
+                stroke-dasharray="408.41" stroke-dashoffset="408.41"
+                stroke-linecap="round" style="transition: stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-text">
+              <div class="score-center-num" id="scoreCenterNum">--</div>
+              <div class="score-center-label">Overall Score</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dimension Bars -->
+      <div style="margin-bottom:28px;">
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">🔥 Motivation &amp; Drive</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 30%</div>
+            </div>
+            <div class="dimension-score" id="scoreMotivation">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-motivation" id="barMotivation" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">📚 Coachability</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 35%</div>
+            </div>
+            <div class="dimension-score" id="scoreCoachability">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-coachability" id="barCoachability" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+
+        <div class="dimension-card">
+          <div class="dimension-header">
+            <div>
+              <div class="dimension-name">💪 Resilience &amp; Rejection Handling</div>
+              <div style="font-size:11px;color:var(--muted);">Weight: 35%</div>
+            </div>
+            <div class="dimension-score" id="scoreResilience">--</div>
+          </div>
+          <div class="dim-bar-bg"><div class="dim-bar-fill fill-resilience" id="barResilience" style="width:0%"></div></div>
+          <div class="dimension-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+        </div>
+      </div>
+
+      <!-- Insights -->
+      <div>
+        <div class="insights-title">📝 Assessment Insights</div>
+        <div id="insightsList"></div>
+      </div>
+
+      <div class="results-footer">
+        This assessment was completed on <span id="completedDate"></span>.<br>
+        Results have been sent to your hiring agent. A copy has been recorded in their ATS.<br><br>
+        <strong>StaffMyAgency.com</strong> — Built for Insurance Agency Owners
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIGURATION — Update before deploying
+// ══════════════════════════════════════════════
+const CONFIG = {
+  // Your ATS webhook endpoint. Results will be POSTed here as JSON.
+  webhookUrl: 'https://YOUR_ATS_WEBHOOK_URL_HERE',
+
+  // Set to true to log payload to console instead of POSTing (for development)
+  devMode: false,
+
+  // Show the full scored report (rating badge, dimension scores, hiring insights)
+  // to the applicant after submission. Recommended: false — hiring recommendations
+  // like "Not Recommended" should only reach the agent via the webhook.
+  showApplicantResults: false
+};
+
+// An unconfigured webhook behaves like dev mode so test runs don't error out.
+const WEBHOOK_READY = CONFIG.webhookUrl && !CONFIG.webhookUrl.includes('YOUR_ATS_WEBHOOK');
+
+// ══════════════════════════════════════════════
+// URL PARAMETER PARSING
+// ══════════════════════════════════════════════
+const params = new URLSearchParams(window.location.search);
+const APPLICANT = {
+  name:      params.get('applicant_name')  || '',
+  email:     params.get('applicant_email') || '',
+  agentEmail: params.get('agent_email')    || '',
+  agentName:  params.get('agent_name')     || 'Your Hiring Agent',
+  jobId:      params.get('job_id')         || '',
+  jobTitle:   params.get('job_title')      || 'Insurance Sales Representative'
+};
+
+// ══════════════════════════════════════════════
+// SCORING MODEL
+// ══════════════════════════════════════════════
+const DIMENSIONS = {
+  motivation:   { questions: [1,2,3,4,5,6,7,8],     weight: 0.30 },
+  coachability: { questions: [9,10,11,12,13,14,15,16,17], weight: 0.35 },
+  resilience:   { questions: [18,19,20,21,22,23,24,25,26], weight: 0.35 }
+};
+// Scenario questions: 4 options whose values rank quality 1 (weakest) to 4 (strongest)
+// regardless of displayed letter; mapped linearly onto the 1-5 Likert range.
+const SCENARIO_QUESTIONS = [3, 13, 21];
+// Reverse-keyed Likert items: agreement indicates a weaker fit, so the score is flipped.
+const REVERSED_QUESTIONS = [6, 9, 22];
+
+function getQuestionValue(qNum) {
+  const inputs = document.querySelectorAll(`input[name="q${qNum}"]:checked`);
+  if (!inputs.length) return null;
+  const raw = parseFloat(inputs[0].value);
+  if (SCENARIO_QUESTIONS.includes(qNum)) return 1 + (raw - 1) * (4 / 3); // 1-4 → 1-5
+  if (REVERSED_QUESTIONS.includes(qNum)) return 6 - raw;
+  return raw;
+}
+
+function calcDimensionScore(questionNums) {
+  let total = 0, max = questionNums.length * 5;
+  for (const q of questionNums) {
+    const v = getQuestionValue(q);
+    if (v !== null) total += v;
+  }
+  return Math.round((total / max) * 100);
+}
+
+// ══════════════════════════════════════════════
+// DRAFT PERSISTENCE (survives accidental refresh)
+// ══════════════════════════════════════════════
+const DRAFT_KEY = `isa_draft_${APPLICANT.email || 'anon'}_${APPLICANT.jobId || 'nojob'}`;
+const PENDING_KEY = 'isa_pending_submission';
+let startedAt = null;
+
+function saveDraft() {
+  const draft = { startedAt, answers: {} };
+  for (let i = 1; i <= 26; i++) {
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    if (checked) draft.answers[`q${i}`] = checked.value;
+  }
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch (e) {}
+}
+
+function restoreDraft() {
+  let draft;
+  try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch (e) { return; }
+  if (!draft || !draft.answers) return;
+  if (draft.startedAt) startedAt = draft.startedAt;
+  for (const [name, value] of Object.entries(draft.answers)) {
+    const input = document.querySelector(`input[name="${name}"][value="${value}"]`);
+    if (input) {
+      input.checked = true;
+      const block = document.getElementById(`qb${name.replace('q','')}`);
+      if (block) block.classList.add('answered');
+    }
+  }
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+}
+
+// ══════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════════════════
+let currentSection = 0;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(pct) {
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function updateAnswerProgress() {
+  let answered = 0;
+  for (let i = 1; i <= 26; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+  }
+  updateProgress(Math.round((answered / 26) * 95));
+}
+
+function startAssessment() {
+  showScreen('screenSection1');
+  if (!startedAt) startedAt = Date.now();
+  saveDraft();
+  updateAnswerProgress();
+}
+
+// ══════════════════════════════════════════════
+// VALIDATION
+// ══════════════════════════════════════════════
+function validateSection(sectionNum) {
+  const sectionMap = { 1: [1,2,3,4,5,6,7,8], 2: [9,10,11,12,13,14,15,16,17], 3: [18,19,20,21,22,23,24,25,26] };
+  const qs = sectionMap[sectionNum];
+  let allAnswered = true;
+
+  qs.forEach(q => {
+    const answered = document.querySelector(`input[name="q${q}"]:checked`) !== null;
+    const block = document.getElementById(`qb${q}`);
+    if (!answered) {
+      block.classList.add('error');
+      allAnswered = false;
+    } else {
+      block.classList.remove('error');
+      block.classList.add('answered');
+    }
+  });
+
+  const valEl = document.getElementById(`val${sectionNum}`);
+  if (!allAnswered) {
+    valEl.classList.add('visible');
+  } else {
+    valEl.classList.remove('visible');
+  }
+  return allAnswered;
+}
+
+// Mark blocks as answered on change
+document.addEventListener('change', e => {
+  if (e.target.type === 'radio') {
+    const name = e.target.name; // e.g. "q3"
+    const qNum = parseInt(name.replace('q', ''));
+    const block = document.getElementById(`qb${qNum}`);
+    if (block) {
+      block.classList.remove('error');
+      block.classList.add('answered');
+    }
+    saveDraft();
+    updateAnswerProgress();
+  }
+});
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function goToSection(num) {
+  const prev = num - 1;
+  if (prev >= 1 && prev <= 3) {
+    if (!validateSection(prev)) return;
+  }
+
+  showScreen(`screenSection${num}`);
+  updateAnswerProgress();
+}
+
+// ══════════════════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════════════════
+async function postWithRetry(payload, attempts = 3) {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const res = await fetch(CONFIG.webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return true;
+    } catch (err) {
+      console.error(`Webhook attempt ${i + 1} failed:`, err);
+      if (i < attempts - 1) await new Promise(r => setTimeout(r, 1500 * (i + 1)));
+    }
+  }
+  return false;
+}
+
+async function submitAssessment() {
+  if (!validateSection(3)) return;
+
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('submitStatus');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+  // Calculate scores
+  const mScore = calcDimensionScore(DIMENSIONS.motivation.questions);
+  const cScore = calcDimensionScore(DIMENSIONS.coachability.questions);
+  const rScore = calcDimensionScore(DIMENSIONS.resilience.questions);
+  const overall = Math.round(mScore * DIMENSIONS.motivation.weight + cScore * DIMENSIONS.coachability.weight + rScore * DIMENSIONS.resilience.weight);
+
+  // Collect raw answers as selected (reversed items are NOT flipped here — scoring handles that)
+  const answers = {};
+  for (let i = 1; i <= 26; i++) {
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    answers[`q${i}`] = checked ? parseFloat(checked.value) : null;
+  }
+
+  // Quality signals for the agent: completion time and straight-line responding
+  const durationSeconds = startedAt ? Math.round((Date.now() - startedAt) / 1000) : null;
+  const likertValues = [];
+  for (let i = 1; i <= 26; i++) {
+    if (!SCENARIO_QUESTIONS.includes(i) && answers[`q${i}`] !== null) likertValues.push(answers[`q${i}`]);
+  }
+  const straightLine = likertValues.length > 0 && likertValues.every(v => v === likertValues[0]);
+
+  const rating = getRating(overall);
+  const completedAt = new Date().toISOString();
+
+  const payload = {
+    // Metadata
+    assessment_type: 'insurance_sales_profile',
+    assessment_version: '1.1',
+    completed_at: completedAt,
+    job_id: APPLICANT.jobId,
+    job_title: APPLICANT.jobTitle,
+
+    // Applicant
+    applicant_name:  APPLICANT.name,
+    applicant_email: APPLICANT.email,
+    agent_email:     APPLICANT.agentEmail,
+    agent_name:      APPLICANT.agentName,
+
+    // Scores
+    score_overall:      overall,
+    score_motivation:   mScore,
+    score_coachability: cScore,
+    score_resilience:   rScore,
+    rating:             rating.label,
+    rating_code:        rating.code,
+
+    // Response-quality signals
+    quality_flags: {
+      duration_seconds: durationSeconds,
+      rushed: durationSeconds !== null && durationSeconds < 120,
+      straight_line: straightLine
+    },
+
+    // Raw answers
+    answers: answers
+  };
+
+  // POST to webhook
+  statusEl.className = 'submit-status status-sending';
+  statusEl.textContent = '⏳ Sending your results...';
+
+  let sent = false;
+  if (CONFIG.devMode || !WEBHOOK_READY) {
+    console.log('Assessment payload:', JSON.stringify(payload, null, 2));
+    await new Promise(r => setTimeout(r, 800)); // simulate delay
+    sent = true;
+  } else {
+    sent = await postWithRetry(payload);
+  }
+
+  clearDraft();
+  if (sent) {
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+    statusEl.className = 'submit-status status-success';
+    statusEl.textContent = '✓ Results submitted successfully.';
+  } else {
+    // Keep the payload so it can be resent automatically on the next page load
+    try { localStorage.setItem(PENDING_KEY, JSON.stringify(payload)); } catch (e) {}
+    statusEl.className = 'submit-status status-error';
+    statusEl.textContent = '⚠️ Could not reach the server. Your answers are saved and will be retried — please also notify your agent.';
+  }
+
+  updateProgress(100);
+  setTimeout(() => {
+    if (CONFIG.showApplicantResults) {
+      showResults(overall, mScore, cScore, rScore, rating);
+    } else {
+      document.getElementById('thankYouWarn').style.display = sent ? 'none' : 'block';
+      showScreen('screenThankYou');
+    }
+  }, 900);
+}
+
+// ══════════════════════════════════════════════
+// RATING LOGIC
+// ══════════════════════════════════════════════
+function getRating(score) {
+  if (score >= 85) return { code: 'elite', label: 'Elite Sales Producer', emoji: '🏆', badgeClass: 'badge-elite' };
+  if (score >= 70) return { code: 'strong', label: 'Strong Sales Candidate', emoji: '⭐', badgeClass: 'badge-strong' };
+  if (score >= 55) return { code: 'developing', label: 'Developing Candidate', emoji: '📈', badgeClass: 'badge-developing' };
+  return { code: 'notrecommended', label: 'Not Recommended', emoji: '⚠️', badgeClass: 'badge-notrecommended' };
+}
+
+// ══════════════════════════════════════════════
+// RESULTS DISPLAY
+// ══════════════════════════════════════════════
+function showResults(overall, mScore, cScore, rScore, rating) {
+  showScreen('screenResults');
+
+  // Badge
+  const badgeEl = document.getElementById('resultsBadge');
+  badgeEl.className = `results-badge ${rating.badgeClass}`;
+  badgeEl.innerHTML = `${rating.emoji} ${rating.label}`;
+
+  // Name
+  document.getElementById('resultsName').textContent = APPLICANT.name || 'Assessment Complete';
+
+  // Score ring animation
+  const circumference = 408.41;
+  const offset = circumference - (overall / 100) * circumference;
+  setTimeout(() => {
+    document.getElementById('ringCircle').style.strokeDashoffset = offset;
+    const colorMap = { elite: '#1e8a4a', strong: '#1a4fa0', developing: '#e8a020', notrecommended: '#c0392b' };
+    document.getElementById('ringCircle').setAttribute('stroke', colorMap[rating.code]);
+  }, 100);
+  document.getElementById('scoreCenterNum').textContent = overall;
+
+  // Dimension scores & bars
+  document.getElementById('scoreMotivation').textContent = mScore;
+  document.getElementById('scoreCoachability').textContent = cScore;
+  document.getElementById('scoreResilience').textContent = rScore;
+  setTimeout(() => {
+    document.getElementById('barMotivation').style.width = mScore + '%';
+    document.getElementById('barCoachability').style.width = cScore + '%';
+    document.getElementById('barResilience').style.width = rScore + '%';
+  }, 200);
+
+  // Completed date
+  document.getElementById('completedDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  // Insights
+  const insights = generateInsights(overall, mScore, cScore, rScore, rating);
+  document.getElementById('insightsList').innerHTML = insights.map(i =>
+    `<div class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function generateInsights(overall, m, c, r, rating) {
+  const insights = [];
+  const safeName = APPLICANT.name ? escapeHtml(APPLICANT.name) : 'This candidate';
+
+  // Overall
+  const descriptions = {
+    elite: `<strong>${safeName}</strong> scored in the top tier for insurance sales readiness. They show exceptional self-motivation, process discipline, and emotional durability — key predictors of long-term producer success.`,
+    strong: `<strong>${safeName}</strong> demonstrates strong sales fundamentals with solid scores across all three dimensions. Expect quick ramp-up with standard onboarding.`,
+    developing: `<strong>${safeName}</strong> shows potential in some areas but will need targeted coaching to build the habits and resilience required for consistent insurance sales performance.`,
+    notrecommended: `<strong>${safeName}</strong> scored below the threshold for recommended hire in key sales aptitude areas. Consider whether additional assessment or a different role may be more appropriate.`
+  };
+  insights.push({ icon: rating.emoji, text: descriptions[rating.code] });
+
+  // Dimension-specific
+  const scores = { motivation: m, coachability: c, resilience: r };
+  const labels  = { motivation: 'Motivation & Drive', coachability: 'Coachability', resilience: 'Resilience' };
+
+  // Highest dimension
+  const topDim = Object.entries(scores).sort((a,b) => b[1]-a[1])[0];
+  insights.push({ icon: '💡', text: `<strong>Top Strength:</strong> ${labels[topDim[0]]} (${topDim[1]}/100) — This is the candidate's strongest area and should be reinforced during onboarding.` });
+
+  // Lowest dimension
+  const bottomDim = Object.entries(scores).sort((a,b) => a[1]-b[1])[0];
+  if (bottomDim[1] < 70) {
+    const devNotes = {
+      motivation: 'Focus onboarding on goal-setting frameworks, commission structure clarity, and accountability check-ins.',
+      coachability: 'Plan regular role-play sessions and script adherence coaching. Pair with a strong mentor.',
+      resilience: 'Prioritize early expectation-setting around rejection rates and use daily huddles to reinforce mindset.'
+    };
+    insights.push({ icon: '🎯', text: `<strong>Development Area:</strong> ${labels[bottomDim[0]]} (${bottomDim[1]}/100) — ${devNotes[bottomDim[0]]}` });
+  }
+
+  // Insurance-specific flag
+  if (r < 60) {
+    insights.push({ icon: '⚠️', text: `<strong>Rejection Tolerance Alert:</strong> Low resilience scores (${r}/100) are the #1 predictor of early attrition in insurance sales. Consider a structured 30-day check-in plan if hired.` });
+  }
+  if (c >= 80) {
+    insights.push({ icon: '✅', text: `<strong>High Coachability (${c}/100):</strong> This candidate will likely adapt quickly to your sales process and respond well to script training and feedback sessions.` });
+  }
+  if (m >= 80) {
+    insights.push({ icon: '🔥', text: `<strong>Strong Drive (${m}/100):</strong> Self-directed and goal-oriented. Minimal hand-holding needed for daily activity levels — a good fit for a results-focused culture.` });
+  }
+
+  return insights;
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+async function retryPendingSubmission() {
+  if (CONFIG.devMode || !WEBHOOK_READY) return;
+  let pending;
+  try { pending = JSON.parse(localStorage.getItem(PENDING_KEY)); } catch (e) { return; }
+  if (!pending) return;
+  const sent = await postWithRetry(pending, 2);
+  if (sent) {
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+    console.log('Previously failed submission delivered successfully.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Populate greeting if params present
+  if (APPLICANT.name) {
+    document.getElementById('greetingName').textContent = APPLICANT.name;
+    document.getElementById('greetingAgent').textContent = APPLICANT.agentName;
+    document.getElementById('applicantGreeting').style.display = 'block';
+    document.getElementById('thankYouName').textContent = `, ${APPLICANT.name.split(' ')[0]}`;
+  }
+  if (APPLICANT.agentName && APPLICANT.agentName !== 'Your Hiring Agent') {
+    document.getElementById('thankYouAgent').textContent = APPLICANT.agentName;
+  }
+
+  restoreDraft();
+  updateAnswerProgress();
+  retryPendingSubmission();
+});
+</script>
+</body>
+</html>
