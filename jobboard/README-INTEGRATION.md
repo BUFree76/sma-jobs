@@ -184,10 +184,16 @@ These are what make the board findable organically and make ad landing pages sco
 
 ## Google Ads notes
 
-- Ad final URLs should use the query-string contract above (or the location landing
-  pages once built) — never the unfiltered board.
-- Fire the Ads conversion tag on the application-submit success event so campaigns can
-  optimize to cost-per-application.
+Full campaign architecture, ad copy, and automation live in `google-ads/`
+(CAMPAIGN-SETUP.md + geo-sync.js). Dev-relevant pieces:
+
+- Implement `GET /api/job-locations.json` per the spec in CAMPAIGN-SETUP.md §4 —
+  it drives the nightly location-target sync. Requires a lat/lng per job (geocode
+  the ZIP once at posting time; the same column powers the board's radius search).
+- Fire the Google Ads conversion tag on the application-submit success event so
+  campaigns can optimize to cost-per-application.
+- Ad final URLs use the query-string contract above (or the location landing pages
+  once built) — never the unfiltered board.
 
 ## Not included (deliberately)
 
