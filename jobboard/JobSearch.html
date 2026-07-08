@@ -1,0 +1,953 @@
+<title>StaffMyAgency — Job Search</title>
+<style>
+  :root {
+    --bg: #f2f5f9;
+    --surface: #ffffff;
+    --ink: #1a2433;
+    --muted: #5b6b80;
+    --line: #dce3ec;
+    --brand: #1a5ca8;
+    --brand-deep: #134679;
+    --brand-tint: #e9f0f9;
+    --salary: #177a4c;
+    --pill-bg: #eef2f7;
+    --focus: #7fb0e6;
+    --btn-ink: #ffffff;
+    --shadow: 0 1px 3px rgba(20, 40, 70, 0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10161f;
+      --surface: #18212d;
+      --ink: #e8edf4;
+      --muted: #97a6b9;
+      --line: #2a3646;
+      --brand: #6fa8e8;
+      --brand-deep: #8dbcf0;
+      --brand-tint: #1d2c3f;
+      --salary: #4cc38a;
+      --pill-bg: #212d3c;
+      --focus: #3d6ea6;
+      --btn-ink: #0e1621;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10161f;
+    --surface: #18212d;
+    --ink: #e8edf4;
+    --muted: #97a6b9;
+    --line: #2a3646;
+    --brand: #6fa8e8;
+    --brand-deep: #8dbcf0;
+    --brand-tint: #1d2c3f;
+    --salary: #4cc38a;
+    --pill-bg: #212d3c;
+    --focus: #3d6ea6;
+    --btn-ink: #0e1621;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  }
+  :root[data-theme="light"] {
+    --bg: #f2f5f9;
+    --surface: #ffffff;
+    --ink: #1a2433;
+    --muted: #5b6b80;
+    --line: #dce3ec;
+    --brand: #1a5ca8;
+    --brand-deep: #134679;
+    --brand-tint: #e9f0f9;
+    --salary: #177a4c;
+    --pill-bg: #eef2f7;
+    --focus: #7fb0e6;
+    --btn-ink: #ffffff;
+    --shadow: 0 1px 3px rgba(20, 40, 70, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.55 "Segoe UI", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  a { color: var(--brand); }
+  button, input, select { font: inherit; color: inherit; }
+
+  input[type="text"], input[type="search"], select {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 10px 12px;
+    width: 100%;
+  }
+  input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+  }
+
+  .site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .wordmark {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .wordmark .sma {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--brand);
+  }
+  .wordmark .tag {
+    font-size: 12.5px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .agency-link { font-size: 13.5px; text-decoration: none; }
+  .agency-link:hover { text-decoration: underline; }
+
+  .search-band {
+    background: linear-gradient(180deg, var(--brand-tint), var(--bg));
+    border-bottom: 1px solid var(--line);
+  }
+  .search-band .inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 28px 20px 24px;
+  }
+  .search-band h1 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  .search-band p.sub {
+    margin: 0 0 18px;
+    color: var(--muted);
+  }
+  .search-form {
+    display: grid;
+    grid-template-columns: 1.4fr 1.1fr auto auto;
+    gap: 10px;
+  }
+  .search-form .field { display: flex; flex-direction: column; gap: 4px; }
+  .search-form label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .btn {
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 10px 18px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn-primary {
+    background: var(--brand);
+    color: var(--btn-ink);
+  }
+  .btn-primary:hover { background: var(--brand-deep); }
+  .search-form .btn { align-self: end; height: 42px; }
+
+  .layout {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 22px 20px 48px;
+    display: grid;
+    grid-template-columns: 232px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .filters {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 16px;
+  }
+  .filters h2 {
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .filters h2 button {
+    background: none;
+    border: none;
+    color: var(--brand);
+    cursor: pointer;
+    font-size: 12.5px;
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0;
+  }
+  .filters h2 button:hover { text-decoration: underline; }
+  .filter-group { display: flex; flex-direction: column; gap: 6px; }
+  .filter-group > span { font-size: 13px; font-weight: 600; }
+  .filter-group label.check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .filter-group .count { color: var(--muted); font-size: 12.5px; margin-left: auto; }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .toolbar .summary { font-size: 14px; color: var(--muted); }
+  .toolbar .summary strong { color: var(--ink); }
+  .toolbar .sort { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--muted); }
+  .toolbar .sort select { width: auto; padding: 6px 10px; }
+
+  .job-list { display: flex; flex-direction: column; gap: 12px; list-style: none; margin: 0; padding: 0; }
+
+  .job-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .job-card:hover { border-color: var(--brand); }
+  .job-card h3 { margin: 0; font-size: 17px; line-height: 1.3; }
+  .job-card h3 a { text-decoration: none; }
+  .job-card h3 a:hover { text-decoration: underline; }
+  .job-meta { color: var(--muted); font-size: 13.5px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    background: var(--pill-bg);
+    border-radius: 999px;
+    padding: 3px 11px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .pill.salary { color: var(--salary); background: transparent; padding-left: 0; font-variant-numeric: tabular-nums; }
+  .job-snippet {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .job-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 2px;
+  }
+  .job-foot .posted { font-size: 12.5px; color: var(--muted); }
+  .btn-apply {
+    background: var(--surface);
+    border: 1px solid var(--brand);
+    color: var(--brand);
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-weight: 600;
+    font-size: 13.5px;
+    text-decoration: none;
+  }
+  .btn-apply:hover { background: var(--brand); color: var(--surface); }
+
+  .empty {
+    background: var(--surface);
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty strong { color: var(--ink); display: block; margin-bottom: 6px; font-size: 16px; }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .pagination button {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    min-width: 38px;
+    padding: 7px 10px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .pagination button[aria-current="page"] {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: var(--btn-ink);
+    font-weight: 700;
+  }
+  .pagination button:disabled { opacity: 0.45; cursor: default; }
+
+  .resume-banner {
+    background: var(--brand-tint);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .resume-banner p { margin: 0; font-size: 14px; }
+  .resume-banner .btn { white-space: nowrap; }
+
+  dialog.resume-modal {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    padding: 0;
+    width: min(480px, calc(100vw - 32px));
+  }
+  dialog.resume-modal::backdrop { background: rgba(8, 18, 32, 0.55); }
+  .modal-body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 12px; }
+  .modal-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .modal-head h2 { margin: 0; font-size: 18px; }
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--muted);
+    padding: 2px 6px;
+  }
+  .modal-sub { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .modal-body .field { display: flex; flex-direction: column; gap: 4px; }
+  .modal-body .field label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .modal-body .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-body input[type="file"] {
+    border: 1px dashed var(--line);
+    border-radius: 6px;
+    padding: 10px 12px;
+    background: var(--bg);
+    width: 100%;
+  }
+  .modal-body .hint { font-size: 12px; color: var(--muted); }
+  label.consent {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  label.consent input { margin-top: 3px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+  .btn-ghost { background: none; border: 1px solid var(--line); color: var(--ink); }
+  .form-error { color: #c23b3b; font-size: 13px; margin: 0; }
+  :root[data-theme="dark"] .form-error { color: #f08c8c; }
+  @media (prefers-color-scheme: dark) { .form-error { color: #f08c8c; } :root[data-theme="light"] .form-error { color: #c23b3b; } }
+  .resume-success { padding: 34px 24px; text-align: center; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .resume-success .mark {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--salary); color: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 700;
+  }
+  .resume-success strong { font-size: 16px; }
+  .resume-success p { margin: 0; color: var(--muted); font-size: 14px; }
+  @media (max-width: 520px) { .modal-body .two-col { grid-template-columns: 1fr; } }
+
+  @media (max-width: 860px) {
+    .search-form { grid-template-columns: 1fr 1fr; }
+    .search-form .field-radius { grid-column: 1; }
+    .search-form .btn { grid-column: 2; }
+    .layout { grid-template-columns: 1fr; }
+    .filters { position: static; }
+  }
+  @media (max-width: 520px) {
+    .search-form { grid-template-columns: 1fr; }
+    .search-form .field-radius, .search-form .btn { grid-column: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="wordmark" href="https://staffmyagency.com/">
+      <span class="sma">SMA</span>
+      <span class="tag">AI-Powered Recruitment</span>
+    </a>
+    <a class="agency-link" href="https://staffmyagency.com/">Hiring for your agency? Post a job &rarr;</a>
+  </div>
+</header>
+
+<section class="search-band">
+  <div class="inner">
+    <h1>Find your next insurance agency job</h1>
+    <p class="sub" id="heroSub">Open roles at insurance agencies across the U.S.</p>
+    <form class="search-form" id="searchForm" role="search" aria-label="Job search">
+      <div class="field">
+        <label for="q">Job title or keywords</label>
+        <input type="search" id="q" name="q" placeholder="e.g. licensed sales, CSR, account manager" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="loc">Location</label>
+        <input type="text" id="loc" name="loc" placeholder="City, state, or ZIP" autocomplete="off">
+      </div>
+      <div class="field field-radius">
+        <label for="radius">Radius</label>
+        <select id="radius" name="radius">
+          <option value="10">10 mi</option>
+          <option value="25" selected>25 mi</option>
+          <option value="50">50 mi</option>
+          <option value="100">100 mi</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Search jobs</button>
+    </form>
+  </div>
+</section>
+
+<div class="layout">
+  <aside class="filters" aria-label="Filters">
+    <h2>Filters <button type="button" id="clearFilters">Clear all</button></h2>
+
+    <div class="filter-group" id="typeGroup">
+      <span>Employment type</span>
+      <label class="check"><input type="checkbox" name="type" value="FULL_TIME"> Full-time <span class="count" data-count="FULL_TIME"></span></label>
+      <label class="check"><input type="checkbox" name="type" value="PART_TIME"> Part-time <span class="count" data-count="PART_TIME"></span></label>
+    </div>
+
+    <div class="filter-group" id="licenseGroup">
+      <span>License</span>
+      <label class="check"><input type="checkbox" name="license" value="P&C"> P&amp;C licensed <span class="count" data-count="P&C"></span></label>
+      <label class="check"><input type="checkbox" name="license" value="L&H"> Life &amp; Health <span class="count" data-count="L&H"></span></label>
+      <label class="check"><input type="checkbox" name="license" value="None"> No license required <span class="count" data-count="None"></span></label>
+    </div>
+
+    <div class="filter-group">
+      <span>Minimum salary</span>
+      <select id="salaryMin" name="salaryMin">
+        <option value="">Any</option>
+        <option value="30000">$30,000+</option>
+        <option value="40000">$40,000+</option>
+        <option value="50000">$50,000+</option>
+        <option value="60000">$60,000+</option>
+      </select>
+    </div>
+  </aside>
+
+  <main>
+    <div class="resume-banner">
+      <p><strong>Get found by hiring agencies.</strong> Upload your resume once — agencies hiring near you search our candidate database every day.</p>
+      <button type="button" class="btn btn-primary" data-open-resume>Upload your resume</button>
+    </div>
+
+    <div class="toolbar">
+      <div class="summary" id="summary" role="status" aria-live="polite"></div>
+      <div class="sort">
+        <label for="sort">Sort</label>
+        <select id="sort" name="sort">
+          <option value="newest">Newest</option>
+          <option value="salary">Highest salary</option>
+        </select>
+      </div>
+    </div>
+
+    <ul class="job-list" id="jobList"></ul>
+
+    <div class="empty" id="emptyState" hidden>
+      <strong>No jobs match your search</strong>
+      Try widening the radius, removing a filter, or searching a nearby city.<br>
+      Or <a href="#" data-open-resume>upload your resume</a> and let agencies contact you when the right role opens.
+    </div>
+
+    <nav class="pagination" id="pagination" aria-label="Search result pages"></nav>
+  </main>
+</div>
+
+<dialog class="resume-modal" id="resumeModal" aria-labelledby="resumeTitle">
+  <form class="modal-body" id="resumeForm">
+    <div class="modal-head">
+      <h2 id="resumeTitle">Join the candidate database</h2>
+      <button type="button" class="modal-close" data-close-resume aria-label="Close">&times;</button>
+    </div>
+    <p class="modal-sub">Hiring agencies on StaffMyAgency search this database when filling roles near you. Takes about a minute.</p>
+
+    <div class="field">
+      <label for="rName">Full name</label>
+      <input type="text" id="rName" name="name" required autocomplete="name">
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label for="rEmail">Email</label>
+        <input type="email" id="rEmail" name="email" required autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="rPhone">Phone (optional)</label>
+        <input type="tel" id="rPhone" name="phone" autocomplete="tel">
+      </div>
+    </div>
+    <div class="field">
+      <label for="rLoc">City, state or ZIP</label>
+      <input type="text" id="rLoc" name="location" required placeholder="Where you want to work">
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label for="rRole">Desired role</label>
+        <select id="rRole" name="role">
+          <option value="ANY">Any agency role</option>
+          <option value="SALES">Sales / producer</option>
+          <option value="SERVICE">Customer service</option>
+          <option value="OFFICE">Office / admin</option>
+          <option value="MANAGEMENT">Management</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="rLicense">Licenses held</label>
+        <select id="rLicense" name="license">
+          <option value="NONE">None yet</option>
+          <option value="P&C">P&amp;C</option>
+          <option value="L&H">Life &amp; Health</option>
+          <option value="BOTH">P&amp;C + L&amp;H</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label for="rFile">Resume</label>
+      <input type="file" id="rFile" name="resume" required accept=".pdf,.doc,.docx">
+      <span class="hint">PDF or Word, up to 5&nbsp;MB.</span>
+    </div>
+    <label class="consent">
+      <input type="checkbox" id="rConsent" name="consent" required>
+      <span>I agree that hiring agencies using StaffMyAgency may view my resume and contact me about job openings. I can request removal at any time.</span>
+    </label>
+    <p class="form-error" id="resumeError" role="alert" hidden></p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" data-close-resume>Cancel</button>
+      <button type="submit" class="btn btn-primary" id="resumeSubmit">Submit resume</button>
+    </div>
+  </form>
+  <div class="resume-success" id="resumeSuccess" hidden>
+    <div class="mark">&#10003;</div>
+    <strong>You're in the database</strong>
+    <p id="resumeSuccessText">Agencies hiring near you can now find your resume. We'll only share it with hiring agencies on StaffMyAgency.</p>
+    <button type="button" class="btn btn-primary" data-close-resume>Back to job search</button>
+  </div>
+</dialog>
+
+<script>
+/* =========================================================================
+   DATA ADAPTER — the only section your developer needs to change.
+
+   OPTION A (recommended): server-side render. In the Razor view, serialize
+   the current page of jobs into `window.SMA_JOBS` and set
+   `window.SMA_TOTAL`. Remove SAMPLE_JOBS below.
+
+   OPTION B: JSON endpoint. Implement GET /api/jobs accepting the same
+   query-string contract this page writes to the URL:
+     q, loc, radius, type (repeatable), license (repeatable),
+     salaryMin, sort, page
+   and replace `getJobs()` with a fetch() to that endpoint. Server should
+   perform real geocoded radius search; the client-side matching below is
+   demo-only.
+
+   Job object contract (all fields required unless noted):
+     id         string  — stable job id
+     title      string
+     agency     string  — hiring agency display name
+     city       string
+     state      string  — 2-letter
+     zip        string
+     salaryMin  number  — USD
+     salaryMax  number
+     salaryUnit "YEAR" (default) | "HOUR"  — optional
+     type       "FULL_TIME" | "PART_TIME"
+     license    "P&C" | "L&H" | "None"
+     posted     string  — ISO date
+     snippet    string  — first ~160 chars of description, plain text
+     url        string  — SITE-RELATIVE path to the job detail page, e.g.
+                          "/Main/ApplyForJob/..." — renders as a normal
+                          same-tab link, never a new window. (The demo data
+                          uses absolute URLs only so links work from the
+                          hosted preview.)
+   ========================================================================= */
+/* Real listings pulled from staffmyagency.com pages 1-3 on 2026-07-08 (45 of 685).
+   NOTE: `license` values below are inferred from job titles for demo purposes —
+   the production data source should supply the real license requirement. */
+const SAMPLE_JOBS = [
+  { id: "j01", title: "Licensed Insurance Sales Representative", agency: "David Korede - State Farm Agency", city: "Suwanee", state: "GA", zip: "30024", salaryMin: 37500, salaryMax: 50000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "David Korede - State Farm Agency, located in Suwanee, GA has an immediate opening for a full-time Licensed Insurance Sales Professional.", url: "https://staffmyagency.com/Main/ApplyForJob/6mAlAdmLp8I=/NaNqf00X-G4=" },
+  { id: "j02", title: "Licensed Insurance Customer Service", agency: "David Korede - State Farm Agency", city: "Suwanee", state: "GA", zip: "30024", salaryMin: 37500, salaryMax: 50000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Successful State Farm Agent is seeking a qualified professional to join their winning team.", url: "https://staffmyagency.com/Main/ApplyForJob/hThzq7IUmc0=/NaNqf00X-G4=" },
+  { id: "j03", title: "Receptionist", agency: "David Korede - State Farm Agency", city: "Suwanee", state: "GA", zip: "30024", salaryMin: 37500, salaryMax: 50000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Looking for a job that provides meaningful work and competitive compensation?", url: "https://staffmyagency.com/Main/ApplyForJob/WUuQ40vtEMg=/NaNqf00X-G4=" },
+  { id: "j04", title: "Bilingual Licensed Insurance Customer Service - Spanish", agency: "Rick Buckner - State Farm Agency", city: "Albuquerque", state: "NM", zip: "87121", salaryMin: 17, salaryMax: 20, salaryUnit: "HOUR", type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Successful State Farm Agent is seeking a qualified professional to join their team.", url: "https://staffmyagency.com/Main/ApplyForJob/2FTSfJq109I=/NaNqf00X-G4=" },
+  { id: "j05", title: "Bilingual Licensed Insurance Sales Representative - Spanish", agency: "Rick Buckner - State Farm Agency", city: "Albuquerque", state: "NM", zip: "87121", salaryMin: 17, salaryMax: 20, salaryUnit: "HOUR", type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Rick Buckner - State Farm Agency, located in Albuquerque, NM has an opening.", url: "https://staffmyagency.com/Main/ApplyForJob/o656CRlAOM0=/NaNqf00X-G4=" },
+  { id: "j06", title: "Bilingual Receptionist / Office Assistant - Spanish", agency: "Rick Buckner - State Farm Agency", city: "Albuquerque", state: "NM", zip: "87121", salaryMin: 17, salaryMax: 20, salaryUnit: "HOUR", type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Rick Buckner - State Farm Insurance Agency in Albuquerque, NM is seeking a receptionist.", url: "https://staffmyagency.com/Main/ApplyForJob/dZqS4UZbDbs=/NaNqf00X-G4=" },
+  { id: "j07", title: "Sales Representative", agency: "Jim Merenick - State Farm Agency", city: "Springville", state: "NY", zip: "14141", salaryMin: 36000, salaryMax: 50000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Jim Merenick - State Farm Agency, located in Springville, NY has an immediate opening.", url: "https://staffmyagency.com/Main/ApplyForJob/BMBWu697AU0=/NaNqf00X-G4=" },
+  { id: "j08", title: "Customer Service Representative", agency: "Jim Merenick - State Farm Agency", city: "Springville", state: "NY", zip: "14141", salaryMin: 36000, salaryMax: 50000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Successful State Farm Agent is seeking a qualified professional to join their team.", url: "https://staffmyagency.com/Main/ApplyForJob/qTHK_JAEdbg=/NaNqf00X-G4=" },
+  { id: "j09", title: "Insurance Sales Representative", agency: "Farmers Insurance - District 9506", city: "Fresno", state: "CA", zip: "93730", salaryMin: 60000, salaryMax: 110000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Are you a licensed insurance professional looking for more than just a sales job?", url: "https://staffmyagency.com/Main/ApplyForJob/glaccuDDpYo=/NaNqf00X-G4=" },
+  { id: "j10", title: "State Farm Agency Representative", agency: "Nadia Ahluwalia - State Farm Agency", city: "Mesa", state: "AZ", zip: "85215", salaryMin: 40000, salaryMax: 50000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Our established State Farm agency is looking for a dependable, motivated representative.", url: "https://staffmyagency.com/Main/ApplyForJob/he1WpYuzZvQ=/NaNqf00X-G4=" },
+  { id: "j11", title: "Life Insurance Specialist", agency: "Teresa Connell - State Farm Agency", city: "Haines City", state: "FL", zip: "33844", salaryMin: 45000, salaryMax: 65000, type: "FULL_TIME", license: "L&H", posted: "2026-07-08", snippet: "State Farm Agent, located in Haines City, FL, is seeking a qualified professional.", url: "https://staffmyagency.com/Main/ApplyForJob/Btdrwi9WF-E=/NaNqf00X-G4=" },
+  { id: "j12", title: "State Farm Senior Agency Representative", agency: "Nadia Ahluwalia - State Farm Agency", city: "Mesa", state: "AZ", zip: "85215", salaryMin: 60000, salaryMax: 80000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Our established State Farm agency is seeking an experienced representative to help operate.", url: "https://staffmyagency.com/Main/ApplyForJob/1-0_hjbCbag=/NaNqf00X-G4=" },
+  { id: "j13", title: "Customer Service Representative", agency: "Brian Booth - State Farm Agency", city: "Vernon", state: "CT", zip: "06066", salaryMin: 22, salaryMax: 27, salaryUnit: "HOUR", type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Brian Booth - State Farm Agency, located in Vernon, CT is looking for a professional.", url: "https://staffmyagency.com/Main/ApplyForJob/EBujNV9cdOQ=/NaNqf00X-G4=" },
+  { id: "j14", title: "Insurance Sales Representative", agency: "Marc Scherrer - State Farm Agency", city: "Tonawanda", state: "NY", zip: "14223", salaryMin: 48000, salaryMax: 60000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "We are seeking a highly motivated person to join our team as an Insurance Sales Rep.", url: "https://staffmyagency.com/Main/ApplyForJob/9F0RbfXj040=/NaNqf00X-G4=" },
+  { id: "j15", title: "Bilingual Customer Service - Spanish", agency: "Jamie McBeth - State Farm Agency", city: "Fayetteville", state: "GA", zip: "30214", salaryMin: 40000, salaryMax: 60000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "State Farm Agency, located in Fayetteville, GA has an immediate opening for a rep.", url: "https://staffmyagency.com/Main/ApplyForJob/Pg1IaLPFl3s=/NaNqf00X-G4=" },
+  { id: "j16", title: "Bilingual Receptionist / Office Assistant - Spanish", agency: "Justin Goodman Agency", city: "Anchorage", state: "AK", zip: "99503", salaryMin: 40000, salaryMax: 50000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Bilingual Receptionist / Office Assistant - Spanish/English (Training Provided)", url: "https://staffmyagency.com/Main/ApplyForJob/QAU0XSt-4iQ=/NaNqf00X-G4=" },
+  { id: "j17", title: "Insurance Account Representative (fulltime)", agency: "Jesse Leal - State Farm Agency", city: "Albuquerque", state: "NM", zip: "87123", salaryMin: 25000, salaryMax: 41000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Successful State Farm Agent is seeking a qualified professional to join their winning team.", url: "https://staffmyagency.com/Main/ApplyForJob/ZrZztGiJdLY=/NaNqf00X-G4=" },
+  { id: "j18", title: "Licensed Insurance Customer Service (fulltime)", agency: "Jesse Leal - State Farm Agency", city: "Albuquerque", state: "NM", zip: "87123", salaryMin: 25000, salaryMax: 41000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Successful State Farm Agent is seeking a qualified professional to join their winning team.", url: "https://staffmyagency.com/Main/ApplyForJob/48I3OQj2C6U=/NaNqf00X-G4=" },
+  { id: "j19", title: "Insurance Account Representative Part Time", agency: "Jesse Leal - State Farm Agency", city: "Albuquerque", state: "NM", zip: "87123", salaryMin: 33000, salaryMax: 41000, type: "PART_TIME", license: "None", posted: "2026-07-08", snippet: "Successful State Farm Agent is seeking a qualified professional to join their winning team.", url: "https://staffmyagency.com/Main/ApplyForJob/QgoWOVlAX_s=/NaNqf00X-G4=" },
+  { id: "j20", title: "Customer Service Representative (part time)", agency: "Jesse Leal - State Farm Agency", city: "Albuquerque", state: "NM", zip: "87123", salaryMin: 17000, salaryMax: 41000, type: "PART_TIME", license: "None", posted: "2026-07-08", snippet: "Successful State Farm Agent is seeking a qualified professional to join their winning team.", url: "https://staffmyagency.com/Main/ApplyForJob/T8X9PqgLci4=/NaNqf00X-G4=" },
+  { id: "j21", title: "Agent Staff - Insurance Account Representative", agency: "Mickey Marrone - State Farm Agency", city: "Goodyear", state: "AZ", zip: "85338", salaryMin: 35000, salaryMax: 45000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Successful State Farm Agent is seeking a qualified professional to join their winning team.", url: "https://staffmyagency.com/Main/ApplyForJob/B-Ff9eUVL2M=/NaNqf00X-G4=" },
+  { id: "j22", title: "Insurance Sales Representative", agency: "Mark Bartley - State Farm Agency", city: "Jonesboro", state: "GA", zip: "30236", salaryMin: 45000, salaryMax: 65000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Join the nation's leading auto and home insurance company as a Sales Representative.", url: "https://staffmyagency.com/Main/ApplyForJob/1l6kQYKcQ2U=/NaNqf00X-G4=" },
+  { id: "j23", title: "Licensed Insurance Sales - State Farm Experienced", agency: "Mark Bartley - State Farm Agency", city: "Jonesboro", state: "GA", zip: "30236", salaryMin: 45000, salaryMax: 65000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Remote Licensed Insurance Sales Representative - Georgia Residents Only.", url: "https://staffmyagency.com/Main/ApplyForJob/23ZfnqTnswA=/NaNqf00X-G4=" },
+  { id: "j24", title: "Marketing Coordinator - State Farm Agent Team Member", agency: "State Farm Agency - Rocklin, CA", city: "Rocklin", state: "CA", zip: "95765", salaryMin: 40000, salaryMax: 65000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Are you organized, detail-oriented, and passionate about helping a growing team succeed?", url: "https://staffmyagency.com/Main/ApplyForJob/f-hU5gVWolU=/NaNqf00X-G4=" },
+  { id: "j25", title: "Account Associate", agency: "Scott Yuill - State Farm Agency", city: "Rocklin", state: "CA", zip: "95765", salaryMin: 43000, salaryMax: 85000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Are you a vibrant individual who thrives on providing exceptional customer experiences?", url: "https://staffmyagency.com/Main/ApplyForJob/uCdH6rLzFGk=/NaNqf00X-G4=" },
+  { id: "j26", title: "Receptionist", agency: "Scott Yuill - State Farm Agency", city: "Rocklin", state: "CA", zip: "95765", salaryMin: 19, salaryMax: 21, salaryUnit: "HOUR", type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "We are seeking a proactive and detail-oriented Receptionist & Office Manager.", url: "https://staffmyagency.com/Main/ApplyForJob/VwOxF60-sYs=/NaNqf00X-G4=" },
+  { id: "j27", title: "Entry Level Sales", agency: "Kim Duke - State Farm Agency", city: "West Monroe", state: "LA", zip: "71291", salaryMin: 35000, salaryMax: 65000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "State Farm Agency, located in West Monroe, LA has an immediate opening.", url: "https://staffmyagency.com/Main/ApplyForJob/K5iR-g-S3is=/NaNqf00X-G4=" },
+  { id: "j28", title: "Inside Sales and Service", agency: "Chase Coleman State Farm Agent", city: "Arlington", state: "TX", zip: "76013", salaryMin: 35000, salaryMax: 80000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "This opportunity is a customer service and sales position within a successful State Farm Agency.", url: "https://staffmyagency.com/Main/ApplyForJob/6GGEM8xuhXc=/NaNqf00X-G4=" },
+  { id: "j29", title: "Licensed Insurance Sales - Life, Health, Auto and Fire", agency: "Kim Duke - State Farm Agency", city: "West Monroe", state: "LA", zip: "71291", salaryMin: 55000, salaryMax: 85000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "We are looking for a motivated, goal-oriented Insurance Sales Representative.", url: "https://staffmyagency.com/Main/ApplyForJob/aQzWSjeJmyE=/NaNqf00X-G4=" },
+  { id: "j30", title: "Receptionist", agency: "Anthony Petrozzella - State Farm Agency", city: "Rosedale", state: "NY", zip: "11422", salaryMin: 38000, salaryMax: 60000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Looking for a job that provides meaningful work and competitive compensation?", url: "https://staffmyagency.com/Main/ApplyForJob/F3RnSInVoF4=/NaNqf00X-G4=" },
+  { id: "j31", title: "Insurance Account Representative", agency: "Chuck Weed - State Farm Agency", city: "Oxford", state: "PA", zip: "19363", salaryMin: 50000, salaryMax: 75000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Are you outgoing and genuinely caring about others?", url: "https://staffmyagency.com/Main/ApplyForJob/6mU8OXhoP5c=/NaNqf00X-G4=" },
+  { id: "j32", title: "Future Agent Internship - State Farm Agent Team Member", agency: "Chuck Weed - State Farm Agency", city: "Oxford", state: "PA", zip: "19363", salaryMin: 50000, salaryMax: 75000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "This is a mentorship opportunity for someone seeking a career in the financial services industry.", url: "https://staffmyagency.com/Main/ApplyForJob/D3KiZT-NLf4=/NaNqf00X-G4=" },
+  { id: "j33", title: "Insurance Customer Service", agency: "Florence Harrison - State Farm Agency", city: "Inglewood", state: "CA", zip: "90301", salaryMin: 65000, salaryMax: 85000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "State Farm Agency, located in Inglewood, CA is currently looking for a talented, caring, professional.", url: "https://staffmyagency.com/Main/ApplyForJob/bs30iaT7dzk=/NaNqf00X-G4=" },
+  { id: "j34", title: "Licensed Insurance Sales Representative", agency: "Florence Harrison - State Farm Agency", city: "Inglewood", state: "CA", zip: "90301", salaryMin: 65000, salaryMax: 95000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Florence Harrison - State Farm Agency, located in Inglewood, CA has an immediate opening.", url: "https://staffmyagency.com/Main/ApplyForJob/ej4mt1lQfss=/NaNqf00X-G4=" },
+  { id: "j35", title: "Account Executive", agency: "Goosehead Insurance", city: "Fenton", state: "MI", zip: "48430", salaryMin: 60000, salaryMax: 80000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Account Executive, Fenton, MI. Hybrid onsite and remote. Primary responsibility to build a book of business.", url: "https://staffmyagency.com/Main/ApplyForJob/4a7bQNjKp9w=/NaNqf00X-G4=" },
+  { id: "j36", title: "Licensed Life Insurance Agent", agency: "Greg McAlpin - State Farm Agency", city: "Gilbert", state: "AZ", zip: "85297", salaryMin: 45000, salaryMax: 90000, type: "FULL_TIME", license: "L&H", posted: "2026-07-08", snippet: "Our growing State Farm agency is seeking an experienced, licensed Life Insurance Sales Specialist.", url: "https://staffmyagency.com/Main/ApplyForJob/nT4OozCcHJg=/NaNqf00X-G4=" },
+  { id: "j37", title: "Licensed Insurance Sales Representative (Part-time)", agency: "Jerry Latta - State Farm Agency", city: "Greer", state: "SC", zip: "29651", salaryMin: 20, salaryMax: 23, salaryUnit: "HOUR", type: "PART_TIME", license: "P&C", posted: "2026-07-08", snippet: "Jerry Latta - State Farm Agency, located in Greer, SC has an immediate opening for a part-time rep.", url: "https://staffmyagency.com/Main/ApplyForJob/u47WUx14FLA=/NaNqf00X-G4=" },
+  { id: "j38", title: "Licensed Insurance Office Manager", agency: "Jim D'Angelo - State Farm Agency", city: "Bryn Mawr", state: "PA", zip: "19010", salaryMin: 60000, salaryMax: 75000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "State Farm Agency located in Bryn Mawr, PA has an immediate opening for an experienced, licensed manager.", url: "https://staffmyagency.com/Main/ApplyForJob/igZs58eAeTk=/NaNqf00X-G4=" },
+  { id: "j39", title: "Bilingual Entry Level Sales - Spanish", agency: "David Reyes - State Farm Agency", city: "Anaheim", state: "CA", zip: "92801", salaryMin: 20, salaryMax: 24, salaryUnit: "HOUR", type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "David Reyes - State Farm Agency, located in Anaheim, CA has an immediate opening for a full-time rep.", url: "https://staffmyagency.com/Main/ApplyForJob/ViJTXfjoPYQ=/NaNqf00X-G4=" },
+  { id: "j40", title: "Bilingual Sales Representative - Spanish", agency: "David Reyes - State Farm Agency", city: "Anaheim", state: "CA", zip: "92801", salaryMin: 25, salaryMax: 30, salaryUnit: "HOUR", type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "David Reyes - State Farm Agency, located in Anaheim, CA has an immediate opening for a full-time rep.", url: "https://staffmyagency.com/Main/ApplyForJob/sVUjry0cPNU=/NaNqf00X-G4=" },
+  { id: "j41", title: "Sales Representative", agency: "State Farm Agency - New Orleans", city: "New Orleans", state: "LA", zip: "70002", salaryMin: 38000, salaryMax: 46000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "State Farm Agency, located in New Orleans, LA has an immediate opening for a full-time Sales Rep.", url: "https://staffmyagency.com/Main/ApplyForJob/j2mkjEPIhSU=/NaNqf00X-G4=" },
+  { id: "j42", title: "Entry Level Sales", agency: "Jim D'Angelo - State Farm Agency", city: "Chester", state: "PA", zip: "19380", salaryMin: 40000, salaryMax: 60000, type: "FULL_TIME", license: "None", posted: "2026-07-08", snippet: "Jim D'Angelo - State Farm Agency, located in Bryn Mawr, PA has an immediate opening.", url: "https://staffmyagency.com/Main/ApplyForJob/8pwHwxzS8Kk=/NaNqf00X-G4=" },
+  { id: "j43", title: "Life Insurance Specialist", agency: "Jim D'Angelo - State Farm Agency", city: "Bryn Mawr", state: "PA", zip: "19010", salaryMin: 60000, salaryMax: 80000, type: "FULL_TIME", license: "L&H", posted: "2026-07-08", snippet: "State Farm Agent, located in Bryn Mawr, PA, is seeking a qualified professional for the role.", url: "https://staffmyagency.com/Main/ApplyForJob/O12dQgWER74=/NaNqf00X-G4=" },
+  { id: "j44", title: "Licensed Insurance Sales Representative", agency: "Jim D'Angelo - State Farm Agency", city: "Bryn Mawr", state: "PA", zip: "19010", salaryMin: 60000, salaryMax: 75000, type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Jim D'Angelo - State Farm Agency, located in Bryn Mawr, PA has an immediate opening.", url: "https://staffmyagency.com/Main/ApplyForJob/Y4ZH5BzGdww=/NaNqf00X-G4=" },
+  { id: "j45", title: "Licensed Producer/Sales Rep", agency: "Farmers Insurance - Walsh Agency", city: "Redding", state: "CA", zip: "96002", salaryMin: 24, salaryMax: 27, salaryUnit: "HOUR", type: "FULL_TIME", license: "P&C", posted: "2026-07-08", snippet: "Are you a driven, people-focused professional who thrives on helping others and achieving results?", url: "https://staffmyagency.com/Main/ApplyForJob/Vo2fzACn4iA=/NaNqf00X-G4=" }
+];
+
+function getJobs() {
+  // OPTION A: return window.SMA_JOBS if the server rendered them.
+  // OPTION B: replace with fetch('/api/jobs?' + params) and server-side filtering.
+  return window.SMA_JOBS || SAMPLE_JOBS;
+}
+
+/* Resume database: set to your endpoint, e.g. "/api/resumes". It receives a
+   POST of multipart/form-data with fields: name, email, phone, location,
+   role, license, consent ("on"), and the file under "resume".
+   While null, submission is simulated so the page works standalone. */
+const RESUME_ENDPOINT = null;
+/* ====================== end data adapter ====================== */
+
+const PAGE_SIZE = 8;
+const STATE_NAMES = {
+  GA: "georgia", NM: "new mexico", NY: "new york", CA: "california",
+  AZ: "arizona", FL: "florida", CT: "connecticut", AK: "alaska",
+  LA: "louisiana", TX: "texas", PA: "pennsylvania", MI: "michigan",
+  SC: "south carolina"
+};
+
+const els = {
+  form: document.getElementById("searchForm"),
+  q: document.getElementById("q"),
+  loc: document.getElementById("loc"),
+  radius: document.getElementById("radius"),
+  salaryMin: document.getElementById("salaryMin"),
+  sort: document.getElementById("sort"),
+  list: document.getElementById("jobList"),
+  empty: document.getElementById("emptyState"),
+  summary: document.getElementById("summary"),
+  pagination: document.getElementById("pagination"),
+  heroSub: document.getElementById("heroSub"),
+  clear: document.getElementById("clearFilters")
+};
+
+let state = { q: "", loc: "", radius: "25", type: [], license: [], salaryMin: "", sort: "newest", page: 1 };
+
+function readUrl() {
+  const p = new URLSearchParams(location.search);
+  state.q = p.get("q") || "";
+  state.loc = p.get("loc") || "";
+  state.radius = p.get("radius") || "25";
+  state.type = p.getAll("type");
+  state.license = p.getAll("license");
+  state.salaryMin = p.get("salaryMin") || "";
+  state.sort = p.get("sort") || "newest";
+  state.page = Math.max(1, parseInt(p.get("page") || "1", 10) || 1);
+}
+
+function writeUrl() {
+  const p = new URLSearchParams();
+  if (state.q) p.set("q", state.q);
+  if (state.loc) p.set("loc", state.loc);
+  if (state.loc && state.radius !== "25") p.set("radius", state.radius);
+  state.type.forEach(t => p.append("type", t));
+  state.license.forEach(l => p.append("license", l));
+  if (state.salaryMin) p.set("salaryMin", state.salaryMin);
+  if (state.sort !== "newest") p.set("sort", state.sort);
+  if (state.page > 1) p.set("page", String(state.page));
+  const qs = p.toString();
+  history.replaceState(null, "", qs ? "?" + qs : location.pathname);
+}
+
+function syncControls() {
+  els.q.value = state.q;
+  els.loc.value = state.loc;
+  els.radius.value = state.radius;
+  els.salaryMin.value = state.salaryMin;
+  els.sort.value = state.sort;
+  document.querySelectorAll('input[name="type"]').forEach(cb => cb.checked = state.type.includes(cb.value));
+  document.querySelectorAll('input[name="license"]').forEach(cb => cb.checked = state.license.includes(cb.value));
+}
+
+function matchesLocation(job, loc) {
+  const needle = loc.trim().toLowerCase().replace(/,/g, "");
+  if (!needle) return true;
+  const hay = [job.city, job.state, STATE_NAMES[job.state] || "", job.zip, job.city + " " + job.state]
+    .join(" ").toLowerCase();
+  return needle.split(/\s+/).every(part => hay.includes(part));
+}
+
+function filterJobs(jobs) {
+  const q = state.q.trim().toLowerCase();
+  return jobs.filter(j => {
+    if (q && !(j.title + " " + j.agency + " " + j.snippet).toLowerCase().includes(q)) return false;
+    if (!matchesLocation(j, state.loc)) return false;
+    if (state.type.length && !state.type.includes(j.type)) return false;
+    if (state.license.length && !state.license.includes(j.license)) return false;
+    if (state.salaryMin && annualMax(j) < Number(state.salaryMin)) return false;
+    return true;
+  });
+}
+
+function sortJobs(jobs) {
+  const copy = [...jobs];
+  if (state.sort === "salary") copy.sort((a, b) => annualMax(b) - annualMax(a));
+  else copy.sort((a, b) => b.posted.localeCompare(a.posted));
+  return copy;
+}
+
+function fmtSalary(j) {
+  if (j.salaryUnit === "HOUR") return "$" + j.salaryMin + " – $" + j.salaryMax + " / hr";
+  const k = n => "$" + Math.round(n / 1000) + "k";
+  return k(j.salaryMin) + " – " + k(j.salaryMax) + " / yr";
+}
+
+function annualMax(j) {
+  return j.salaryUnit === "HOUR" ? j.salaryMax * 2080 : j.salaryMax;
+}
+
+function fmtPosted(iso) {
+  const days = Math.max(0, Math.floor((Date.now() - new Date(iso + "T12:00:00")) / 86400000));
+  if (days === 0) return "Posted today";
+  if (days === 1) return "Posted yesterday";
+  return "Posted " + days + " days ago";
+}
+
+function render() {
+  const all = getJobs();
+  const filtered = sortJobs(filterJobs(all));
+  const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  state.page = Math.min(state.page, pages);
+  const start = (state.page - 1) * PAGE_SIZE;
+  const pageJobs = filtered.slice(start, start + PAGE_SIZE);
+
+  const total = window.SMA_TOTAL || all.length;
+  els.heroSub.textContent = total + " open roles at insurance agencies across the U.S.";
+
+  // facet counts (against jobs matching everything except that facet)
+  document.querySelectorAll("[data-count]").forEach(span => {
+    const val = span.dataset.count;
+    const isType = span.closest("#typeGroup") !== null;
+    const saved = isType ? state.type : state.license;
+    const key = isType ? "type" : "license";
+    const restore = [...saved];
+    state[key] = [];
+    const base = filterJobs(all);
+    state[key] = restore;
+    span.textContent = "(" + base.filter(j => j[key] === val).length + ")";
+  });
+
+  const where = state.loc.trim();
+  els.summary.innerHTML = "<strong>" + filtered.length + " job" + (filtered.length === 1 ? "" : "s") + "</strong>" +
+    (state.q ? " matching &ldquo;" + escapeHtml(state.q) + "&rdquo;" : "") +
+    (where ? " near " + escapeHtml(where) : "");
+
+  els.list.innerHTML = pageJobs.map(j => `
+    <li class="job-card">
+      <h3><a href="${j.url}">${escapeHtml(j.title)}</a></h3>
+      <div class="job-meta">${escapeHtml(j.agency)} &middot; ${escapeHtml(j.city)}, ${j.state} ${j.zip}</div>
+      <div class="pill-row">
+        <span class="pill salary">${fmtSalary(j)}</span>
+        <span class="pill">${j.type === "FULL_TIME" ? "Full-time" : "Part-time"}</span>
+        <span class="pill">${j.license === "None" ? "No license required" : j.license + " license"}</span>
+      </div>
+      <p class="job-snippet">${escapeHtml(j.snippet)}</p>
+      <div class="job-foot">
+        <span class="posted">${fmtPosted(j.posted)}</span>
+        <a class="btn-apply" href="${j.url}">Apply now</a>
+      </div>
+    </li>`).join("");
+
+  els.empty.hidden = filtered.length > 0;
+  renderPagination(pages);
+  writeUrl();
+}
+
+function renderPagination(pages) {
+  if (pages <= 1) { els.pagination.innerHTML = ""; return; }
+  let html = `<button type="button" data-page="${state.page - 1}" ${state.page === 1 ? "disabled" : ""} aria-label="Previous page">&lsaquo;</button>`;
+  for (let i = 1; i <= pages; i++) {
+    html += `<button type="button" data-page="${i}" ${i === state.page ? 'aria-current="page"' : ""}>${i}</button>`;
+  }
+  html += `<button type="button" data-page="${state.page + 1}" ${state.page === pages ? "disabled" : ""} aria-label="Next page">&rsaquo;</button>`;
+  els.pagination.innerHTML = html;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// events
+els.form.addEventListener("submit", e => {
+  e.preventDefault();
+  state.q = els.q.value;
+  state.loc = els.loc.value;
+  state.radius = els.radius.value;
+  state.page = 1;
+  render();
+});
+document.querySelectorAll('input[name="type"], input[name="license"]').forEach(cb => {
+  cb.addEventListener("change", () => {
+    state.type = [...document.querySelectorAll('input[name="type"]:checked')].map(c => c.value);
+    state.license = [...document.querySelectorAll('input[name="license"]:checked')].map(c => c.value);
+    state.page = 1;
+    render();
+  });
+});
+els.salaryMin.addEventListener("change", () => { state.salaryMin = els.salaryMin.value; state.page = 1; render(); });
+els.sort.addEventListener("change", () => { state.sort = els.sort.value; state.page = 1; render(); });
+els.clear.addEventListener("click", () => {
+  state = { q: "", loc: "", radius: "25", type: [], license: [], salaryMin: "", sort: "newest", page: 1 };
+  syncControls();
+  render();
+});
+els.pagination.addEventListener("click", e => {
+  const btn = e.target.closest("button[data-page]");
+  if (!btn || btn.disabled) return;
+  state.page = parseInt(btn.dataset.page, 10);
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// resume database modal
+const modal = document.getElementById("resumeModal");
+const resumeForm = document.getElementById("resumeForm");
+const resumeSuccess = document.getElementById("resumeSuccess");
+const resumeError = document.getElementById("resumeError");
+const resumeSubmit = document.getElementById("resumeSubmit");
+
+document.querySelectorAll("[data-open-resume]").forEach(el => {
+  el.addEventListener("click", e => {
+    e.preventDefault();
+    resumeForm.hidden = false;
+    resumeSuccess.hidden = true;
+    resumeError.hidden = true;
+    modal.showModal();
+  });
+});
+modal.addEventListener("click", e => {
+  if (e.target.closest("[data-close-resume]")) modal.close();
+  else if (e.target === modal) modal.close(); // backdrop click
+});
+
+resumeForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  resumeError.hidden = true;
+
+  const file = document.getElementById("rFile").files[0];
+  const okTypes = /\.(pdf|docx?)$/i;
+  if (!file || !okTypes.test(file.name)) {
+    resumeError.textContent = "Please attach your resume as a PDF or Word document.";
+    resumeError.hidden = false;
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    resumeError.textContent = "That file is over 5 MB. Please upload a smaller version.";
+    resumeError.hidden = false;
+    return;
+  }
+
+  resumeSubmit.disabled = true;
+  resumeSubmit.textContent = "Submitting…";
+  try {
+    if (RESUME_ENDPOINT) {
+      const res = await fetch(RESUME_ENDPOINT, { method: "POST", body: new FormData(resumeForm) });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+    } else {
+      await new Promise(r => setTimeout(r, 600)); // demo mode — no endpoint configured
+    }
+    const where = document.getElementById("rLoc").value.trim();
+    document.getElementById("resumeSuccessText").textContent =
+      "Agencies hiring" + (where ? " near " + where : " near you") +
+      " can now find your resume. We'll only share it with hiring agencies on StaffMyAgency.";
+    resumeForm.hidden = true;
+    resumeSuccess.hidden = false;
+    resumeForm.reset();
+  } catch (err) {
+    resumeError.textContent = "Something went wrong submitting your resume. Please try again.";
+    resumeError.hidden = false;
+  } finally {
+    resumeSubmit.disabled = false;
+    resumeSubmit.textContent = "Submit resume";
+  }
+});
+
+readUrl();
+syncControls();
+render();
+</script>
