@@ -1,0 +1,135 @@
+<!-- =====================================================================
+     StaffMyAgency — Homepage SEO/AEO drop-in snippets
+     Prepared 2026-09-14. All values are real except items marked [EDIT].
+     For your developer: paste each block into the homepage <head>.
+     File is UTF-8 — keep it UTF-8 so the em-dash (—) doesn't corrupt again.
+     ===================================================================== -->
+
+
+<!-- ---------------------------------------------------------------------
+     1) ENRICHED ORGANIZATION SCHEMA
+     ACTION: REPLACE the current Organization JSON-LD block on the homepage
+     with this one. (The old one only had name/url/description and a broken
+     "�" character.) This is the highest-value change for AI answer engines —
+     logo + address + contactPoint + sameAs are how they confirm your identity.
+     --------------------------------------------------------------------- -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "StaffMyAgency",
+  "url": "https://staffmyagency.com/",
+  "logo": "https://staffmyagency.com/Image/logo.png",
+  "image": "https://staffmyagency.com/Image/logo.png",
+  "description": "AI-powered, done-for-you recruiting for insurance agencies and small businesses — candidate screening, qualified shortlists, and human recruiting support. Based in Denton, Texas.",
+  "email": "support@staffmyagency.com",
+  "telephone": "+1-940-268-0971",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Denton",
+    "addressRegion": "TX",
+    "addressCountry": "US"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-940-268-0971",
+    "email": "support@staffmyagency.com",
+    "contactType": "customer service",
+    "areaServed": "US",
+    "availableLanguage": "English"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/company/staffmyagency",
+    "https://www.facebook.com/staffmyagencycom",
+    "https://jobs.staffmyagency.com/"
+  ]
+}
+</script>
+<!-- Optional upgrade: if you add a full street address + ZIP, change
+     "@type": "Organization" to "@type": "EmploymentAgency" for a stronger,
+     more specific entity signal (it's a LocalBusiness subtype). -->
+
+
+<!-- ---------------------------------------------------------------------
+     2) OPEN GRAPH + TWITTER TAGS
+     ACTION: In the homepage <head>, REPLACE the single existing
+     <meta property="og:image" ...> line with this whole block.
+     Keep your existing twitter:title / twitter:description lines; just add
+     twitter:image and upgrade the card type (both included below).
+     Currently only og:image exists — so every share/link preview and AI
+     context pull is missing the title, description, and site name.
+     --------------------------------------------------------------------- -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="StaffMyAgency" />
+<meta property="og:title" content="StaffMyAgency — AI-Powered Recruiting for Insurance Agencies" />
+<meta property="og:description" content="Done-for-you recruiting for insurance agencies and small businesses. AI screens candidates from job boards and delivers qualified shortlists fast, with human recruiting support." />
+<meta property="og:url" content="https://staffmyagency.com/" />
+<meta property="og:image" content="https://staffmyagency.com/Image/logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://staffmyagency.com/Image/logo.png" />
+
+
+<!-- ---------------------------------------------------------------------
+     3) HOMEPAGE FAQ SCHEMA
+     ACTION: ADD this block to the homepage <head>. Ideally also render these
+     same Q&As as visible text on the page (Google requires the FAQ content to
+     be visible to the user to be eligible). You already do FAQ schema well on
+     article pages — this brings it to the page brand/product queries land on.
+     Review every answer; [EDIT] marks ones you should confirm.
+     --------------------------------------------------------------------- -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does StaffMyAgency do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "StaffMyAgency is a done-for-you recruiting service for insurance agencies and small businesses. It uses AI to screen candidates sourced from job boards, then delivers a shortlist of qualified, vetted candidates — combining AI automation with hands-on human recruiting support."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is StaffMyAgency different from a job board or an ATS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A job board gives you a flood of raw applicants to sort yourself, and an ATS is software you still have to operate. StaffMyAgency does the work for you: it screens and scores applicants with AI and a recruiter delivers a shortlist of qualified candidates, so you review a handful of strong matches instead of hundreds of resumes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How fast will I receive qualified candidates?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most clients receive their first shortlist of qualified candidates within days of a role going live, because AI screening runs continuously against incoming applicants rather than waiting for a manual review cycle. [EDIT: confirm your actual turnaround/guarantee.]"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does StaffMyAgency specialize in insurance agencies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. StaffMyAgency was built for insurance agencies — including State Farm, Farmers, Allstate, and independent agencies — and recruits for sales, customer service, and office roles. It also serves other small businesses with similar hiring needs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What roles does StaffMyAgency recruit for?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Common roles include licensed and unlicensed insurance sales representatives, customer service representatives, account managers, receptionists, and administrative/office staff. [EDIT: adjust to match the roles you actually place.]"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does StaffMyAgency cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "[EDIT: insert your real pricing model — e.g. a flat monthly subscription, or a per-hire fee. State a starting price if you can; concrete numbers get cited by AI answer engines and pre-qualify leads.]"
+      }
+    }
+  ]
+}
+</script>
