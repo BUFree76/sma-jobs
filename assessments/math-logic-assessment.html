@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math &amp; Logical Reasoning Assessment | StaffMyAgency.com</title>
+<style>
+  :root {
+    --primary: #1a4fa0;
+    --primary-dark: #123a78;
+    --accent: #e8a020;
+    --accent-dark: #c78510;
+    --success: #1e8a4a;
+    --danger: #c0392b;
+    --warn: #e8a020;
+    --light: #f4f7fb;
+    --border: #d0daea;
+    --text: #1a2232;
+    --muted: #6b7a95;
+    --white: #ffffff;
+    --card-shadow: 0 2px 16px rgba(26,79,160,0.09);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--primary);
+    color: white;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-logo {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 18px; color: white;
+  }
+  .header-title { font-size: 17px; font-weight: 700; line-height: 1.2; }
+  .header-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .header-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px;
+  }
+  .header-badge.timer-running { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .header-badge.timer-warn {
+    background: rgba(192,57,43,0.9);
+    border-color: rgba(255,255,255,0.4);
+  }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    background: rgba(255,255,255,0.2);
+    height: 4px;
+  }
+  .progress-bar {
+    background: var(--accent);
+    height: 4px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── Container ── */
+  .container { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  /* ── Cards ── */
+  .card {
+    background: white;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    padding: 36px 40px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 540px) {
+    .card { padding: 24px 20px; }
+  }
+
+  /* ── Welcome screen ── */
+  .welcome-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin-bottom: 20px;
+  }
+  .welcome-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+  .welcome-sub { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  @media (max-width: 540px) { .info-grid { grid-template-columns: 1fr; } }
+  .info-item {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .info-item-icon { font-size: 22px; margin-bottom: 6px; }
+  .info-item-label { font-size: 12px; color: var(--muted); }
+  .info-item-value { font-size: 14px; font-weight: 700; color: var(--primary); margin-top: 2px; }
+  .applicant-greeting {
+    background: linear-gradient(135deg, #eef3fb, #dce8f8);
+    border: 1px solid #c0d4f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    margin-bottom: 24px;
+    color: var(--primary-dark);
+  }
+  .applicant-greeting strong { font-weight: 700; }
+  .timed-notice {
+    background: #fdf6e8;
+    border: 1px solid #ecd49a;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    color: #7a5c10;
+  }
+
+  /* ── Section header ── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .section-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .section-desc { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+  /* ── Questions ── */
+  .question-block {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .question-block:focus-within { border-color: var(--primary); }
+  .question-block.answered { border-color: #b0c8f0; background: #fafcff; }
+  .question-block.error { border-color: var(--danger); background: #fff8f7; }
+
+  .question-num {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    font-size: 11px; font-weight: 700;
+    text-align: center; line-height: 22px;
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .question-text {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  /* Answer options */
+  .scenario-options { display: flex; flex-direction: column; gap: 8px; }
+  .scenario-option { position: relative; }
+  .scenario-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px; height: 1px;
+    pointer-events: none;
+  }
+  .scenario-option input[type="radio"]:focus-visible + label {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .scenario-option label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text);
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .scenario-option label .opt-letter {
+    background: var(--light);
+    border: 1.5px solid var(--border);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    color: var(--primary);
+    transition: all 0.15s;
+  }
+  .scenario-option input[type="radio"]:checked + label {
+    border-color: var(--primary);
+    background: #f0f5ff;
+  }
+  .scenario-option input[type="radio"]:checked + label .opt-letter {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+  .scenario-option label:hover { border-color: var(--primary); }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  .btn-accent {
+    background: var(--accent);
+    color: white;
+  }
+  .btn-accent:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-lg { padding: 16px 36px; font-size: 16px; width: 100%; }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* ── Navigation ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--muted);
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ── Results screen ── */
+  .results-header {
+    text-align: center;
+    padding: 32px 0 24px;
+  }
+  .results-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .badge-elite { background: linear-gradient(135deg, #1e8a4a, #25a858); color: white; }
+  .badge-strong { background: linear-gradient(135deg, #1a4fa0, #2563c0); color: white; }
+  .badge-developing { background: linear-gradient(135deg, #e8a020, #d4880a); color: white; }
+  .badge-notrecommended { background: linear-gradient(135deg, #c0392b, #a02020); color: white; }
+
+  .results-name { font-size: 22px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .results-sub { font-size: 14px; color: var(--muted); }
+
+  /* Overall score ring */
+  .score-ring-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0;
+  }
+  .score-ring-svg { transform: rotate(-90deg); }
+  .score-ring-text {
+    position: absolute;
+    text-align: center;
+  }
+  .score-ring-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .score-center-num { font-size: 36px; font-weight: 900; color: var(--primary); line-height: 1; }
+  .score-center-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* Skill breakdown bars (informational, not separately weighted) */
+  .dimension-card {
+    background: var(--light);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .dimension-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .dimension-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .dimension-score {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--primary);
+  }
+  .dim-bar-bg {
+    height: 10px;
+    background: #dce5f0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .dim-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease;
+    background: linear-gradient(90deg, #1a4fa0, #4a80d0);
+  }
+  .dimension-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Insight items */
+  .insights-title { font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 14px; }
+  .insight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: white;
+    border: 1px solid var(--border);
+  }
+  .insight-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .insight-text { font-size: 13.5px; color: var(--text); line-height: 1.5; }
+  .insight-text strong { color: var(--primary); }
+
+  /* Footer note */
+  .results-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Status messages */
+  .submit-status {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: none;
+  }
+  .status-success { background: #e8f7ef; border: 1px solid #a0d8b8; color: #1e6e3e; display: block; }
+  .status-error { background: #fdf0ef; border: 1px solid #f0b0a8; color: #8c2020; display: block; }
+  .status-sending { background: #eef3fb; border: 1px solid #c0d4f0; color: #1a4fa0; display: block; }
+
+  /* Screen management */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Spinner */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* Validation error message */
+  .val-msg {
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: 8px;
+    display: none;
+  }
+  .val-msg.visible { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">S</div>
+    <div>
+      <div class="header-title">StaffMyAgency.com</div>
+      <div class="header-sub">Math &amp; Logical Reasoning Assessment</div>
+    </div>
+  </div>
+  <div class="header-badge" id="headerBadge">Confidential</div>
+</div>
+<div class="progress-wrap">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<!-- ══════════════ WELCOME SCREEN ══════════════ -->
+<div class="container">
+  <div class="screen active" id="screenWelcome">
+    <div class="card">
+      <div class="welcome-icon">🧠</div>
+      <div class="welcome-title">Math &amp; Logical Reasoning Assessment</div>
+      <div class="welcome-sub">
+        This assessment measures core numerical and logical reasoning ability — quick, accurate
+        calculation, working with ratios and percentages, and solving multi-step word problems
+        under time pressure. There are no trick formats: every question has exactly one correct answer.
+      </div>
+
+      <div id="applicantGreeting" class="applicant-greeting" style="display:none;">
+        Welcome, <strong id="greetingName"></strong>! This assessment has been sent to you by
+        <strong id="greetingAgent"></strong>. Your results will be shared with them upon completion.
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-item-icon">❓</div>
+          <div class="info-item-label">Questions</div>
+          <div class="info-item-value">30 Questions</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">⏱️</div>
+          <div class="info-item-label">Time Limit</div>
+          <div class="info-item-value" id="timeLimitDisplay">15 Minutes</div>
+        </div>
+        <div class="info-item">
+          <div class="info-item-icon">📊</div>
+          <div class="info-item-label">Format</div>
+          <div class="info-item-value">Multiple Choice</div>
+        </div>
+      </div>
+
+      <div class="timed-notice">
+        <strong>⏱️ This assessment is timed.</strong> The clock starts when you click Begin and runs
+        continuously — it will not pause if you refresh the page. When time expires, your answers are
+        submitted automatically. You may use scratch paper, but no calculator or outside assistance.
+        Unanswered questions are scored as incorrect, so keep an eye on the timer in the top-right corner.
+      </div>
+
+      <p style="font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;">
+        <strong style="color:var(--text);">What we measure:</strong> A single overall score reflecting
+        the percentage of questions answered correctly, covering arithmetic, percentages, ratios,
+        algebra, and logical/word-problem reasoning.
+      </p>
+
+      <button class="btn btn-primary btn-lg" onclick="startAssessment()">
+        Begin Timed Assessment →
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 1 ══════════════ -->
+  <div class="screen" id="screenSection1">
+    <div class="card">
+      <div class="section-label">🔢 Part 1 of 3</div>
+      <div class="section-title">Foundational Math</div>
+      <div class="section-desc">Questions 1–10 — arithmetic, percentages, ratios, and basic algebra.</div>
+      <div id="sectionQuestions1"></div>
+      <div class="val-msg" id="val1">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <span></span>
+        <button class="btn btn-primary" onclick="goToSection(2)">Next: Applied Reasoning →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 2 ══════════════ -->
+  <div class="screen" id="screenSection2">
+    <div class="card">
+      <div class="section-label">🧩 Part 2 of 3</div>
+      <div class="section-title">Applied Reasoning</div>
+      <div class="section-desc">Questions 11–20 — rates, word problems, and logical reasoning.</div>
+      <div id="sectionQuestions2"></div>
+      <div class="val-msg" id="val2">⚠️ Please answer all questions before continuing.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goToSection(3)">Next: Multi-Step Problems →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 3 ══════════════ -->
+  <div class="screen" id="screenSection3">
+    <div class="card">
+      <div class="section-label">🧮 Part 3 of 3</div>
+      <div class="section-title">Multi-Step Problems</div>
+      <div class="section-desc">Questions 21–30 — sequences, multi-step calculations, and scheduling.</div>
+      <div id="sectionQuestions3"></div>
+      <div class="val-msg" id="val3">⚠️ Please answer all questions before submitting.</div>
+      <div class="nav-row">
+        <button class="btn-outline" onclick="goToSection(2)">← Back</button>
+        <button class="btn btn-accent" id="submitBtn" onclick="submitAssessment()">
+          Submit Assessment ✓
+        </button>
+      </div>
+      <div id="submitStatus" class="submit-status"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ THANK YOU SCREEN (applicant-facing) ══════════════ -->
+  <div class="screen" id="screenThankYou">
+    <div class="card" style="text-align:center;">
+      <div class="welcome-icon" style="margin:0 auto 20px;">✅</div>
+      <div class="welcome-title">Assessment Complete</div>
+      <div class="welcome-sub">
+        Thank you<span id="thankYouName"></span>! Your responses have been submitted and shared with
+        <span id="thankYouAgent">your hiring agent</span>, who will be in touch about next steps.
+      </div>
+      <div id="thankYouWarn" style="display:none;font-size:13px;color:var(--danger);line-height:1.6;margin-bottom:16px;">
+        ⚠️ We had trouble reaching the server. Your answers are saved in this browser and we'll retry
+        automatically — but please also let your hiring agent know you've completed the assessment.
+      </div>
+      <div class="results-footer">
+        <strong>StaffMyAgency.com</strong> — Built for Insurance Agency Owners
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ RESULTS SCREEN (agent-facing — hidden from applicants unless CONFIG.showApplicantResults) ══════════════ -->
+  <div class="screen" id="screenResults">
+    <div class="card">
+      <div class="results-header">
+        <div id="resultsBadge" class="results-badge"><!-- filled by JS --></div>
+        <div id="resultsName" class="results-name"></div>
+        <div class="results-sub">Math &amp; Logical Reasoning Assessment — StaffMyAgency.com</div>
+
+        <!-- Score Ring -->
+        <div class="score-ring-wrap">
+          <div class="score-ring-container">
+            <svg class="score-ring-svg" width="160" height="160" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="65" fill="none" stroke="#dce5f0" stroke-width="14"/>
+              <circle id="ringCircle" cx="80" cy="80" r="65" fill="none" stroke="#1a4fa0" stroke-width="14"
+                stroke-dasharray="408.41" stroke-dashoffset="408.41"
+                stroke-linecap="round" style="transition: stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-text">
+              <div class="score-center-num" id="scoreCenterNum">--</div>
+              <div class="score-center-label">Overall Score</div>
+            </div>
+          </div>
+        </div>
+        <div class="results-sub" id="correctSummary"></div>
+      </div>
+
+      <!-- Skill breakdown (informational tally, not a separately weighted score) -->
+      <div style="margin-bottom:28px;margin-top:16px;" id="skillBreakdown"></div>
+
+      <!-- Insights -->
+      <div>
+        <div class="insights-title">📝 Assessment Insights</div>
+        <div id="insightsList"></div>
+      </div>
+
+      <div class="results-footer">
+        This assessment was completed on <span id="completedDate"></span>.<br>
+        Results have been sent to your hiring agent. A copy has been recorded in their ATS.<br><br>
+        <strong>StaffMyAgency.com</strong> — Built for Insurance Agency Owners
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIGURATION — Update before deploying
+// ══════════════════════════════════════════════
+const CONFIG = {
+  // Your ATS webhook endpoint. Results will be POSTed here as JSON.
+  webhookUrl: 'https://YOUR_ATS_WEBHOOK_URL_HERE',
+
+  // Set to true to log payload to console instead of POSTing (for development)
+  devMode: false,
+
+  // Show the full scored report (rating badge, score, insights) to the applicant
+  // after submission. Recommended: false — hiring recommendations like
+  // "Not Recommended" should only reach the agent via the webhook.
+  showApplicantResults: false,
+
+  // Time limit for the whole assessment. The clock keeps running through page
+  // refreshes; on expiry the assessment auto-submits with unanswered = incorrect.
+  timeLimitMinutes: 15
+};
+
+// An unconfigured webhook behaves like dev mode so test runs don't error out.
+const WEBHOOK_READY = CONFIG.webhookUrl && !CONFIG.webhookUrl.includes('YOUR_ATS_WEBHOOK');
+
+// ══════════════════════════════════════════════
+// URL PARAMETER PARSING
+// ══════════════════════════════════════════════
+const params = new URLSearchParams(window.location.search);
+const APPLICANT = {
+  name:      params.get('applicant_name')  || '',
+  email:     params.get('applicant_email') || '',
+  agentEmail: params.get('agent_email')    || '',
+  agentName:  params.get('agent_name')     || 'Your Hiring Agent',
+  jobId:      params.get('job_id')         || '',
+  jobTitle:   params.get('job_title')      || 'Job Applicant'
+};
+
+// ══════════════════════════════════════════════
+// QUESTION BANK
+// ══════════════════════════════════════════════
+// Every question is multiple choice with exactly one correct option (`a`, 0-based).
+// `skill` is informational metadata used only to group insights below — it is
+// NOT a separately weighted score. This is a single-construct test: one overall
+// percent-correct score.
+//
+// NOTE: because scoring runs client-side, the answer key is visible to anyone
+// who reads the page source. See the integration guide's security note.
+const QUESTIONS = [
+  { n: 1,  section: 1, skill: 'arithmetic',   text: 'What is 45 + 32?', options: ['67', '72', '77', '82'], a: 2 },
+  { n: 2,  section: 1, skill: 'arithmetic',   text: 'What is 3.5 × 2.4?', options: ['7.5', '8.4', '8.6', '9'], a: 1 },
+  { n: 3,  section: 1, skill: 'arithmetic',   text: 'Calculate 144 ÷ 12:', options: ['12', '156', '7', '132'], a: 0 },
+  { n: 4,  section: 1, skill: 'arithmetic',   text: 'Subtract 58 from 102:', options: ['56', '44', '5', '160'], a: 1 },
+  { n: 5,  section: 1, skill: 'arithmetic',   text: 'Add 3.75 and 4.26:', options: ['1.25', '0.51', '15.975', '8.01'], a: 3 },
+  { n: 6,  section: 1, skill: 'percentages',  text: 'What is 25% of 200?', options: ['50', '100', '40', '150'], a: 0 },
+  { n: 7,  section: 1, skill: 'percentages',  text: 'Increase 150 by 30%:', options: ['180', '120', '195', '50'], a: 2 },
+  { n: 8,  section: 1, skill: 'percentages',  text: 'If a product costs $80 and is discounted 20%, what is the sale price?', options: ['$100', '$60', '$64', '$40'], a: 2 },
+  { n: 9,  section: 1, skill: 'ratios',       text: 'If a recipe calls for 3 cups of flour to 2 cups of sugar, what is the ratio of flour to sugar?', options: ['3:2', '2:3', '2:2', '3:3'], a: 0 },
+  { n: 10, section: 1, skill: 'algebra',      text: '5x = 25 implies that x =', options: ['125', '20', '30', '5'], a: 3 },
+
+  { n: 11, section: 2, skill: 'ratios',       text: 'The simplified ratio for 18:24 is:', options: ['4:3', '3:4', '3:3', '4:4'], a: 1 },
+  { n: 12, section: 2, skill: 'rates',        text: 'If a train travels 180 miles in 3 hours at a constant speed, how many miles does the train travel in one hour?', options: ['540', '90', '50', '60'], a: 3 },
+  { n: 13, section: 2, skill: 'word_problem', text: "If John has eight apples and his sister gives him four, but his cousin takes two, how many apples does John have left?", options: ['10', '14', '8', '2'], a: 0 },
+  { n: 14, section: 2, skill: 'logic',        text: 'If 2 + 4 + 6 + 8 + 10 = 30, what is the sum of just the single-digit numbers in this equation?', options: ['30', '12', '20', '14'], a: 2 },
+  { n: 15, section: 2, skill: 'geometry',     text: 'If a rectangle is 10 units × 5 units, what is the area of the rectangle?', options: ['50', '15', '2', '5'], a: 0 },
+  { n: 16, section: 2, skill: 'arithmetic',   text: '–8 + 5 =', options: ['3', '–3', '13', '–13'], a: 1 },
+  { n: 17, section: 2, skill: 'word_problem', text: 'Bob buys five packets of cookies. Each packet has eight cookies. Bob gives half of one packet of cookies to his friend Penny. How many cookies does Bob have left?', options: ['24', '18', '40', '36'], a: 3 },
+  { n: 18, section: 2, skill: 'logic',        text: 'Jim is taller than Jenny, and Jenny is shorter than Ryan. Who is the shortest?', options: ['Jenny', 'Ryan', 'Jeff', 'Ryan and Angel'], a: 0 },
+  { n: 19, section: 2, skill: 'logic',        text: 'If today is Monday, what day will it be three days from now?', options: ['Saturday', 'Friday', 'Thursday', 'Wednesday'], a: 2 },
+  { n: 20, section: 2, skill: 'probability',  text: 'The probability of rolling a three on a single six-sided die is:', options: ['1 in 6', '2 in 6', '3 in 6', '4 in 6'], a: 0 },
+
+  { n: 21, section: 3, skill: 'logic',        text: 'If you are running a race and you overtake the person in second place, what place are you in now?', options: ['First', 'Second', 'Third', 'Fourth'], a: 1 },
+  { n: 22, section: 3, skill: 'rates',        text: 'If a music artist earns $5 in royalties every time their song is played on the radio, what would their royalties be for one day if their song is played every other hour?', options: ['$100', '$60', '$5', '$120'], a: 1 },
+  { n: 23, section: 3, skill: 'percentages',  text: 'As a percentage, what is 12 out of 60?', options: ['45%', '20%', '48%', '72%'], a: 1 },
+  { n: 24, section: 3, skill: 'sequence',     text: 'What is the next number in this sequence? 3…5…8…13…21…', options: ['33', '34', '35', '36'], a: 1 },
+  { n: 25, section: 3, skill: 'arithmetic',   text: 'What is the total of 5/8 and 3/4?', options: ['3/8', '9/8', '1 1/4', '1 3/8'], a: 3 },
+  { n: 26, section: 3, skill: 'word_problem', text: 'If there are 24 students in a class and the teacher divides them into groups of six, how many students are in each group?', options: ['6', '4', '18', '3'], a: 0 },
+  { n: 27, section: 3, skill: 'word_problem', text: 'Mary has four times as many apples as Melissa. Melissa has four apples, how many apples does Mary have?', options: ['Four', 'Eight', 'Sixteen', 'Thirty-two'], a: 2 },
+  { n: 28, section: 3, skill: 'rates',        text: 'A series of car repairs will take one technician twelve hours to complete. If the technician works with two more technicians at the same time, how many hours will it take for the car repairs to be completed?', options: ['4 hours', '3 hours', '2 hours', '1 hour'], a: 0 },
+  { n: 29, section: 3, skill: 'word_problem', text: 'If a tourist has a six-hour flight and a four-hour train to their destination, and they have already been traveling for five and a half hours, how much more travel time do they have before reaching their destination?', options: ['Three and a half hours', 'Fifteen and a half hours', 'Four and a half hours', 'Nine and a half hours'], a: 2 },
+  { n: 30, section: 3, skill: 'word_problem', text: "Mark's date requires two and a half hours to prepare for a charity gala that begins at 6:00 PM. Since they need to leave by 5:00 PM to arrive on time, what is the latest time his date should start getting ready?", options: ['4:30 p.m.', '2:30 p.m.', '4 p.m.', '2 p.m.'], a: 1 }
+];
+
+const SECTION_MAP = { 1: [1,2,3,4,5,6,7,8,9,10], 2: [11,12,13,14,15,16,17,18,19,20], 3: [21,22,23,24,25,26,27,28,29,30] };
+const TOTAL_QUESTIONS = 30;
+const LETTERS = ['a', 'b', 'c', 'd'];
+
+const SKILL_LABELS = {
+  arithmetic: 'Arithmetic',
+  percentages: 'Percentages',
+  ratios: 'Ratios',
+  algebra: 'Algebra',
+  rates: 'Rates & Work Problems',
+  word_problem: 'Word Problems',
+  logic: 'Logic',
+  geometry: 'Geometry',
+  probability: 'Probability',
+  sequence: 'Sequences & Patterns'
+};
+
+function renderQuestions() {
+  for (const q of QUESTIONS) {
+    const container = document.getElementById(`sectionQuestions${q.section}`);
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `qb${q.n}`;
+    let inner = `<div class="question-text"><span class="question-num">${q.n}</span><span>${q.text}</span></div>`;
+    inner += '<div class="scenario-options">' + q.options.map((opt, i) =>
+      `<div class="scenario-option"><input type="radio" name="q${q.n}" id="q${q.n}-${LETTERS[i]}" value="${i}"><label for="q${q.n}-${LETTERS[i]}"><span class="opt-letter">${LETTERS[i].toUpperCase()}</span><span>${opt}</span></label></div>`
+    ).join('') + '</div>';
+    block.innerHTML = inner;
+    container.appendChild(block);
+  }
+}
+
+// ══════════════════════════════════════════════
+// SCORING MODEL — correct / incorrect, single overall score
+// ══════════════════════════════════════════════
+function getSelectedIndex(qNum) {
+  const checked = document.querySelector(`input[name="q${qNum}"]:checked`);
+  return checked ? parseInt(checked.value) : null;
+}
+
+function isCorrect(qNum) {
+  const q = QUESTIONS.find(x => x.n === qNum);
+  const sel = getSelectedIndex(qNum);
+  return sel !== null && sel === q.a;
+}
+
+// ══════════════════════════════════════════════
+// DRAFT PERSISTENCE (survives accidental refresh — timer keeps running)
+// ══════════════════════════════════════════════
+const DRAFT_KEY = `mla_draft_${APPLICANT.email || 'anon'}_${APPLICANT.jobId || 'nojob'}`;
+const PENDING_KEY = 'mla_pending_submission';
+let startedAt = null;
+let submitted = false;
+
+function saveDraft() {
+  const draft = { startedAt, answers: {} };
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    const checked = document.querySelector(`input[name="q${i}"]:checked`);
+    if (checked) draft.answers[`q${i}`] = checked.value;
+  }
+  try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch (e) {}
+}
+
+function restoreDraft() {
+  let draft;
+  try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch (e) { return; }
+  if (!draft || !draft.answers) return;
+  if (draft.startedAt) startedAt = draft.startedAt;
+  for (const [name, value] of Object.entries(draft.answers)) {
+    const input = document.querySelector(`input[name="${name}"][value="${value}"]`);
+    if (input) {
+      input.checked = true;
+      const block = document.getElementById(`qb${name.replace('q','')}`);
+      if (block) block.classList.add('answered');
+    }
+  }
+}
+
+function clearDraft() {
+  try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+}
+
+// ══════════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════════
+let timerInterval = null;
+
+function timeRemainingMs() {
+  if (!startedAt) return CONFIG.timeLimitMinutes * 60000;
+  return (startedAt + CONFIG.timeLimitMinutes * 60000) - Date.now();
+}
+
+function startTimer() {
+  const badge = document.getElementById('headerBadge');
+  badge.classList.add('timer-running');
+  const tick = () => {
+    const remaining = timeRemainingMs();
+    if (remaining <= 0) {
+      badge.textContent = '⏱ 0:00';
+      clearInterval(timerInterval);
+      timerInterval = null;
+      submitAssessment(true); // time's up — auto-submit
+      return;
+    }
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    badge.textContent = `⏱ ${mins}:${String(secs).padStart(2, '0')}`;
+    if (remaining < 2 * 60000) badge.classList.add('timer-warn');
+  };
+  tick();
+  timerInterval = setInterval(tick, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  const badge = document.getElementById('headerBadge');
+  badge.classList.remove('timer-running', 'timer-warn');
+  badge.textContent = 'Confidential';
+}
+
+// ══════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(pct) {
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function answeredCount() {
+  let answered = 0;
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+  }
+  return answered;
+}
+
+function updateAnswerProgress() {
+  updateProgress(Math.round((answeredCount() / TOTAL_QUESTIONS) * 95));
+}
+
+function startAssessment() {
+  showScreen('screenSection1');
+  if (!startedAt) startedAt = Date.now();
+  saveDraft();
+  startTimer();
+  updateAnswerProgress();
+}
+
+// ══════════════════════════════════════════════
+// VALIDATION
+// ══════════════════════════════════════════════
+function validateSection(sectionNum) {
+  const qs = SECTION_MAP[sectionNum];
+  let allAnswered = true;
+
+  qs.forEach(q => {
+    const answered = document.querySelector(`input[name="q${q}"]:checked`) !== null;
+    const block = document.getElementById(`qb${q}`);
+    if (!answered) {
+      block.classList.add('error');
+      allAnswered = false;
+    } else {
+      block.classList.remove('error');
+      block.classList.add('answered');
+    }
+  });
+
+  const valEl = document.getElementById(`val${sectionNum}`);
+  if (!allAnswered) {
+    valEl.classList.add('visible');
+  } else {
+    valEl.classList.remove('visible');
+  }
+  return allAnswered;
+}
+
+// Mark blocks as answered on change
+document.addEventListener('change', e => {
+  if (e.target.type === 'radio') {
+    const qNum = parseInt(e.target.name.replace('q', ''));
+    const block = document.getElementById(`qb${qNum}`);
+    if (block) {
+      block.classList.remove('error');
+      block.classList.add('answered');
+    }
+    saveDraft();
+    updateAnswerProgress();
+  }
+});
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function goToSection(num) {
+  const prev = num - 1;
+  if (prev >= 1 && prev <= 3) {
+    if (!validateSection(prev)) return;
+  }
+  showScreen(`screenSection${num}`);
+  updateAnswerProgress();
+}
+
+// ══════════════════════════════════════════════
+// SUBMIT
+// ══════════════════════════════════════════════
+async function postWithRetry(payload, attempts = 3) {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const res = await fetch(CONFIG.webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return true;
+    } catch (err) {
+      console.error(`Webhook attempt ${i + 1} failed:`, err);
+      if (i < attempts - 1) await new Promise(r => setTimeout(r, 1500 * (i + 1)));
+    }
+  }
+  return false;
+}
+
+// force=true is used by the timer: it bypasses validation and submits
+// whatever has been answered (unanswered = incorrect).
+async function submitAssessment(force = false) {
+  if (submitted) return;
+  if (!force && !validateSection(3)) return;
+  submitted = true;
+  stopTimer();
+
+  const btn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('submitStatus');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Submitting...';
+
+  // Collect answers + per-skill tally
+  const answers = {};
+  const skillTally = {};
+  let totalCorrect = 0;
+  for (const q of QUESTIONS) {
+    const sel = getSelectedIndex(q.n);
+    const correct = sel !== null && sel === q.a;
+    if (correct) totalCorrect++;
+    answers[`q${q.n}`] = { selected: sel !== null ? LETTERS[sel] : null, correct: correct, skill: q.skill };
+
+    if (!skillTally[q.skill]) skillTally[q.skill] = { correct: 0, total: 0 };
+    skillTally[q.skill].total++;
+    if (correct) skillTally[q.skill].correct++;
+  }
+
+  const overall = Math.round((totalCorrect / TOTAL_QUESTIONS) * 100);
+
+  // Quality signals for the agent
+  const durationSeconds = startedAt ? Math.round((Date.now() - startedAt) / 1000) : null;
+  const positions = [];
+  for (let i = 1; i <= TOTAL_QUESTIONS; i++) {
+    const sel = getSelectedIndex(i);
+    if (sel !== null) positions.push(sel);
+  }
+  const straightLine = positions.length >= 15 && positions.every(v => v === positions[0]);
+  const unanswered = TOTAL_QUESTIONS - answeredCount();
+
+  const rating = getRating(overall);
+  const completedAt = new Date().toISOString();
+
+  const payload = {
+    // Metadata
+    assessment_type: 'math_logic_reasoning',
+    assessment_version: '1.0',
+    completed_at: completedAt,
+    job_id: APPLICANT.jobId,
+    job_title: APPLICANT.jobTitle,
+
+    // Applicant
+    applicant_name:  APPLICANT.name,
+    applicant_email: APPLICANT.email,
+    agent_email:     APPLICANT.agentEmail,
+    agent_name:      APPLICANT.agentName,
+
+    // Scores — single overall construct; skill_breakdown is an informational
+    // tally, not a separately weighted score.
+    score_overall:      overall,
+    questions_correct:  totalCorrect,
+    questions_total:    TOTAL_QUESTIONS,
+    rating:              rating.label,
+    rating_code:          rating.code,
+    skill_breakdown: skillTally,
+
+    // Timing
+    time_limit_minutes: CONFIG.timeLimitMinutes,
+    auto_submitted:     force,
+    questions_unanswered: unanswered,
+
+    // Response-quality signals
+    quality_flags: {
+      duration_seconds: durationSeconds,
+      rushed: durationSeconds !== null && durationSeconds < 120,
+      straight_line: straightLine
+    },
+
+    // Per-question results
+    answers: answers
+  };
+
+  // POST to webhook
+  statusEl.className = 'submit-status status-sending';
+  statusEl.textContent = force ? '⏱ Time is up — submitting your answers...' : '⏳ Sending your results...';
+
+  let sent = false;
+  if (CONFIG.devMode || !WEBHOOK_READY) {
+    console.log('Assessment payload:', JSON.stringify(payload, null, 2));
+    await new Promise(r => setTimeout(r, 800)); // simulate delay
+    sent = true;
+  } else {
+    sent = await postWithRetry(payload);
+  }
+
+  clearDraft();
+  if (sent) {
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+    statusEl.className = 'submit-status status-success';
+    statusEl.textContent = '✓ Results submitted successfully.';
+  } else {
+    // Keep the payload so it can be resent automatically on the next page load
+    try { localStorage.setItem(PENDING_KEY, JSON.stringify(payload)); } catch (e) {}
+    statusEl.className = 'submit-status status-error';
+    statusEl.textContent = '⚠️ Could not reach the server. Your answers are saved and will be retried — please also notify your agent.';
+  }
+
+  updateProgress(100);
+  setTimeout(() => {
+    if (CONFIG.showApplicantResults) {
+      showResults(overall, totalCorrect, unanswered, force, skillTally, rating);
+    } else {
+      document.getElementById('thankYouWarn').style.display = sent ? 'none' : 'block';
+      showScreen('screenThankYou');
+    }
+  }, 900);
+}
+
+// ══════════════════════════════════════════════
+// RATING LOGIC
+// ══════════════════════════════════════════════
+function getRating(score) {
+  if (score >= 85) return { code: 'elite', label: 'Excellent Aptitude', emoji: '🏆', badgeClass: 'badge-elite' };
+  if (score >= 70) return { code: 'strong', label: 'Strong Aptitude', emoji: '⭐', badgeClass: 'badge-strong' };
+  if (score >= 55) return { code: 'developing', label: 'Developing Aptitude', emoji: '📈', badgeClass: 'badge-developing' };
+  return { code: 'notrecommended', label: 'Not Recommended', emoji: '⚠️', badgeClass: 'badge-notrecommended' };
+}
+
+// ══════════════════════════════════════════════
+// RESULTS DISPLAY
+// ══════════════════════════════════════════════
+function showResults(overall, totalCorrect, unanswered, autoSubmitted, skillTally, rating) {
+  showScreen('screenResults');
+
+  // Badge
+  const badgeEl = document.getElementById('resultsBadge');
+  badgeEl.className = `results-badge ${rating.badgeClass}`;
+  badgeEl.innerHTML = `${rating.emoji} ${rating.label}`;
+
+  // Name
+  document.getElementById('resultsName').textContent = APPLICANT.name || 'Assessment Complete';
+  document.getElementById('correctSummary').textContent = `${totalCorrect} of ${TOTAL_QUESTIONS} questions answered correctly`;
+
+  // Score ring animation
+  const circumference = 408.41;
+  const offset = circumference - (overall / 100) * circumference;
+  setTimeout(() => {
+    document.getElementById('ringCircle').style.strokeDashoffset = offset;
+    const colorMap = { elite: '#1e8a4a', strong: '#1a4fa0', developing: '#e8a020', notrecommended: '#c0392b' };
+    document.getElementById('ringCircle').setAttribute('stroke', colorMap[rating.code]);
+  }, 100);
+  document.getElementById('scoreCenterNum').textContent = overall;
+
+  // Skill breakdown bars (informational — sorted worst to best so gaps are obvious)
+  const rows = Object.entries(skillTally)
+    .map(([skill, t]) => ({ skill, pct: Math.round((t.correct / t.total) * 100), correct: t.correct, total: t.total }))
+    .sort((a, b) => a.pct - b.pct);
+  const breakdownHtml = rows.map(r => `
+    <div class="dimension-card">
+      <div class="dimension-header">
+        <div>
+          <div class="dimension-name">${SKILL_LABELS[r.skill] || r.skill}</div>
+          <div style="font-size:11px;color:var(--muted);">${r.correct} of ${r.total} correct</div>
+        </div>
+        <div class="dimension-score">${r.pct}</div>
+      </div>
+      <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:${r.pct}%"></div></div>
+    </div>
+  `).join('');
+  document.getElementById('skillBreakdown').innerHTML = breakdownHtml;
+
+  // Completed date
+  document.getElementById('completedDate').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  // Insights
+  const insights = generateInsights(overall, totalCorrect, unanswered, autoSubmitted, skillTally, rating);
+  document.getElementById('insightsList').innerHTML = insights.map(i =>
+    `<div class="insight-item"><div class="insight-icon">${i.icon}</div><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function generateInsights(overall, totalCorrect, unanswered, autoSubmitted, skillTally, rating) {
+  const insights = [];
+  const safeName = APPLICANT.name ? escapeHtml(APPLICANT.name) : 'This candidate';
+
+  const descriptions = {
+    elite: `<strong>${safeName}</strong> scored in the top tier for numerical and logical reasoning — fast, accurate calculation and clean multi-step problem solving.`,
+    strong: `<strong>${safeName}</strong> demonstrates solid numerical and logical reasoning fundamentals.`,
+    developing: `<strong>${safeName}</strong> shows gaps in numerical or logical reasoning that may slow ramp-up on tasks involving calculations or multi-step problem solving.`,
+    notrecommended: `<strong>${safeName}</strong> scored below the threshold on core numerical and logical reasoning. Consider whether the role's math/logic demands are a good fit.`
+  };
+  insights.push({ icon: rating.emoji, text: descriptions[rating.code] });
+
+  if (autoSubmitted) {
+    insights.push({ icon: '⏱️', text: `<strong>Time Expired:</strong> The assessment auto-submitted at the ${CONFIG.timeLimitMinutes}-minute limit with ${unanswered} question${unanswered === 1 ? '' : 's'} unanswered (scored as incorrect). Scores may understate ability — consider whether pace or skill was the limiting factor.` });
+  }
+
+  // Skill-tag tally insights — informational only, requires at least 2 questions
+  // in a category before drawing a conclusion.
+  const rows = Object.entries(skillTally)
+    .map(([skill, t]) => ({ skill, pct: Math.round((t.correct / t.total) * 100), total: t.total }))
+    .filter(r => r.total >= 2);
+
+  const weakest = rows.slice().sort((a, b) => a.pct - b.pct)[0];
+  if (weakest && weakest.pct < 60) {
+    insights.push({ icon: '🎯', text: `<strong>Development Area:</strong> ${SKILL_LABELS[weakest.skill]} (${weakest.pct}% correct) — the weakest category on this attempt. Worth a quick skills check before assigning tasks that lean heavily on this.` });
+  }
+
+  const strongest = rows.slice().sort((a, b) => b.pct - a.pct)[0];
+  if (strongest && strongest.pct === 100 && strongest.skill !== (weakest && weakest.skill)) {
+    insights.push({ icon: '💡', text: `<strong>Strongest Category:</strong> ${SKILL_LABELS[strongest.skill]} — answered perfectly.` });
+  }
+
+  return insights;
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+async function retryPendingSubmission() {
+  if (CONFIG.devMode || !WEBHOOK_READY) return;
+  let pending;
+  try { pending = JSON.parse(localStorage.getItem(PENDING_KEY)); } catch (e) { return; }
+  if (!pending) return;
+  const sent = await postWithRetry(pending, 2);
+  if (sent) {
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+    console.log('Previously failed submission delivered successfully.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderQuestions();
+  document.getElementById('timeLimitDisplay').textContent = `${CONFIG.timeLimitMinutes} Minutes`;
+
+  // Populate greeting if params present
+  if (APPLICANT.name) {
+    document.getElementById('greetingName').textContent = APPLICANT.name;
+    document.getElementById('greetingAgent').textContent = APPLICANT.agentName;
+    document.getElementById('applicantGreeting').style.display = 'block';
+    document.getElementById('thankYouName').textContent = `, ${APPLICANT.name.split(' ')[0]}`;
+  }
+  if (APPLICANT.agentName && APPLICANT.agentName !== 'Your Hiring Agent') {
+    document.getElementById('thankYouAgent').textContent = APPLICANT.agentName;
+  }
+
+  restoreDraft();
+  updateAnswerProgress();
+  retryPendingSubmission();
+
+  // If a timed session was already in progress (page refresh), resume it —
+  // the clock keeps running from the original start time.
+  if (startedAt) {
+    if (timeRemainingMs() <= 0) {
+      // Time expired while the page was closed: render a section so the
+      // submit UI exists, then auto-submit what was answered.
+      showScreen('screenSection3');
+      submitAssessment(true);
+    } else {
+      // Resume at the first section with an unanswered question
+      let resumeSection = 3;
+      outer: for (const [sec, qs] of Object.entries(SECTION_MAP)) {
+        for (const q of qs) {
+          if (!document.querySelector(`input[name="q${q}"]:checked`)) {
+            resumeSection = parseInt(sec);
+            break outer;
+          }
+        }
+      }
+      showScreen(`screenSection${resumeSection}`);
+      startTimer();
+    }
+  }
+});
+</script>
+</body>
+</html>
